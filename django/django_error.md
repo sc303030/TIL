@@ -2,25 +2,25 @@
 
 ## 파이참에서 장고 설치 오류 발생
 
-![error01](./img/error01.png)
+![error01](./image/error1.PNG)
 
 - 파이참에서 장고를 설치하는 과정에서 다음과 같은 에러가 발생하였다.
 
-![error02](./img/error02.png)
+![error02](./image/error2.PNG)
 
 - 로컬에는 다음과 같이 장고가 정상적으로 설치되어있어 자세히 살펴보았다.
 
-![error03](./img/error03.png)
+![error03](./image/error3.PNG)
 
 - 오류에 나와있는 경로로 가서 libcurl-7.71.1-h2a8f88b_1을 삭제하였다
 
-![error04](./img/error04.png)
+![error04](./image/error4.PNG)
 
 - 마찬가지로 curl-7.71.1-h2a8f88b_1을 삭제하였다.
 
 ## 그 다음에 장고를 다시 설치하였다.
 
-![error05](./img/django.png)
+![error05](./image/django01.PNG)
 
 - 장고가 정상적으로 설치된 것을 볼 수 있다.
 - 아마 그 전에 깔았던 파일들에서 오류가 난 것 같다.
