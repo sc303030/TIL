@@ -64,6 +64,10 @@ GUI(Graphic User Interface, 보통의 프로그램)
 - `mv` (move) : 파일명 변경
 - `mv [파일/폴더명] [위치]` : 파일 또는 폴더를 **이동**
 
+### (11) `git add .`
 
+- `git commit -m "코멘트"`
+- `git push origin master`
 
-Project
+- gitgub에 올라가있는 폴더 지울때
+
