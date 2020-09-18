@@ -250,7 +250,9 @@
 
   - `<form></form>` 으로 감싸줘야지 투표했을 때 투표수를 반영할 수 있다.
 
-  - 히든으로 `clist.id` 를 담는다.
+  - `<input type="hidden" name="question_id" value="{{clist.id}}"/>`
+
+    - `VOTE` 의 값을 누적하고 싶은데 어떤 `question` 인지 모르니 `question` 의 `id` 을 같이 넘겨주는 것이다. 
 
   - `for choice in clist.choice_set.all` 
 
@@ -269,7 +271,7 @@
     - 라디오 버튼 옆에 choice_text를 표시해준다. 
 
   - `<input type="submit" value="VOTE">` 
-
+  
     - 이제 `VOTE` 를 누르면 `action="{% url 'vote' %}"` 이 실행되어야 한다. 
 
 **지금까지 만든걸 웹페이지에서 보면 다음과 같다**
@@ -294,4 +296,112 @@
 
 - `views.py` 로 가서 `vote` 함수를 만든다.
 
-  - 
+  - ```python
+    def vote(request):
+        choice = request.POST['choice']
+        question_id = request.POST['question_id']
+        
+        question = get_object_or_404(Question, pk=question_id)
+        checked_choice = question.choice_set.get(pk=choice)
+        checked_choice.votes += 1
+        checked_choice.save()
+    
+        request.session['question_id'] = question_id
+        return redirect('result')
+    ```
+
+  - `POST` 방식으로 받아왔기 때문에 `POST` 로 `choice` 랑 `question_id` 를 변수에 할당한다.
+
+  - `question` 에는 `Question` 에서 키가 `question_id` 인 모델들만 할당한다. 
+
+  - `question` 과 외래키로 연결되어 있는 `choice` 의 모든 값을 가져온다. 
+
+    - `pk` 가 `choice` 인것들, 
+      - 위 `html` 에서 `<input type="radio" name="choice" value="{{choice.id}}">` 이 값을 비교해 주는 것이다. 
+    
+  - `checked_choice` 에는 `Choice` 에서 만들었던 `votes` 가 있을 것이다. 이 값을 누적해준다.
+  
+  - 그리고 다시 저장해준다.
+  
+  - ` request.session['question_id'] = question_id` 
+  
+    - django에서는  `request.session`  이라는 딕셔너리로 객체에 필요한 값을 저장하고 읽어올 수 있다.
+    - `question_id` 에 `Question` 의`id` 를 저장한다.
+    - 그럼 어떤 `question` 의 `vote` 가 업데이트 되었는지 알 수 있다.
+  
+  - `redirect('result')` 를 하는 이유는 업데이트된 결과를  보여주기 위해서 `return` 한다.
+  
+    - `polls/result.html` 로 가달라는 말이다. 
+    - `result` 는 `urls.py` 에 있는 `path`  의 `id` 값이다. 그러면 `urls.py` 에 값을 추가해주자.
+  
+- `urls.py`  에 다음과 같이 `path` 를 추가한다.
+
+  - ```python
+    urlpatterns = [
+        path('index/', views.index, name='index'),
+        path('<int:question_id>/', views.choice, name='choice'),
+        path('vote/', views.vote, name='vote'),
+        path('result/', views.result, name='result'),
+    ]
+    ```
+
+- `views.py` 로 가서 `result` 함수를 만들자.
+
+- ```python
+  def result(request):
+      question_id = request.session['question_id']
+      question = get_object_or_404(Question, pk=question_id)
+      context = {'question' : question}
+      return render(request, 'polls/result.html', context)
+  ```
+
+  - `question_id` 는 위에서 `vote()` 에서 저장해 주었던 값을 다시 꺼내온다.
+  - `Question`  에서 그 값에 해당하는 컬럼들을 저장해준다. 
+  - 이 값을 다시 `context` 에 딕셔너리 형식으로 저장한다.
+  - 이제 `result.html` 를 이용하여 웹페이지에 표시해주러 가자.
+
+- `templates` - `polls` 에 `result.html` 파일을 만든다.
+
+  - ```html
+    <body>
+        <h1>{{ question.question_text }}</h1>
+        <hr/>
+        <ul>
+            {% for choice in question.choice_set.all %}
+            <li>{{ choice.choice_text}} - {{choice.votes}}</li>
+            {% endfor %}
+        </ul>
+        <p/>
+        <a href="{% url 'index' %}">첫 페이지 이동</a>
+    </body>
+    ```
+
+  - `{{ question.question_text }}` 
+
+    - 질문을 표시해주는 것이다.
+
+  - `{% for choice in question.choice_set.all %}` 
+
+    - `question` 을 외래키로 하는 `choice` 의 모든 값을 가져와서 `choice` 로 이름을 지어준다.
+
+  - `<li>{{ choice.choice_text}} - {{choice.votes}}</li>` 
+
+    - 그럼 `Choice` 에 있던 컬럼 `choice_text` 와 업데이트 된  `votes` 를 웹페이지에 표시해준다.
+
+  - `<a href="{% url 'index' %}">첫 페이지 이동</a>` 
+
+    - 링크 태그로 다시 맨 처음 페이지로 이동한다.
+
+![web14](./image/dj_web14.jpg)
+
+- 여기서 `VOTE` 를 누르면 투표수가 누적되고, 누적된 값이 반영된 페이지를 보여주게 한것이다.
+
+![web15](./image/dj_web15.jpg)
+
+- 이렇게 누적 투표수를 보여준다. 
+
+#### 그럼 잘 누적되었는지 admin으로 가서 본다.
+
+![web16](./image/dj_web16.jpg)
+
+- 정상적으로 잘 반영되고 있다. 여기에 저장되는 값을 아까 `VOTE` 버튼을 누르면 뷰를 거쳐서 DB에 들렸다가 다시 나오는 것이다. 그걸 웹페이지에 뿌려준다. 
