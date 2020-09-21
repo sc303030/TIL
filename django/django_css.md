@@ -131,7 +131,7 @@ python manage.py makemigrations
 - 모델이 만들어진다.
 
 ```
-python manahe.py migrate
+python manage.py migrate
 ```
 
 - 서버를 가동시킨다.
@@ -334,7 +334,9 @@ def logout(request):
 
 - 프로필에 저장되었던 `session` 을 초기화 시키고 `request.session.modified = True` 을 한다.
 - `redirect` 로 다시 로그인 화면으로 돌아가게 한다.
-- 게시판에 항목들이 나오게 하자.
+
+#### 게시판에 항목들이 나오게 하자.
+
 - 이번에도 `header.html` 로 가서 관련된 코드들을 수정하자.
 
 ```html
