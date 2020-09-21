@@ -117,7 +117,7 @@ class BbsUserRegister(models.Model):
 admin.site.register(BbsUserRegister)
 ```
 
-- 이제 연결해주는 마이그레이션이 필요하다.
+- 이제 모델의 변경 내역을 DB로 반영시키는 마이그레이션을 실행한다.
 - 콘솔창에 다음과 같이 입력한다.
 
 ```
@@ -268,4 +268,180 @@ TEMPLATES = [
 - 홈화면이 다음과 같이 나온다. 
 
 #### redirect와 render 차이점
+
+- **redirect** 
+  - `URL` 로 이동해서 그 `URL` 에 맞는 `views` 가 다시 실행된다.
+    - 여기서 다시 `redirect`  와 `render` 중에 결정한다.
+  - 동적인 표현이 불가능하다.
+    - 웹페이지에 값을 뿌려주는게 안 된다.
+- **render** 
+  - `템플릿` 을 불러온다.
+  - 페이지에 표시주는 것이기에 동적인 표현이 가능하다.
+  - context 같은 딕셔너리에 담아서 표현한다. 
+    - context에 담아서 표현하면 해당 페이지에서만 표현이 가능하다.
+
+#### 그래서 session에 담아서 여러 페이지에 공유한다. 
+
+- 로그아웃 하면 session에 있던 값들이 사라진다.
+- 위에서 계속 페이지에 표시하기 위해서는 공통으로 관리되고 있는 `header.html` 에 값을 주어야한다.
+
+##### header.html로 이동
+
+- 닉네임이 표시되는 곳을 찾아 `{{userSession}}` 을 추가한다.
+
+```html
+<span class="hidden-xs">{{userSession}}</span>
+<p>
+                      {{userSession}} Data Anaylist
+</p>
+<p>{{userSession}}</p>
+```
+
+#### 로그아웃과 게시판 작성
+
+![css07](./image/css07.jpg)
+
+- 로그아웃을 클릭했을 때 session에 저장 된 값이 초기화 되고 다시 로그인 화면으로 돌아가게 한다.
+
+- `header.html` 로 이동한다.
+
+```html
+<a href="{% url 'logout' %}" class="btn btn-default btn-flat">Sign out</a>
+```
+
+- `url logout` 으로 이동하게 링크를 걸어준다. 
+- `urls.py` 에 `path` 을 추가시킨다.
+
+```python
+urlpatterns = [
+    path('index/', views.loginForm, name='loginForm'),
+    path('registerForm/', views.registerForm, name='registerForm'),
+    path('register/', views.register, name='register'),
+    path('login/', views.login, name='login'),
+    path('logout/', views.logout, name='logout'),
+]
+```
+
+- `views.py` 에 `logout` 함수를 만들자.
+
+```python
+def logout(request):
+    request.session['user_name'] = {}
+    request.session.modified = True
+
+    return redirect('loginForm')
+```
+
+- 프로필에 저장되었던 `session` 을 초기화 시키고 `request.session.modified = True` 을 한다.
+- `redirect` 로 다시 로그인 화면으로 돌아가게 한다.
+- 게시판에 항목들이 나오게 하자.
+- 이번에도 `header.html` 로 가서 관련된 코드들을 수정하자.
+
+```html
+<li><a href="{% url 'bbs_list' %}"><i class="fa fa-circle-o"></i>게시판</a></li>
+```
+
+- `url bbs_list` 로 가도록 링크를 걸어준다.
+- `urls.py` 에 `path` 를 추가하러 가자.
+
+```python
+urlpatterns = [
+    path('index/', views.loginForm, name='loginForm'),
+    path('registerForm/', views.registerForm, name='registerForm'),
+    path('register/', views.register, name='register'),
+    path('login/', views.login, name='login'),
+    path('logout/', views.logout, name='logout'),
+    path('bbs_list/', views.list, name='bbs_list'),
+]
+```
+
+- 게시판에 기록한 항목들을 `model` 과 `DB` 로 관리하려면 `models.py` 에서 `class` 를 만들자.
+
+```python
+class Bbs(models.Model):
+    title   = models.CharField(max_length=100)
+    write   = models.CharField(max_length=100)
+    content = models.TextField()
+    regdate = models.DateTimeField(default= timezone.now)
+    viewcnt = models.IntegerField(default=0)
+```
+
+- 필요한 컬럼들을 지정하고 ` class Bbs` 를 생성한다.
+
+- `views.py` 에 `list` 함수를 추가시키러 가자.
+
+```python
+def list(request):
+    boards = Bbs.objects.all()
+    print('boards result : ', type(boards), boards)
+    context = {"boards" : boards}
+    return render(request, 'list.html', context)
+```
+
+- `Bbs` 객체의 모든것을 가져온다. 그것을 동적으로 만들기 위해 `context` 에 담아 관리한다. 
+- `list.html` 로 이동해서 `boards` 의 값들을 웹페이지에 표현하자.
+- 형태가 잡혀있는 `list.html` 을 `BbsApp` - `templates` 에 복사한다.
+
+![css08](./image/css08.jpg)
+
+- `list.html` 에도 `<section>` 으로 시작하기 때문에 `header.html` 과 `footer.html` 을 불러와야 한다.
+
+```html
+{% include 'header.html' %}
+{% block content %}
+-----------<body>---------
+{% endblock %}
+{% include 'footer.html' %}
+```
+
+```html
+{% if boards %}
+<table class="table table-bordered">
+	<tr>
+		<th style="width: 10px">BNO</th>
+		<th>TITLE</th>
+		<th>WRITER</th>
+		<th>REGDATE</th>
+		<th style="width: 40px">VIEWCNT</th>
+	</tr>
+
+	<tbody id="tbody">
+	{% for board in boards %}
+	<tr>
+		<td>{{ board.id }}</td>
+		<td><a href="">{{board.title}}</a></td>
+		<td>{{board.write}}</td>
+		<td>{{board.regdate}}</td>
+		<td><span class="badge bg-red">{{board.viewcnt}}</span></td>
+	</tr>
+    {% endfor %}
+	</tbody>
+
+</table>
+{% else %}
+		<p>데이터가 존재하지 않습니다.</p>
+{% endif %}
+```
+
+- `list` 함수에서 `boards` 로 객체를 저장하였기 때문에 그 값을 불러와서 웹페이지에 뿌려준다.
+- 게시물 수 만큼 `<tr> 과 <td>`  가 생성되어야 하니 for루프를 돌린다. 
+  - 해당되는 `<td>` 에 값이 나오도록 지정한다.
+- 게시판의 내용을 관리해야 하니 `BbsApp` - `admin.py` 에 관리자 권한을 추가시켜준다.
+
+```python
+admin.site.register(BbsUserRegister)
+admin.site.register(Bbs)
+```
+
+#### models.py 를 수정했으니 마이그레이션을 다시 해준다.
+
+- 그 다음 서버를 다시 실행시킨다.
+
+- 관리자 페이지로 들어가서 게시판에 표시할 값을 추가시킨다.
+
+![css10](./image/css10.jpg)
+
+- 로그인을 하고 홈페이지에서 게시판에 들어가보면 정상적으로 값이 나오는 것을 알  수 있다.
+
+![css09](./image/css09.jpg)
 
