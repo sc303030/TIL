@@ -292,3 +292,125 @@ def bbsRead(request,id):
 
 - 관리하기 쉽도록 `id="listBtn"` 를 추가해주고 지정된 `action` 이 없기 때문에 `scrtpt` 에서 꾸며준다.
 
+```html
+<script>
+				
+$(document).ready(function(){
+	$('#listBtn').click(function(){
+		location.href='../bbs_list' ;
+});
+
+</script>
+```
+
+- 제이쿼리 형식으로 버튼을 클릭했을 때 `'../bbs_list'` 로 이동하라고 링크를 걸어준다.
+
+![read07](./image/read07.jpg)
+
+- 그럼 게시물 리스트로 넘어가게 된다.
+
+#### 게시물 삭제와 수정
+
+- `LIST ALL` 버튼 왼쪽에 `Modify` 와 `Remove` 버튼을 추가시켜보자.
+- `read.html` 로 이동해서 코드를 추가시키자.
+
+```html
+{% if id == boards.write %}
+<button type="submit" class="btn btn-warning">Modify</button>
+<button type="submit" class="btn btn-danger">Remove</button>
+{% endif %}
+```
+
+- 여기서 조건이 있다. 게시글을 쓴 글쓴이와 현재 로그인한 사용자가 같아야지 버튼이 나오게 해야한다.
+  - 여기서 `id` 는 `session` 으로 계속 가지고 다닌 `user_id` 고 `boards.write` 는 내가 `bbsRead` 함수에서 받아온 게시글을 쓴 `user_id` 다.
+
+```
+boards.write :  pengsu
+context['id'] :  pengsu
+```
+
+- `print` 를 해보면 같다는 것을 알 수 있다. 이렇게 로그인 사용자와 게시글 작성자가 같으면 
+
+![read08](./image/read08.jpg)
+
+- 다음과 같이 버튼이 정상정으로 출력된다.
+
+- 그럼 `Remove` 버튼을 클릭했을 때 게시물이 삭제되도록 해보자.
+
+#### 게시물 삭제
+
+- 게시글의 번호(`id`)를 알아야 게시글을 삭제할 수 있다.
+- `read.html` 로 가서 코드를 수정하자.
+
+```html
+<form role="form" method="post" id="removeFrm">
+
+	{% csrf_token %}
+	<input type='hidden' name='id' value="{{boards.id}}">
+
+</form>
+```
+
+- 보이지 않게 게시글의 `id` 의 값을 지정하였다. 
+
+```html
+<button type="submit" class="btn btn-danger">Remove</button>
+```
+
+- 현재 `Remove` 버튼에는 `submit` 으로 `action` 을 취하고 싶지만 `form` 에는 `action` 이 없다. `script` 에서 꾸며주자.
+
+```html
+<script>
+				
+$(document).ready(function(){
+	$('#listBtn').click(function(){
+		location.href='../bbs_list' ;
+	})
+	$('.btn-danger').click(function(){
+		$('#removeFrm').attr('action', '../bbs_remove/')
+		$('#removeFrm').submit();
+	})
+});
+
+</script>
+```
+
+- `Remove` 의 `class="btn btn-danger"`  를 이용하여 함수를 준다.
+  - `form` 의 `id` 를 찾아 `action` 속성을 부여한다. `bbs_remove` url 링크를 걸어준다.
+  - 그 다음 `submit()` 을 줘서 발동시킨다. 그럼 `action` 이 실행된다.
+- `BbsApp` - `urls.py` 에 `path` 를 추가한다.
+
+```python
+urlpatterns = [
+    path('index/', views.loginForm, name='loginForm'),
+    path('registerForm/', views.registerForm, name='registerForm'),
+    path('register/', views.register, name='register'),
+    path('login/', views.login, name='login'),
+    path('logout/', views.logout, name='logout'),
+    path('bbs_list/', views.list, name='bbs_list'),
+    path('bbs_registerForm/', views.bbsRegisterForm, name='bbs_registerForm'),
+    path('bbs_register/', views.bbsRegister, name='bbs_register'),
+    path('bbs_read/<int:id>', views.bbsRead, name='bbs_read'),
+    path('bbs_remove/', views.bbsRemove, name='bbs_remove'),
+]
+```
+
+- `views.py` 에 `bbsRemove` 함수를 추가하러 가자.
+
+```python
+def bbsRemove(request):
+       id = request.POST['id']
+       Bbs.objects.get(id=id).delete()
+
+    return redirect('bbs_list')
+```
+
+- `hidden` 으로 가져왔던 게시물 `id` 를 받아온다. 
+- `Bbs` 에서  `id` 에 해당되는 객체를 찾아서 지운다.
+  - `delete` 이기 때문에 따로 `save()` 할 필요는 없다.
+- 그 다음 다시 게시물 목록 리스트로 `redirect` 한다.
+
+![read09](./image/read09.jpg)
+
+-  `BNO` 7번 게시물이 정상적으로 삭제된 것을 볼 수 있다.
+  - `BNO` 는 인덱스이기 신경 안써도 된다.
