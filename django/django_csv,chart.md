@@ -430,3 +430,107 @@ series: [{
 ```
 
 - 이렇게 바꿔주자.
+
+#### Word Cloud
+
+- `index` 에 `wordcloud` url 을 걸어준다.
+
+```html
+<a href="../line"><li>line Chart</li></a>
+<a href="../bar"><li>bar Chart</li></a>
+<a href="../wordcloud"><li>wordcloud chart</li></a>
+```
+
+- `urls.py` 에 `path` 를 추가시키자.
+
+```python
+urlpatterns = [
+    path('index/', views.intro, name='index'),
+    path('line/', views.line, name='line'),
+    path('bar/', views.bar, name='bar'),
+    path('wordcloud/', views.wordcloud, name='wordcloud'),]
+```
+
+- `views.py` 에 `wordcloud` 함수를 추가하자.
+
+```python
+def wordcloud(request):
+    txt = '난 몇달째 골드 버튼에 있었어 근데 나 다이아 가고 싶다고 말했지. 실버를 넘어 골드를 지나, 펭티비로 다이아 갈꺼야. 펭티비에 콘텐츠 만들어 언젠가 다이아를 갈꺼야'
+    context = {'txt' : txt}
+    return render(request,'chart_wordcloud.html',context)
+```
+
+- `chart_wordcloud.html` 을 만든다.
+  - 기존에 가지고 있던 `chart_wordcloud.html` 을 붙여넣기한다.
+
+![chart04](./image/chart04.jpg)
+
+- 이렇게 나온다.
+- `chart_wordcloud.html` 데이터 부분 코드를 봐보자.
+
+```html
+<script>
+    var text = "{{txt}}";
+    var lines = text.split(/[,\. ]+/g),
+```
+
+- `"{{}}"` 로 되어있는 이유는 문자열이기 때문이다.
+  - 위에서는 시리즈여서 가능했고 지금은 문자열인걸 알려줘야 한다.
+
+#### ajax
+
+-  마지막 링크를 추가해준다.
+
+```html
+<a href="../line"><li>line Chart</li></a>
+<a href="../bar"><li>bar Chart</li></a>
+<a href="../wordcloud"><li>wordcloud chart</li></a>
+<a href="../ajax"><li>json chart</li></a>
+```
+
+- `urls.py` 에 가서 `path` 를 추가시키자.
+
+```python
+urlpatterns = [
+    path('index/', views.intro, name='index'),
+    path('line/', views.line, name='line'),
+    path('bar/', views.bar, name='bar'),
+    path('wordcloud/', views.wordcloud, name='wordcloud'),
+    path('ajax/', views.ajax, name='ajax'),
+
+]
+```
+
+- `views.py` 에 `ajax`  함수를 만들자.
+
+```python
+def ajax(request):
+    return render(request, 'chart_ajax.html')
+```
+
+- `chart_ajax.html` 를 만들고, 기존에 있던 `chart_ajax.html` 파일을 복사하자.
+- `views.py` 의 함수에서 context로 만들어서 html에 뿌려주는게 아니라 바로 템플릿으로 가서 스크립트에서 실행한다. 
+
+![chart06](./image/chart06.gif)
+
+- `script` 를 봐보자.
+
+```html
+<script>
+    Highcharts.getJSON(
+      'https://cdn.jsdelivr.net/gh/highcharts/highcharts@v7.0.0/samples/data/usdeur.json',
+      function (data){
+          .
+          .
+          .
+      }
+        series: [{
+                type: 'area',
+                name: 'USD to EUR',
+                data: data
+```
+
+- 데이터를 제이슨 형식으로 받는다.
+- 이걸 받아서  `function` 에서 차트를 그린다. 
+- `series` 에 데이터가 들어가서 저런 차트가 그려진다.
+- 화면이 전부 렌더링 되고 다시 통신하는 작업이다.
