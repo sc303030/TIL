@@ -264,15 +264,17 @@ base_df = pd.DataFrame({
 })
 ```
 
-```python
-base_df.to_csv('base_df.csv', mode='w', encoding='utf-8')
-```
-
 |      |    name    |  avg  | hit  | homerun | rbi  |
 | :--: | :--------: | :---: | :--: | :-----: | :--: |
 |  0   | 페르난데스 | 0.355 | 173  |   18    |  87  |
 |  1   |   김현수   | 0.352 | 161  |   21    | 107  |
 |  2   |   손아섭   | 0.350 | 150  |    8    |  67  |
+
+```python
+base_df.to_csv('base_df.csv', mode='w', encoding='utf-8')
+```
+
+![c11](./img/c_11.jpg)
 
 #### 판다스없이 DataFrame 만들기
 
@@ -308,7 +310,9 @@ with open('base_02.csv','w',encoding='utf-8') as file:
 
 - 1번이랑 다르게 미리 file에 컬럼이름을 `write` 를 하니 컬럼이름이 생성되었다.
 
-### 시각화하기
+![c12](./img/c_12.jpg)
+
+### 시각화
 
 ```python
 %matplotlib inline
@@ -360,3 +364,104 @@ else:
 ![c07](./img/c_07.jpg)
 
 - 한글이 정상적으로 나온다.
+
+### 표에 있는 데이터 가져오기_3
+
+![c09](./img/c_09.jpg)
+
+- `Item Title` , `Description` , `Cost` , `Image` 에 해당하는 데이터를 가져오자
+  - `Image` 는 사진대신 주소값을 가져오자.
+
+```python
+from bs4 import BeautifulSoup
+from urllib.request import urlopen
+from urllib.error   import HTTPError
+from urllib.error   import URLError
+```
+
+```python
+try:
+    html = urlopen('http://www.pythonscraping.com/pages/page3.html')
+except HTTPError as he:
+    print('http error')
+except URLError as ue:
+    print('url error')
+else:
+    soup = BeautifulSoup(html.read(), 'html.parser')
+```
+
+```python
+table = soup.find('table',{'id' : 'giftList'})
+table
+```
+
+```python
+<table id="giftList">
+<tr><th>
+Item Title
+</th><th>
+Description
+</th> ... </tr></table>
+```
+
+```python
+img_list =[]
+title_list = []
+Description_list = []
+Cost_list = []
+for tr in table.find_all('tr'):
+    tdr = list(tr.find_all('td'))
+    for td in tdr:
+        if td.find('img'):
+            img = td.find('img')
+            img = img['src']
+            img_list.append(img)
+            title = tdr[0].text.strip()
+            title_list.append(title)
+            Description = tdr[1].text.strip()
+            Description_list.append(Description)
+            Cost = tdr[2].text.strip()
+            Cost_list.append(Cost)
+```
+
+```
+['../img/gifts/img1.jpg', '../img/gifts/img2.jpg', '../img/gifts/img3.jpg', '../img/gifts/img4.jpg', '../img/gifts/img6.jpg']
+['Vegetable Basket', 'Russian Nesting Dolls', 'Fish Painting', 'Dead Parrot', 'Mystery Box']
+['This vegetable basket is the perfect gift for your health conscious (or overweight) friends!\nNow with super-colorful bell peppers!', 'Hand-painted by trained monkeys, these exquisite dolls are priceless! And by "priceless," we mean "extremely expensive"! 8 entire dolls per set! Octuple the presents!', "If something seems fishy about this painting, it's because it's a fish! Also hand-painted by trained monkeys!", "This is an ex-parrot! Or maybe he's only resting?", 'If you love suprises, this mystery box is for you! Do not place on light-colored surfaces. May cause oil staining. Keep your friends guessing!']
+['$15.00', '$10,000.52', '$10,005.00', '$0.50', '$1.50']
+```
+
+- `strip()` 을 붙이지 않으면 값에 `\n` 이 있어서 공백이 생겨버린다. 제거하자.
+- img는 src에 해당하는 값만 뽑자.
+
+#### 판다스로 DataFrame 만들기
+
+```python
+import pandas as pd
+```
+
+```python
+Gifts_df = pd.DataFrame({
+    'title' : title_list,
+    'Description' : Description_list,
+    'Cost' : Cost_list,
+    'image' : img_list
+})
+```
+
+|      |         title         |                    Description                    |    Cost    |         image         |
+| :--: | :-------------------: | :-----------------------------------------------: | :--------: | :-------------------: |
+|  0   |   Vegetable Basket    | This vegetable basket is the perfect gift for ... |   $15.00   | ../img/gifts/img1.jpg |
+|  1   | Russian Nesting Dolls | Hand-painted by trained monkeys, these exquisi... | $10,000.52 | ../img/gifts/img2.jpg |
+|  2   |     Fish Painting     | If something seems fishy about this painting, ... | $10,005.00 | ../img/gifts/img3.jpg |
+|  3   |      Dead Parrot      | This is an ex-parrot! Or maybe he's only resting? |   $0.50    | ../img/gifts/img4.jpg |
+|  4   |      Mystery Box      | If you love suprises, this mystery box is for ... |   $1.50    | ../img/gifts/img6.jpg |
+
+```python
+Gifts_df.to_csv('Gifts_df.csv', mode='w', encoding='utf-8')
+```
+
+![c10](./img/c_10.jpg)
+
+#### 판다스없이 DataFrame 만들기
+
