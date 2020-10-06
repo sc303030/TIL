@@ -324,5 +324,102 @@ name
 7년-그들이 없는 언론	 137.28
 ```
 
-#### `point` 에 따라 정렬
+#### 결과에 대한 정렬이 필요 할 경우 sort_values(by= , ascending=)
 
+- point에 따라 정렬하자.
+
+```python
+movie_pivot_sort = movie_pivot.sort_values(by='point', ascending=False)
+movie_pivot_sort
+```
+
+```
+					   point
+name	
+댄서					914.60
+서서평, 천천히 평온하게	889.64
+오두막					861.65
+라라랜드				858.89
+너의 이름은.				738.42
+```
+
+#### 원하는 영화만 저장
+
+> select랑 같다.
+
+```python
+temp = movieDF.query('name == ["라라랜드"]')
+temp
+```
+
+```
+          date	  name	  point
+36	2017-05-01	라라랜드	8.59
+86	2017-05-02	라라랜드	8.59
+143	2017-05-03	라라랜드	8.59
+```
+
+### 시각화
+
+```python
+plt.figure(figsize=(12,8))
+plt.plot(temp['date'],temp['point'])
+plt.legend(loc='best')
+plt.grid()
+plt.show()
+```
+
+![sc06](./img/sc06.png)
+
+- `loc=best` 는 최적의 장소에 `legeand` 를 뿌려준다.
+
+### 영화별 날짜 변화에 따른 평점 변화 시각화 실습
+
+```python
+movie_date_point_pivot = pd.pivot_table(movieDF, index=['date'], columns=['name'], values=['point'])
+movie_date_point_pivot
+```
+
+![sc07](./img/sc07.jpg)
+
+- pd.pivot_table(데이터, index = 설정하고 싶은 컬럼, columns = 컬럼이 되고 싶은 열, values=안에 채울 것)
+
+- movie_date_point_pivot에 droplevel을 했다.
+
+![sc08](./img/sc08.jpg)
+
+- `point` 가 사라졌다.
+
+#### 산점도
+
+```python
+import platform
+
+from matplotlib import font_manager, rc
+# plt.rcParams['axes.unicode_minus'] = False
+
+if platform.system() == 'Darwin':
+    rc('font', family='AppleGothic')
+elif platform.system() == 'Windows':
+    path = "c:/Windows/Fonts/malgun.ttf"
+    font_name = font_manager.FontProperties(fname=path).get_name()
+    rc('font', family=font_name)
+else:
+    print('Unknown system... sorry~~~~') 
+```
+
+- 한글이 깨질 수 있으니 한글이 정상적으로 출력되도록 설정한다.
+
+```python
+target_col = ['행복 목욕탕', '흑집사 : 북 오브 더 아틀란틱']
+plt.figure(figsize=(12,8))
+plt.plot(movie_date_point_pivot[target_col])
+plt.legend(target_col,loc='best')
+plt.grid()
+plt.show()
+```
+
+- 원하는 컬럼을 변수에 리스트로 담는다.
+- 내가 만든 피벗테이블에 지정한 컬럼 변수를 부여하면 그에 따라서 그래프가 그려진다.
+
+![sc09](./img/sc09.png)
