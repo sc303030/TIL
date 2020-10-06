@@ -192,3 +192,137 @@ for n in tqdm_notebook(range(2), desc='outer'):
 
 - 안에 있는 `for` 가 끝나야 다음 `for` 가 실행되고 최종 마무리 되는 것을 볼 수 있다.
 - `desc` 는 본인이 원하는 구별 텍스트를 기입하면 된다.
+
+#### 데이터를 리스트에 저장하자
+
+```python
+names_result = []
+point_result = []
+date_result  = []
+```
+
+```python
+base_url = 'https://movie.naver.com/'
+sub_url = '/movie/sdb/rank/rmovie.nhn?sel=cur&date='
+for day in tqdm_notebook(date):
+    html = base_url + sub_url + '{date}'
+    response = urlopen(html.format(date=urllib.parse.quote(day.strftime('%Y%m%d'))))
+    soup = BeautifulSoup(response,'html.parser')
+    end  = len(soup.find_all('td', 'point'))
+    names_result.extend([soup.find_all('div', 'tit5')[n].a.text for n in range(0,end) ])
+    point_result.extend([soup.find_all('td', 'point')[n].text for n in range(0,end) ])
+    date_result.extend([day for i in range(0,end)])
+```
+
+- `date` 는 우리가 위에서 100일을 불러왔던 값이다. 
+  - 그 `date` 를 `url` 에 붙이면 그 당시의 영화 제목과 평점을 얻어 올 수 있다. 
+  - 양식이 `2017-5-1` 과 같은 형식이기 때문에 `urllib.parse.quote` 을 사용하여 `20170501` 과 같은 형식으로 바꿔줍니다
+- `quote` : [URL 인용(quoting) 함수는 특수 문자를 인용하고 비 ASCII 텍스트를 적절히 인코딩하여 프로그램 데이터를 취해서 URL 구성 요소로 안전하게 사용할 수 있도록 하는 데 중점을 둡니다. 또한 해당 작업이 위의 URL 구문 분석 함수로 처리되지 않는 경우 URL 구성 요소의 내용에서 원래 데이터를 다시 만들기 위해 이러한 작업을 뒤집는 것도 지원합니다.](https://docs.python.org/ko/3/library/urllib.parse.html)
+
+- `append` 를 사용하지 않고 `extend` 를 사용하는 이유 :
+  - `append` : 리스트 끝에 x 1
+  - `extend` : 리스트 끝에 iterable의 모든 항목
+  - `append` 를 사용했다라고 가정하면 리스트안에 또 리스트가 만들어지는 셈이다. 우리가 원하는건 데이터 값만이다. 그래서 `extend` 를 사용하였다.
+
+```python
+print(len(names_result))
+print(len(point_result))
+print(len(date_result))
+```
+
+```
+4723
+4723
+4723
+```
+
+- 길이를 다시 확인한다.
+
+#### DataFrame 생성
+
+```python
+movieDF = pd.DataFrame({'date' : date_result, 'name' : names_result, 'point' : point_result})
+```
+
+```python
+movieDF.head()
+```
+
+```
+		  date	     name	    point
+0	2017-05-01	히든 피겨스	      9.38
+1	2017-05-01	사운드 오브 뮤직	 9.36
+2	2017-05-01	시네마 천국	      9.29
+3	2017-05-01	미스 슬로운	      9.26
+4	2017-05-01	잉여들의 히치하이킹	9.25
+```
+
+```python
+movieDF.info()
+```
+
+```
+<class 'pandas.core.frame.DataFrame'>
+RangeIndex: 4723 entries, 0 to 4722
+Data columns (total 3 columns):
+date     4723 non-null datetime64[ns]
+name     4723 non-null object
+point    4723 non-null object
+dtypes: datetime64[ns](1), object(2)
+memory usage: 110.8+ KB
+```
+
+- point의 형식이 `object` 다. 숫자로 바꿔주자.
+
+#### astype() 
+
+> 컬럼의 타입을 변경할 수 있다.
+
+```py
+movieDF['point']  = movieDF['point'].astype(float)
+```
+
+```
+<class 'pandas.core.frame.DataFrame'>
+RangeIndex: 4723 entries, 0 to 4722
+Data columns (total 3 columns):
+date     4723 non-null datetime64[ns]
+name     4723 non-null object
+point    4723 non-null float64
+dtypes: datetime64[ns](1), float64(1), object(1)
+memory usage: 110.8+ KB
+```
+
+- 정상적으로 변경되었다.
+
+### 피벗테이블
+
+- 내가 원하는 영화의 평점을 총점으로 확인하고 싶다면?
+- 피벗테이블을 이용하여 볼 수 있다.
+
+#### 필요한 패키지 설치
+
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+%matplotlib inline
+```
+
+```python
+movie_pivot = pd.pivot_table(movieDF, index=['name'], aggfunc=np.sum)
+movie_pivot
+```
+
+- pd.pivot_table(데이터, 내가 그룹하고 싶은 컬럼, aggfunc=함수)
+
+```
+					  point
+name	
+10분					 124.46
+47 미터				149.23
+500일의 썸머			75.51
+7년-그들이 없는 언론	 137.28
+```
+
+#### `point` 에 따라 정렬
+
