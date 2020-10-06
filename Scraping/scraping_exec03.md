@@ -233,3 +233,105 @@ plt.show()
 ![sc13](./img/sc13.png)
 
 - 알아서 글자안에 단어들이 들어간다. 
+
+#### 다시 영화 정보들을 가져오자
+
+#### 감정분석(VADER) - NLTK
+
+- good + 0.1, awful -0.1, perfect +0.1 
+- 문장에서 저런 단어가 추출되면, 나올 때마다 점수를 더하고 빼서 점수가 양수면 긍정, 음수면 부정으로 평가해보자.
+
+```python
+from nltk.sentiment.vader import SentimentIntensityAnalyzer
+from nltk import tokenize
+import nltk
+nltk.download('vader_lexicon')
+sid = SentimentIntensityAnalyzer()
+```
+
+- `sid` 여기에 감정분석이 들어있다. 
+
+```python
+score_list = []
+title_list = []
+writer_list = []
+date_list = []
+content_list = []
+sum_review = ''
+sum_list = []
+for review in review_list:
+    score   = review.find('span','rating-other-user-rating').span.text
+    score_list.append(score)
+    title   = review.find('a','title').text.replace('\n','')
+    title_list.append(title)
+    writer  = review.find('span','display-name-link').a.text.strip()
+    writer_list.append(writer)
+    date    = review.find('span','review-date').string.strip()
+    date_list.append(date)
+    content = review.find('div','text show-more__control').get_text()
+    content_list.append(content)
+    
+    sum_review = sum_review + content
+    
+    lines_list = tokenize.sent_tokenize(content)
+    sum = 0
+   
+    for sent in lines_list:
+        ss = sid.polarity_scores(sent)
+        sum = sum + ss['compound']
+    sum1 = str(sum/len(lines_list))
+    sum_list.append(sum1)
+```
+
+- `sum_review` 는 wordcloud를 하기위해 따로 저장하는 것이다.
+- `polarity_scores()` : 문장을 단어별로 분석해서 긍정, 부정, 중립에 대한 점수를 계산해주고 종합 점수[compound]를 반환한다.
+  - 긍정이 많으면 양수, 부정이면 음수
+  - 위에서 sid 만들어 놓았음
+
+```python
+wordcloud_DF = pd.DataFrame({
+    'score' : score_list,
+    'title'  : title_list,
+    'writer'  : writer_list,
+    'date' : date_list,
+    'content'     : content_list,
+    'sum' : sum_list
+})
+wordcloud_DF
+```
+
+```
+score	title	      writer	            date	                               
+0	9	Great	MR_Heraclius	23 February 2020	This movie portrays a villain that by 
+ content	               sum
+far has ...	-0.065733333333333
+```
+
+- 파일을 저장하기 위해 다음과 같이 `DF` 를 만들었다. 
+
+```python
+wordcloud_t.to_csv('./data/wordcloud_t.csv', mode='w', encoding='utf-8')
+print('success')
+```
+
+![sc14](./img/sc14.jpg)
+
+- 잘 저장되었다. 
+
+#### content로 wordcloud
+
+- 위에서 저장한 `sum_review` 로 만들 것이다.
+
+```python
+wordcloud = WordCloud(
+    width=2000, height=2000,stopwords=set(STOPWORDS)
+).generate(sum_review)
+plt.figure(figsize=(15,15))
+plt.imshow(wordcloud)
+plt.show()
+```
+
+![sc15](./img/sc15.png)
+
+- 어벤져스 영화리뷰에서 어떤 단어가 가장 많이 나왔는지 알 수 있다.
+  - 타노스가 눈에 띈다. 
