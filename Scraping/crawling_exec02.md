@@ -85,5 +85,62 @@ html
 
 #### json 파일 생성
 
+```python
+with open('./data/booklist_json.json', mode='w' , encoding='utf-8') as file:
+    data=[]
+    for partial_html in re.findall(r'<td class="left"><a.*?</td>', html):
+        search = re.search(r'<a href="(.*?)">' ,partial_html ).group(1) 
+        url = 'http://www.hanbit.co.kr'+search
 
+        title = re.sub(r'<.*?>','' , partial_html )
+        data.append({'bookName' : title, 'link' : url})
+        print(json.dumps(data, ensure_ascii=False, indent=2))
+    json.dump(data, file,ensure_ascii=False, indent=2 )
+```
+
+- 매칭되는것만 가져오려면 group()하면 된다.
+
+- group(1) 하면 속성에 있는 값만 가져온다.
+
+- `r'<td class="left"><a.*?</td>'` : 로우데이터를 쓰려면 `r` 을 붙인다. 
+
+- `re.search(r'<a href="(.*?)">'` : 해당되는 것을 찾는다. 
+
+- `re.sub(r'<.*?>','' , partial_html )`  : `r'<.*?>'` 이걸 `''` 이걸로 바꾼다.
+
+- `print(json.dumps(data, ensure_ascii=False, indent=2))` : 아스키로 변환 안 하면 한글이 다 깨진다. 그러니 변환하자 . 인덴트는 들여쓰기.그러면 좀 더 이뻐진다. 
+
+```
+[
+  {
+    "bookName": "나는 꼭 필요한 것만 남기기로 했다",
+    "link": "http://www.hanbit.co.kr/store/books/look.php?p_code=B7269609529"
+  }
+]
+```
+
+```python
+import json
+```
+
+```python
+with open('./data/booklist_json.json', mode='r',encoding='utf-8') as file:
+    json_data = json.load(file)
+```
+
+```python
+print(json.dumps(json_data, ensure_ascii=False, indent='\t'))
+```
+
+- 파일을 저장하고 출력해본다. 
+
+#### 원하는 데이터만 가져오자.
+
+```python
+print(json.dumps(json_data[0]['bookName'], ensure_ascii=False, indent='\t'))
+```
+
+```
+"나는 꼭 필요한 것만 남기기로 했다"
+```
 
