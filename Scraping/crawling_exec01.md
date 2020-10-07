@@ -104,7 +104,7 @@ print('image download success')
   - 지금 이미지의 주소가 file로 저장되어 있고 이걸 `images` 의 폴더에 숫자순으로 저장한다. 
 - 그 다음에 `cnt` 가 우리가 저장하고자 하는 숫자보다 커지면 빠져나간다. 
 
-![cl03](./img/cl03.png)
+![cl03](./img/cl03.PNG)
 
 - 다음과 같이 이미지가 저장된다. 
 
@@ -198,3 +198,68 @@ title_read_df = pd.read_csv('./data/title_df.csv',encoding='utf-8')
 title_read_df
 ```
 
+![cl07](./img/cl07.jpg)
+
+- 이렇게 하면 파일을 불어왔을때 인덱스가 새로운 열로 새롭게 생성되지 않는다. 
+
+### 크롤링
+
+#### 크롤러
+
+```python
+from time import sleep
+from random import randint
+import pandas as pd
+from IPython.core.display import clear_output
+from time import time
+from bs4 import BeautifulSoup
+from requests import get
+```
+
+- 필요한 라이브러리들을 `import` 한다. 
+
+#### loop 사이에 잘 진행되고 있는지를 보기위한 indicator sentencs
+
+```python
+start_time = time()
+requests  = 0
+for _ in range(5):
+    requests += 1
+    sleep(randint(1,3))
+    current_time = time()
+    elapsed_time = current_time - start_time
+    print('request : {} , frquency : {}'.format(requests, requests / elapsed_time))
+```
+
+- `start_time` : 1602059486.9628997다. 
+- `sleep` 를 줘서 약간의 간격을 줘서 살펴본다. 
+- `current_time` 은 루프 안에서 시간이라 얼마나 걸리는지 알 수 있다. 
+
+![cl08](./img/cl08.gif)
+
+- 이렇게 시간을 줘서 하나씩 실행된다. 
+
+```python
+ clear_output(wait=True) #밑으로 추가되는게 아니라 그 자리에 값을 계속 표시해준다.
+```
+
+- 밑으로 추가되는게 아니라 그 자리에 값을 계속 표시해준다.
+
+![cl09](./img/cl09.gif)
+
+- 위의 것과 다르게 밑으로 나오는게 아니라 그 자이에 값을 계속 표시한다. 
+
+#### 쇼핑 품목의 이름과 가격을 가져오자
+
+![cl10](./img/cl10.jpg)
+
+```python
+pages = [str(i) for i in range(1,11)]
+pages
+```
+
+```
+['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
+```
+
+- 10개의 페이지를 크롤링 할 것이다. 그래서 숫자를 저장해놓는다. 
