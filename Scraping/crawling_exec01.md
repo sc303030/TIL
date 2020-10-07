@@ -263,3 +263,87 @@ pages
 ```
 
 - 10개의 페이지를 크롤링 할 것이다. 그래서 숫자를 저장해놓는다. 
+
+![cl11](./img/cl11.png)
+
+- 페이지가 변할 때 마다 저기 있는 숫자만 바꾸면 된다. 
+
+```python
+price_list =[]
+title_list =[]
+link_list =[]
+
+start_time = time()
+requests  = 0
+for page in pages:
+    requests += 1
+    url = get('https://search.shopping.naver.com/search/all?frm=NVSHATC&origQuery=%ED%8E%AD%EC%88%98&pagingIndex='+page+'&pagingSize=40&productSet=total&query=%ED%8E%AD%EC%88%98&sort=rel&timestamp=&viewType=list')
+    sleep(randint(1,3))
+    current_time = time()
+    elapsed_time = current_time - start_time
+
+    soup = BeautifulSoup(url.text, 'html.parser')
+    # title, link, price
+    #가격 가져오기
+    peice_soup = soup.find_all('span','price_num__2WUXn')
+    price = [i.text for i in peice_soup]
+    price_list.extend(price)
+    #타이틀, 링크 가져오기
+    title_soup = soup.find_all('a', 'basicList_link__1MaTN')
+    title = [ i.attrs['title']  for i in title_soup ]
+    title_list.extend(title)
+    link  = [ i.attrs['href']   for i in title_soup ]
+    link_list.extend(link)
+    
+```
+
+- `df` 를 만들거라 `list` 를 만들어 놓는다.
+- `url` 설정을 살펴보면 쇼핑 url 사이에 우리가 만들었던 `page` 숫자를 넣어서 연결한다. 
+- 그 다음에 우리가 `url` 을 불러오는 것처럼 `BeautifulSoup` 을 해서 가져온다. 
+- 거기서  해당되는 `class` 를 가져온다. 
+
+![cl12](./img/cl12.jpg)
+
+![cl13](./img/cl13.jpg)
+
+```python
+print(len(price_list))
+print(len(title_list))
+print(len(link_list))
+```
+
+```
+50
+50
+50
+```
+
+- 길이를 구한다. 
+  - 10페이지를 구했는데 50개인 이유는 네이버쇼핑이 5씩 보여주면서 스크롤을 내릴 때 마다 이름이 바뀌어서 그렇다. 
+
+```python
+peng_df = pd.DataFrame({
+    
+    "title" : title_list,
+    'price' : price_list,
+    'link'  : link_list
+    
+})
+peng_df
+```
+
+- `df` 을 만든다. 
+
+![cl14](./img/cl14.jpg)
+
+- 정상적으로 값이 저장되었다. 
+
+```python
+peng_df.to_csv('./data/peng_df.csv', mode='w',encoding='utf-8',index=False )
+peng_df_open = pd.read_csv('./data/peng_df.csv', encoding='utf-8')
+peng_df_open
+```
+
+![cl14](C:\Users\gh\TIL\Scraping\crawling_exec01.assets\cl14.jpg)
+
+- 정상적으로 불어와진다. 
