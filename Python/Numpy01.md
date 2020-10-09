@@ -856,3 +856,71 @@ for idx in range(len(arr)):
 >  1 2 3 4 5 
 ```
 
+#### iterator
+
+```python
+ite = np.nditer(arr, flags=['c_index']) 
+# finished 면 True기 때문에 not 을 줘야지만 빠져나갈 수 있다.
+while not ite.finished:
+    print(arr[ite.index], end=' ')
+    ite.iternext()
+```
+
+- `ite ` : 객체를 이용해서 접근 할 수 있다.순환 반복 객체가 만들어졌다. 
+
+- `ite.finished` : 만약에 `ite` 가 끝났으면 `True` 가 된다. 그러니 `not` 를 붙여서 `False` 로 조건을 준다.
+- `ite.iternext()` : 하나가 끝났으면 그 다음으로 넘어간다.
+
+```python
+arr = np.array([[1,2,3],[4,5,6]])
+arrayinfo(arr)
+>
+type : .<class 'numpy.ndarray'>
+shape : (2, 3)
+dimension : 2
+dtype : int32
+Array Data : 
+ [[1 2 3]
+ [4 5 6]]
+```
+
+**2차원 배열에 대한 순차적 접근 코드 작성**
+
+```python
+for a in arr:
+    for i in a:
+        print(i)
+>
+1
+2
+3
+4
+5
+6
+```
+
+##### print(arr.shape[0]) : row
+
+##### print(arr.shape[1]) : col
+
+```python
+for i in range(arr.shape[0]):
+    for j in range(arr.shape[1]):
+        print(arr[i,j], end='\t')
+    print('\n')
+```
+
+- 먼저 행의 개수를 불러온다.
+- 그 다음에 다시 열을 부른다. 거기거 인덱스로 행과 열을 준다.
+
+```python
+ite = np.nditer(arr, flags=['multi_index'])
+while not ite.finished:
+    print(arr[ite.multi_index], end=' ')
+    ite.iternext()
+> 1 2 3 4 5 6 
+```
+
+- 여기서는 `'multi_index'` 로 주어야한다.
+- 속도면에서 훨씬 이득이다. 
+
