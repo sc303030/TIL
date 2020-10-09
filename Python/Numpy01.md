@@ -18,7 +18,6 @@ def arrayinfo(array):
     print('dimension : {}'.format(array.ndim))
     print('dtype : {}'.format(array.dtype))
     print('Array Data : \n', array)
-    
 ```
 
 - 만든 배열의 정보를 확인하기 위해 함수를 만들었다. 
@@ -58,10 +57,7 @@ Array Data :
 ```python
 data = [0,1,2,3,4,5,6,7,8,9]
 data * 2
-```
-
-```
-[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+> [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 ```
 
 - 리스트 안에 값에 2씩 곱해지는 것이 아니라 리스트가 2개가 된다. 
@@ -71,10 +67,7 @@ result = []
 for d in data:
     result.append(d * 2)
 result
-```
-
-```
-[0, 2, 4, 6, 8, 10, 12, 14, 16, 18]
+> [0, 2, 4, 6, 8, 10, 12, 14, 16, 18]
 ```
 
 - 이렇게 해야 `data` 값에 2씩 곱해진다. 
@@ -82,10 +75,7 @@ result
 ```python
 result2 = [d * 2 for d in data]
 result2
-```
-
-```
-[0, 2, 4, 6, 8, 10, 12, 14, 16, 18]
+> [0, 2, 4, 6, 8, 10, 12, 14, 16, 18]
 ```
 
 - 리스트컴프리헨션을 이용해서 바로 변수에 저장한다. 
@@ -93,11 +83,105 @@ result2
 ```python
 result3 = firstAry * 2
 result3
-```
-
-```
-array([ 0,  2,  4,  6,  8, 10, 12, 14, 16, 18])
+> array([ 0,  2,  4,  6,  8, 10, 12, 14, 16, 18])
 ```
 
 - 행렬에 대한 연산이 바로 가능하다. 
-- 
+
+#### 벡터 연산은 비교, 산술, 논리 연산을 포함하는 모든 수학연사에 적용됨
+
+```python
+xArray = np.array([1,2,3])
+yArray = np.array([10,20,30])
+```
+
+```python
+xArray + yArray
+> array([11, 22, 33])
+```
+
+- 각자의 첨자번지끼지 더해진다.
+
+```python
+2 * xArray + yArray
+> array([12, 24, 36])
+```
+
+- 연산에 우선순위가 있는 것을 알 수 있다. 
+
+```python
+xArray == 2 
+> array([False,  True, False])
+```
+
+- 그냥 리스트였으면 `if` 를 써야 하지만 배열이라 연산이 가능하다.
+
+```python
+yArray > 20
+> array([False, False,  True])
+```
+
+```python
+(xAry == 2) & (yAry > 20) 
+> array([False, False, False])
+```
+
+- `True` 가 하나 있더라도 `False` 가 있으면 `False` 다. 비교 연산자가 `&` 이기 때문이다.
+
+### 2차원 배열 생성
+
+- ndarray(N-Dimensional Array)
+- 2차원, 3차원(다차원 배열 자료구조)
+- 2차원 배열은 행렬(Matrix)
+- list of list
+- list od list of list
+
+**2개의 행과 3개의 열을 가지는 배열 만든다면?**
+
+```python
+secondAry = np.array([[1,2,3],[4,5,6]], dtype=np.float64)
+arrayinfo(secondAry)
+> 
+type : .<class 'numpy.ndarray'>
+shape : (2, 3)
+dimension : 2
+dtype : float64
+Array Data : 
+ [[1. 2. 3.]
+ [4. 5. 6.]]
+```
+
+- `dtype` 을 주면 형태를 지정할 수 있다. 
+
+```python
+secondAry = np.array([[1,2,3],[4,5,'6']])
+arrayinfo(secondAry)
+>
+type : .<class 'numpy.ndarray'>
+shape : (2, 3)
+dimension : 2
+dtype : <U11
+Array Data : 
+ [['1' '2' '3']
+ ['4' '5' '6']]
+```
+
+- `dtype` 가 `<U11` 이다. 배열중에 `'6'` 이 들어있어서 문자로 인식한다. 
+
+**행의 개수, 열의 개수**
+
+```python
+print(len(twoAry))
+print(len(twoAry[0]))
+print(len(twoAry[1]))
+> 
+2
+3
+3
+```
+
+- `print(len(twoAry))` : 행의 개수를 리턴한다.
+- `print(len(twoAry[0]))` : 처음 행의 개수를 리턴하니 열의 개수를 알 수 있다. 
+
+### 3차원 배열 생성
+
