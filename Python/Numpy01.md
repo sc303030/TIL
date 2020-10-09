@@ -577,5 +577,282 @@ Array Data :
 
 - 데이터 형식을 문자로 주었다. 
 
+```python
+x[0] + x[1]
+> '12'
+```
 
+- 문자 형식이라 연산이 되는게 아니라 이어서 써진다. 
+
+#### Inf vs NaN
+
+- `Inf ` : 무한대,  `NaN` : 정할수 없을때, 숫자로 정의 못하고
+
+```python
+np.array([0,1,-1,0] / np.array([1,0,0,0]))
+> array([  0.,  inf, -inf,  nan])
+```
+
+- `inf` 와`nan` 이 어떤 상황에서 등장하는지 보았다. 
+
+#### 넌파이 - 다른속성
+
+- zeros : 0으로 세팅,크기가 정해져 있고 모든 값이 0인 배열을 생성하려면
+- ones : 1로 세팅
+- zeros_like : 카피해온다. 0으로 세팅, ones_like : 쉐잎만 카피해서 1로 세팅
+- empty : 비어있는거
+- arange : 순열
+- linspace, logspace
+
+```python
+z = np.zeros(5, dtype='i')
+arrayinfo(z)
+>
+type : .<class 'numpy.ndarray'>
+shape : (5,)
+dimension : 1
+dtype : int32
+Array Data : 
+ [0 0 0 0 0]
+```
+
+- 0으로 구성된 배열이 생성된다. 
+
+```python
+z = np.zeros(5, dtype='U')
+arrayinfo(z)
+>
+type : .<class 'numpy.ndarray'>
+shape : (5,)
+dimension : 1
+dtype : <U1
+Array Data : 
+ ['' '' '' '' '']
+```
+
+- 데이터 타입이 문자여서 공백으로 구성된 배열이 생성된다. 
+
+```python
+z = np.zeros((2,3), dtype='i') 
+arrayinfo(z)
+>
+type : .<class 'numpy.ndarray'>
+shape : (2, 3)
+dimension : 2
+dtype : int32
+Array Data : 
+ [[0 0 0]
+ [0 0 0]]
+```
+
+- 2행과 3열로 0으로 채운 배열을 만든다.
+
+```python
+o = np.ones((2,3,4), dtype='i8') 
+arrayinfo(o)
+>
+type : .<class 'numpy.ndarray'>
+shape : (2, 3, 4)
+dimension : 3
+dtype : int64
+Array Data : 
+ [[[1 1 1 1]
+  [1 1 1 1]
+  [1 1 1 1]]
+
+ [[1 1 1 1]
+  [1 1 1 1]
+  [1 1 1 1]]]
+```
+
+- `dtype='i8'` : 64비트
+- 1로 채운 2차원 3행 4열이 생성된다.
+
+```python
+o_like = np.ones_like(o, dtype='f')
+arrayinfo(o_like)
+>
+type : .<class 'numpy.ndarray'>
+shape : (2, 3, 4)
+dimension : 3
+dtype : float32
+Array Data : 
+ [[[1. 1. 1. 1.]
+  [1. 1. 1. 1.]
+  [1. 1. 1. 1.]]
+
+ [[1. 1. 1. 1.]
+  [1. 1. 1. 1.]
+  [1. 1. 1. 1.]]]
+```
+
+- 실수 1로 2차원 3행 4열이 생성된다. 
+
+```python
+z_like = np.zeros_like(z)
+arrayinfo(z_like)
+>
+type : .<class 'numpy.ndarray'>
+shape : (5,)
+dimension : 1
+dtype : <U1
+Array Data : 
+ ['' '' '' '' '']
+```
+
+- `z` 배열을 복사한다. 
+
+```python
+e = np.empty((4,3))
+arrayinfo(e) 
+>
+type : .<class 'numpy.ndarray'>
+shape : (4, 3)
+dimension : 2
+dtype : float64
+Array Data : 
+ [[0.0078125 0.0078125 0.0078125]
+ [0.0078125 0.0078125 0.0078125]
+ [0.0078125 0.0078125 0.0078125]
+ [0.0078125 0.0078125 0.0078125]]
+```
+
+- `0078125` : 메모리의 주소값, 랜덤하게 주어진다. 
+
+```python
+a = np.arange(10)
+arrayinfo(a)
+>
+type : .<class 'numpy.ndarray'>
+shape : (10,)
+dimension : 1
+dtype : int32
+Array Data : 
+ [0 1 2 3 4 5 6 7 8 9]
+```
+
+- 0...n-1 까지 나열한다. 
+
+```python
+a = np.arange(3,21,2)
+arrayinfo(a)
+>
+type : .<class 'numpy.ndarray'>
+shape : (9,)
+dimension : 1
+dtype : int32
+Array Data : 
+ [ 3  5  7  9 11 13 15 17 19]
+```
+
+- 3부터 시작해서 20까지 2단계식 띄어서 부여한다.
+
+### 전치행렬
+
+-  행렬의 행은 열로, 열은 행으로 바꾼 행렬을 의미한다.
+
+- 속성 : T(transpose opertion)
+
+```python
+arr = np.array([[1,2,3],[4,5,6]])
+arrayinfo(arr)
+>
+type : .<class 'numpy.ndarray'>
+shape : (2, 3)
+dimension : 2
+dtype : int32
+Array Data : 
+ [[1 2 3]
+ [4 5 6]]
+```
+
+```python
+arr_transpose = arr.T
+arrayinfo(arr_transpose)
+>
+type : .<class 'numpy.ndarray'>
+shape : (3, 2)
+dimension : 2
+dtype : int32
+Array Data : 
+ [[1 4]
+ [2 5]
+ [3 6]]
+```
+
+- 2행 3열이 3행 2열로 바뀌었다. 
+
+**Vector에 Transpose가 가능할까?**
+
+```python
+vec = np.arange(10)
+arrayinfo(vec)
+>
+type : .<class 'numpy.ndarray'>
+shape : (10,)
+dimension : 1
+dtype : int32
+Array Data : 
+ [0 1 2 3 4 5 6 7 8 9]
+```
+
+```python
+vec_transpose = vec.T
+arrayinfo(vec_transpose)
+>
+type : .<class 'numpy.ndarray'>
+shape : (10,)
+dimension : 1
+dtype : int32
+Array Data : 
+ [0 1 2 3 4 5 6 7 8 9]
+```
+
+- 벡터로 할 수는 있지만 의미는 없다. 
+
+```python
+vec_transpose = vec.reshape(1,10).T
+arrayinfo(vec_transpose)
+>
+type : .<class 'numpy.ndarray'>
+shape : (10, 1)
+dimension : 2
+dtype : int32
+Array Data : 
+ [[0]
+ [1]
+ [2]
+ [3]
+ [4]
+ [5]
+ [6]
+ [7]
+ [8]
+ [9]]
+```
+
+- 이렇게 하면 된다. 
+
+### 배열의 원소를 순차적으로 접근하고자 한다면?
+
+1. for(Vector, Matrix)
+2. iterator(순환반복) : internext(), finished 속성을 이용해서 ndarray 모든 요소를 순차적으로 접근할 수 있다. 
+
+```python
+arr = np.array([1,2,3,4,5])
+```
+
+#### for
+
+```python
+for tmp in arr : 
+    print(tmp, end=' ')
+> 1 2 3 4 5 
+```
+
+```python
+for idx in range(len(arr)):
+    print(arr[idx], end=' ')
+>  1 2 3 4 5 
+```
 
