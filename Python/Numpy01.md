@@ -377,3 +377,205 @@ print(mArray[0:2,-2:])
  [8 9]]
 ```
 
+### Fancy indexing
+
+**boolean indexing = sql의 쿼리로 생각하면 된다.**
+
+```python
+arrr = np.array([0,1,2,3,4,5,6,7,8,9])
+arrayinfo(arrr)
+idx = np.array([True,False,True,False,True,False,True,False,True,False ]) 
+print(arrr[idx])
+>
+type : .<class 'numpy.ndarray'>
+shape : (10,)
+dimension : 1
+dtype : int32
+Array Data : 
+ [0 1 2 3 4 5 6 7 8 9]
+> [0 2 4 6 8]
+```
+
+- 짝수만 뽑는 경우다. 
+  -  `index` 에 `True` 와 `False` 를 준다.
+  - `arrr` 에 인덱스를 `idx` 로 줘서  `True` 값만 가져오게 하면 짝수만 가져온다. 
+
+```python
+arr % 2 == 0
+> array([ True, False,  True, False,  True, False,  True, False,  True, False])
+```
+
+- 배열이라 연산이 가능하다. 
+
+```python
+arrr[arrr % 2 == 0]
+> array([0, 2, 4, 6, 8])
+```
+
+- boolean 인덱싱이 가능하다. 
+
+```python
+cnidx = np.array([0,2,4,6,8])
+print(arrr[cnidx]) 
+```
+
+- 배열로 인덱스를 만들어서 다시 인덱스로 줄 수 있다. 
+
+```python
+x = np.array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
+             11, 12, 13, 14, 15, 16, 17, 18, 19, 20])
+```
+
+**배열에서 3의 배수를 찾아라**
+
+```python
+print(x[x % 3 == 0])
+> [ 3  6  9 12 15 18]
+```
+
+- `True` 와 `False` 값으로 인덱싱을 하는것이다. 
+
+**배열에서 4로 나누면 1이 남는 수를 찾아라**
+
+```python
+print(x[x % 4 == 1])
+> [ 1  5  9 13 17]
+```
+
+**배열에서 3으로 나누면 나누어지고 4로 나누면 1이 남는 수를 찾아라**
+
+```python
+print(x[(x % 3 == 0) & (x % 4 == 1)])
+> [9]
+```
+
+**배열에 index배열을 전달하여 배열 요소를 참조해 보자**
+
+**정수값 인덱스가 들어가서 fancy인덱싱하자**
+
+```python
+fancyArray = np.arange(0,12,1).reshape(3,4)
+arrayinfo(fancyArray)
+>
+type : .<class 'numpy.ndarray'>
+shape : (3, 4)
+dimension : 2
+dtype : int32
+Array Data : 
+ [[ 0  1  2  3]
+ [ 4  5  6  7]
+ [ 8  9 10 11]]
+```
+
+- `arange` : 0에서 12까지 1씩 증가시켜서 값을 만든다.
+- `reshape` 를 통해 3행 4열을 만든다.
+
+**10값을 가져온다면?**
+
+```python
+fancyArray[2,2]
+> 10
+```
+
+- 스칼라 타입 인덱싱이다.
+
+**6값을 가져온다면?**
+
+```python
+arrayinfo(fancyArray[1:2,2])
+> 
+type : .<class 'numpy.ndarray'>
+shape : (1,)
+dimension : 1
+dtype : int32
+Array Data : 
+ [6]
+```
+
+- 배열 형식으로 리턴된다. 
+
+```python
+aryinfo(fancyArray[1:2,:])
+>
+type : .<class 'numpy.ndarray'>
+shape : (1, 4)
+dimension : 2
+dtype : int32
+Array Data : 
+ [[4 5 6 7]]
+```
+
+- 2차원으로 리턴된다. 
+
+```python
+aryinfo(fancyArray[1:2,:1:2])
+> 
+type : .<class 'numpy.ndarray'>
+shape : (1, 1)
+dimension : 2
+dtype : int32
+Array Data : 
+ [[4]]
+```
+
+- 2차원으로 리턴된다.
+
+```python
+fancyArray[[0,2],2]
+aryinfo(fancyArray[[0,2],2:3])
+>
+type : .<class 'numpy.ndarray'>
+shape : (2, 1)
+dimension : 2
+dtype : int32
+Array Data : 
+ [[ 2]
+ [10]]
+```
+
+#### fancy인덱싱을 하는 이유는 차원에 대한 이해가 없느면 data핸들링이 어렵다.
+
+##### 배열에서 슬라이싱 할 때 배열의 요소를 넘겨서 작업을 하는것
+
+##### 1:2 , 2 이건 그냥 인덱스를 넘긴것
+
+##### [0,2], 2:3 배열의 인덱스 번지를 넘긴 것
+
+**fancyArray에서 0,2,8,10을 찾자**
+
+```python
+fancyArray[[0,2],[[0],[2]]]
+> array([[ 0,  8],
+       [ 2, 10]])
+```
+
+```python
+rowidx = np.array([0,2])
+colidx = np.array([0,2])
+print(fancyArray[ [rowidx]] [:,colidx] )
+> [[ 0  2]
+ [ 8 10]]
+```
+
+- 행과 열을 뽑을 배열을 만드다.
+  - 이 배열을 인덱스에 지정한다. 
+  - 행을 우선 뽑고 열을 뽑것이다. 즉 0번째 행을 뽑고 거기서 다시 열 인덱스를 찾아서 값을 리턴 받는다. 
+
+### 배열 변형( 타입, 형태)
+
+```python
+x = np.array([1,2,3], dtype='U')
+arrayinfo(x)
+> 
+type : .<class 'numpy.ndarray'>
+shape : (3,)
+dimension : 1
+dtype : <U1
+Array Data : 
+ ['1' '2' '3']
+```
+
+- 데이터 형식을 문자로 주었다. 
+
+
+
