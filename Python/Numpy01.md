@@ -171,17 +171,17 @@ Array Data :
 **행의 개수, 열의 개수**
 
 ```python
-print(len(twoAry))
-print(len(twoAry[0]))
-print(len(twoAry[1]))
+print(len(secondAry))
+print(len(secondAry[0]))
+print(len(secondAry[1]))
 > 
 2
 3
 3
 ```
 
-- `print(len(twoAry))` : 행의 개수를 리턴한다.
-- `print(len(twoAry[0]))` : 처음 행의 개수를 리턴하니 열의 개수를 알 수 있다. 
+- `print(len(secondAry))` : 행의 개수를 리턴한다.
+- `print(len(secondAry[0]))` : 처음 행의 개수를 리턴하니 열의 개수를 알 수 있다. 
 
 ### 3차원 배열 생성
 
