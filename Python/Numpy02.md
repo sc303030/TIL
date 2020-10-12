@@ -437,3 +437,251 @@ Array Data :
 
 - `axis=0` 을 지정하면 행을 기준으로 삭제한다.
 - `axis=1` 을 지정하면 열을 기준으로 삭제한다.
+
+#### 배열의 연산
+
+- vector operation (명시적으로 반복문을 사용하지 않더라도 모든 원소에 대해서 연산 가능)
+
+```python
+x = np.arange(1, 10001)
+print(x)
+y = np.arange(10001, 20001)
+print(y)
+>
+[    1     2     3 ...  9998  9999 10000]
+[10001 10002 10003 ... 19998 19999 20000]
+```
+
+##### 연산 시간 측정
+
+```python
+%%time
+z = np.zeros_like(x)
+print(z)
+for i in range(10000):
+    z[i] = x[i] + y[i]
+print(z[:10])
+>
+[0 0 0 ... 0 0 0]
+[10002 10004 10006 10008 10010 10012 10014 10016 10018 10020]
+Wall time: 6.01 ms
+```
+
+- 루프구문을 돌려 하나씩 더하면 6.01ms 걸린다.
+
+```python
+%%time 
+z = x + y
+print(z[:10])
+>
+[10002 10004 10006 10008 10010 10012 10014 10016 10018 10020]
+Wall time: 0 ns
+```
+
+- 백터연산이 가능하니깐 시간적인 측면에서 매우 효율적이다. 
+
+#### 비교, 논리 연산도 가능하다. 단, 길이가 맞아야 연산이 가능하다.
+
+```python
+x = np.array([1,2,3,4])
+y = np.array([4,2,2,4])
+z = np.array([1,2,3,4])
+
+print(x == y)
+print(x >= y)
+# 배열의 모든 원소가 같은지  다른지를 판단하고 싶다면?
+print(np.all(x == y)) # 요소에 대해서 전체 검사해서 동일하면 Ture, 틀리면 False
+print(np.all(x == z))
+
+# 스칼라 연산
+print(x * 10)
+>
+[False  True False  True]
+[False  True  True  True]
+False
+True
+[10 20 30 40]
+```
+
+```python
+x = np.arange(12).reshape(3,4)
+arrayinfo(x)
+>
+type : .<class 'numpy.ndarray'>
+shape : (3, 4)
+dimension : 2
+dtype : int32
+Array Data : 
+ [[ 0  1  2  3]
+ [ 4  5  6  7]
+ [ 8  9 10 11]]
+```
+
+```python
+print(x * 100) 
+>
+[[   0  100  200  300]
+ [ 400  500  600  700]
+ [ 800  900 1000 1100]]
+```
+
+- 스칼라연산이 가능하다.
+
+#### broadcasting
+
+- 크기가 다를 때 넘파이에서 연산이 가능하다. 이걸 브로드캐스팅이라고 한다.
+
+```python
+x = np.vstack([ range(7)[i:i+3] for i in range(5)])
+arrayinfo(x)
+>
+type : .<class 'numpy.ndarray'>
+shape : (5, 3)
+dimension : 2
+dtype : int32
+Array Data : 
+ [[0 1 2]
+ [1 2 3]
+ [2 3 4]
+ [3 4 5]
+ [4 5 6]]
+```
+
+- 리스트 컴프리헨션을 통해 바로 `vstack` 를 적용해 보았다.
+
+- 0~6에서 i,i+3까지만 행으로 정한다.
+
+```python
+y = np.arange(5)[:, np.newaxis] 
+arrayinfo(y)
+>
+type : .<class 'numpy.ndarray'>
+shape : (5, 1)
+dimension : 2
+dtype : int32
+Array Data : 
+ [[0]
+ [1]
+ [2]
+ [3]
+ [4]]
+```
+
+- `np.newaxis` : 열을 추가해준다.
+  - 열을 지정하지 않고 추가하는 식으로한다.
+
+```python
+x + y
+>
+array([[ 0,  1,  2],
+       [ 2,  3,  4],
+       [ 4,  5,  6],
+       [ 6,  7,  8],
+       [ 8,  9, 10]])
+```
+
+- 0,1,2,3,4가 x의 각각의 행과 열에 더해진다.
+
+#### 최대/최소 : min, max, argmin, argmax
+
+#### 통계 : sum, mean, median, std, var
+
+```python
+x = np.array([1,2,3,4])
+arrayinfo(np.sum(x))
+>
+type : .<class 'numpy.int32'>
+shape : ()
+dimension : 0
+dtype : int32
+Array Data : 
+ 10
+```
+
+- 합계를 리턴한다.
+
+```python
+arrayinfo(x.sum())
+>
+type : .<class 'numpy.int32'>
+shape : ()
+dimension : 0
+dtype : int32
+Array Data : 
+ 10
+```
+
+- 이렇게 해도 합계가 리턴된다.
+
+```python
+x.min()
+>1
+```
+
+```python
+x.max()
+> 4
+```
+
+- 최소와 최대를 리턴한다.
+
+```python
+print('최솟값인덱스 : ', x.argmin())
+print('최댓값인덱스 : ', x.argmax())
+print('최솟값 : ', x[x.argmin()]) 
+print('최댓값 : ', x[x.argmax()])
+print('중위수값 : ', np.median(x))
+print('평균값 : ', np.mean(x))
+print('합 : ', np.sum(x))
+
+print('*'*50)
+
+print(np.all([True, True, True]))  #and연산자랑 비슷하게 생각하면 된다.
+print(np.any([True, True, False])) #or연산자랑 비슷하게 생각하면 된다.
+>
+최솟값인덱스 :  0
+최댓값인덱스 :  3
+최솟값 :  1
+최댓값 :  4
+중위수값 :  2.5
+평균값 :  2.5
+합 :  10
+**************************************************
+True
+True
+```
+
+- `arg~` 은 인덱스를 반환한다. 그래서 이것을 인덱싱하면 값이 나온다.
+
+```python
+all_matrix =np.zeros((100,100), dtype=np.int)
+arrayinfo(all_matrix)
+
+print(np.all( all_matrix == all_matrix))
+>
+type : .<class 'numpy.ndarray'>
+shape : (100, 100)
+dimension : 2
+dtype : int32
+Array Data : 
+ [[0 0 0 ... 0 0 0]
+ [0 0 0 ... 0 0 0]
+ [0 0 0 ... 0 0 0]
+ ...
+ [0 0 0 ... 0 0 0]
+ [0 0 0 ... 0 0 0]
+ [0 0 0 ... 0 0 0]]
+True
+```
+
+- `dtype` 를 주면 타입을 정해줄 수 있다. 
+
+```python
+x_vector = np.array([1,2,3,2])
+y_vector = np.array([2,2,3,2])
+z_vector = np.array([6,4,4,5])
+
+print(((x_vector <= y_vector) & (y_vector <= z_vector)).all())
+> True
+```
+
