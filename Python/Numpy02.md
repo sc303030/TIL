@@ -345,6 +345,95 @@ Array Data :
 ```
 
 - 1차원에서 차원을 추가해서 배열을 열로 결합한다.
+  - 열로 만들어서 열로 결합한다.
 
+```python
+arrayinfo(np.tile(np.array([[1,2,3],[4,5,6]]),(3,2)))
+>
+type : .<class 'numpy.ndarray'>
+shape : (6, 6)
+dimension : 2
+dtype : int32
+Array Data : 
+ [[1 2 3 1 2 3]
+ [4 5 6 4 5 6]
+ [1 2 3 1 2 3]
+ [4 5 6 4 5 6]
+ [1 2 3 1 2 3]
+ [4 5 6 4 5 6]]
+```
 
+- 행을 3번 반복하고 열을 2번 반복한다. 
+  - [1,2,3] [1,2,3]
+  - [4,5,6] [4,5,6]
 
+### ndarray delete() 함수
+
+- axis 기준 행과 열을 삭제 할 수 있다.
+- axis 지정하지 않으면 1차원 변환 삭제
+- 원본 배열을 변경하지 않고 새로운 배열 return
+
+```python
+arr = np.random.randint(0,10,(3,4))  
+arrayinfo(arr)
+>
+type : .<class 'numpy.ndarray'>
+shape : (3, 4)
+dimension : 2
+dtype : int32
+Array Data : 
+ [[2 2 8 1]
+ [5 5 2 6]
+ [4 2 3 2]]
+```
+
+- 0부터 10까지의 수를 무작위로 3행 4열로 생성
+
+```python
+result = np.delete(arr,1) 
+arrayinfo(result)
+print('*'*50)
+arrayinfo(arr)
+print('*'*50)
+result = np.delete(arr,1,axis=0) #축을 지정하면 원래 데이터 차원에서 지워버린다.axis=0 행을 기준
+arrayinfo(result)
+result = np.delete(arr,1,axis=1)#축을 지정하면 원래 데이터 차원에서 지워버린다.axis=1 열을 기준
+arrayinfo(result)
+>
+type : .<class 'numpy.ndarray'>
+shape : (11,)
+dimension : 1
+dtype : int32
+Array Data : 
+ [2 8 1 5 5 2 6 4 2 3 2]
+**************************************************
+type : .<class 'numpy.ndarray'>
+shape : (3, 4)
+dimension : 2
+dtype : int32
+Array Data : 
+ [[2 2 8 1]
+ [5 5 2 6]
+ [4 2 3 2]]
+**************************************************
+type : .<class 'numpy.ndarray'>
+shape : (2, 4)
+dimension : 2
+dtype : int32
+Array Data : 
+ [[2 2 8 1]
+ [4 2 3 2]]
+type : .<class 'numpy.ndarray'>
+shape : (3, 3)
+dimension : 2
+dtype : int32
+Array Data : 
+ [[2 8 1]
+ [5 2 6]
+ [4 3 2]]
+```
+
+- 축을 지정하지 않으면 2차원을 1차원으로 변환시켜서 인덱스가 1인 것을 삭제한다.
+
+- `axis=0` 을 지정하면 행을 기준으로 삭제한다.
+- `axis=1` 을 지정하면 열을 기준으로 삭제한다.
