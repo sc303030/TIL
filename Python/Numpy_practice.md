@@ -145,6 +145,8 @@ year2020_df_M
 
 **pd.merge(data1, data2,left_index=True, right_index=True)**
 
+- 인덱스 기준으로 merge
+
 ```python
 gender_df = pd.merge(year2020_df_M, year2020_df_F, left_index=True, right_index=True)
 gender_df 
