@@ -501,7 +501,7 @@ pop_df
 
 **열 삭제**
 
-- 열에 대해서 배열 인덱스가 안 된다.
+- 열에 대해서 배열 인덱스가 안 된다. 단, 컬럼 이름을 정수로 만들었으면 가능하다.
 
 ```python
 del pop_df['2014-2016 증가율']
@@ -515,3 +515,327 @@ pop_df
 대구	경상권	4203948	6203948	3203948	1203948	0.0034
 ```
 
+**부분 인덱싱**
+
+```python
+pop_df[['지역','증가율']]
+>
+특성	지역	증가율
+도시		
+서울	수도권	0.2343
+부산	경상권	0.0434
+경기	수도권	0.0944
+대구	경상권	0.0034
+```
+
+- 원하는 컬럼을 리스트로 만들어서 인덱싱 해야한다.
+
+```python
+type(pop_df[['지역','증가율']])
+> pandas.core.frame.DataFrame
+```
+
+```python
+test_df = pd.DataFrame(np.arange(12).reshape(3,4))
+test_df
+>
+	0	1	2	3
+0	0	1	2	3
+1	4	5	6	7
+2	8	9	10	11
+```
+
+```python
+test_df[2]
+>
+0     2
+1     6
+2    10
+Name: 2, dtype: int32
+```
+
+- 정수면 배열 인덱싱을 할 수 있다.
+
+#### row indexing
+
+- 항상 슬라이싱을 해야 한다.
+- 인덱스, 문자라벨 슬라이싱도 가능하다.
+
+```python
+display(pop_df[:1])
+display(pop_df[:'서울'])
+>
+특성	지역	2014	2016	2018	2020	증가율
+도시						
+서울	수도권	5910293	7910293	8910293	9910293	0.2343
+특성	지역	2014	2016	2018	2020	증가율
+도시						
+서울	수도권	5910293	7910293	8910293	9910293	0.2343
+```
+
+- 0~1 인덱스 이니깐 0에 해당하는 행의 값을 출력한다.
+
+```python
+display(pop_df[1:2])
+>
+특성	지역	2014	2016	2018	2020	증가율
+도시						
+부산	경상권	3384050	5384050	7384050	8384050	0.0434
+```
+
+```python
+display(pop_df[0:3])
+>
+특성	지역	2014	2016	2018	2020	증가율
+도시						
+서울	수도권	5910293	7910293	8910293	9910293	0.2343
+부산	경상권	3384050	5384050	7384050	8384050	0.0434
+경기	수도권	4938486	7938486	5938486	2938486	0.0944
+```
+
+```python
+display(pop_df['서울':'경기'])
+>
+특성	지역	2014	2016	2018	2020	증가율
+도시						
+서울	수도권	5910293	7910293	8910293	9910293	0.2343
+부산	경상권	3384050	5384050	7384050	8384050	0.0434
+경기	수도권	4938486	7938486	5938486	2938486	0.0944
+```
+
+- 문자 인덱싱은 문자까지 출력한다.
+
+#### 개별 데이터 인덱싱 ( 특정 행, 특정 열)
+
+- 열의 행을 건드려야 한다.
+
+```python
+display(pop_df['2020']['서울'])
+> 9910293
+```
+
+```python
+display(pop_df[['2020']][:'서울'])
+>
+특성	2020
+도시	
+서울	9910293
+```
+
+- 데이터 프레임으로 보고 싶으면 열을 `[]` 로 감싸면 된다.
+
+```python
+score_data = {
+    'kor' : [80,90,70,30],
+    'eng' : [90,70,60,40],
+    'math' : [90,60,90,70]
+    
+}
+columns = ['kor', 'eng', 'math']
+index   = ['펭수', '뽀로로', '뿡뿡이', '물범']
+
+exec_df = pd.DataFrame(score_data, index=index, columns = columns)
+exec_df
+>
+	kor	eng	math
+펭수	80	90	90
+뽀로로	90	70	60
+뿡뿡이	70	60	90
+물범	30	40	70
+```
+
+- 위 데이터를 보고 모든 학생의 수학 점수를 시리즈로 출력하라
+
+```python
+display(exec_df['math'])
+type(exec_df['math'])
+>
+펭수     90
+뽀로로    60
+뿡뿡이    90
+물범     70
+Name: math, dtype: int64
+pandas.core.series.Series
+```
+
+- 모든 학생의  국어와 영어 점수를 데이터 프레임으로 만들어라
+
+```python
+display(exec_df[['kor','eng']])
+type(exec_df[['kor','eng']])
+>
+
+	kor	eng
+펭수	80	90
+뽀로로	90	70
+뿡뿡이	70	60
+물범	30	40
+```
+
+- 모든 학생의 각 과목 평균 점수를 새로운 열로 추가하라
+
+```python
+exec_df['mean'] = np.mean(exec_df[['kor', 'eng', 'math']].T)
+exec_df
+>
+	kor	eng	math	mean
+펭수	80	90	90	86.666667
+뽀로로	100	70	100	90.000000
+뿡뿡이	70	60	90	73.333333
+물범	30	90	70	63.333333
+```
+
+- 물범 학생의 영어 점수를 90점으로 수정하고 평균 점수도 다시 계산하라
+
+```python
+exec_df['eng']['물범'] = 90
+exec_df['mean'] = np.mean(exec_df[['kor', 'eng', 'math']].T)
+exec_df
+>
+	kor	eng	math	mean
+펭수	80	90	90	86.666667
+뽀로로	100	70	100	90.000000
+뿡뿡이	70	60	90	73.333333
+물범	30	90	70	63.333333
+```
+
+- 펭수 학생의 점수를 데이터 프레임으로 만들어라
+
+```python
+display(exec_df[:'펭수'])
+type(exec_df[:'펭수'])
+>
+	kor	eng	math	mean
+펭수	80	90	90	86.6667
+pandas.core.frame.DataFrame
+```
+
+- 뿡뿡이 학생의 점수를 시리즈로 출력하라
+
+```python
+exec_df.T['뿡뿡이']
+>
+kor     70.000000
+eng     60.000000
+math    90.000000
+mean    73.333333
+Name: 뿡뿡이, dtype: float64
+```
+
+- 뽀로로 학생의 국어점수와 수학점수를 100점으로 수정하고 평균 점수도 다시 계산하라
+
+```python
+exec_df['kor']['뽀로로'] = 100
+exec_df['math']['뽀로로'] = 100
+exec_df['mean'] = np.mean(exec_df[['kor', 'eng', 'math']].T)
+exec_df
+>
+	kor	eng	math	mean
+펭수	80	90	90	86.666667
+뽀로로	100	70	100	90.000000
+뿡뿡이	70	60	90	73.333333
+물범	30	90	70	63.333333
+```
+
+## 데이터 입출력
+
+- 매직명령어 - %%
+
+```python
+%%writefile sample01.csv
+col01, col02, col03
+1,1,1
+2,2,2
+3,3,3
+4,4,4
+>
+Writing sample01.csv
+```
+
+- 간단히 매직 명령어로 csv 파일을 만들었다.
+
+```python
+court_df = pd.read_csv('./data/court_code.txt', sep='\t', encoding='cp949')
+dfInfo(court_df)
+>
+df shape : (46180, 3)
+df size : 138540
+df ndim : 2
+df index : RangeIndex(start=0, stop=46180, step=1)
+df index  type : <class 'pandas.core.indexes.range.RangeIndex'>
+df columns : Index(['법정동코드', '법정동명', '폐지여부'], dtype='object')
+df columns  type : <class 'pandas.core.indexes.base.Index'>
+df values : [[1100000000 '서울특별시' '존재']
+ [1111000000 '서울특별시 종로구' '존재']
+ [1111010100 '서울특별시 종로구 청운동' '존재']
+ ...
+ [5013032024 '제주특별자치도 서귀포시 표선면 가시리' '존재']
+ [5013032025 '제주특별자치도 서귀포시 표선면 세화리' '존재']
+ [5013032026 '제주특별자치도 서귀포시 표선면 토산리' '존재']]
+df values  type : <class 'numpy.ndarray'>
+```
+
+**head()**
+
+```python
+court_df.head()
+>
+	법정동코드				법정동명	폐지여부
+0	1100000000	서울특별시			    존재
+1	1111000000	서울특별시 종로구		  존재
+2	1111010100	서울특별시 종로구 청운동	존재
+3	1111010200	서울특별시 종로구 신교동	존재
+4	1111010300	서울특별시 종로구 궁정동	존재
+```
+
+- 상위 5개만 보여준다.
+
+**tail()**
+
+```python
+court_df.tail()
+>
+			법정동코드	법정동명	                 폐지여부
+46175	5013032022	제주특별자치도 서귀포시 표선면 하천리	존재
+46176	5013032023	제주특별자치도 서귀포시 표선면 성읍리	존재
+46177	5013032024	제주특별자치도 서귀포시 표선면 가시리	존재
+46178	5013032025	제주특별자치도 서귀포시 표선면 세화리	존재
+46179	5013032026	제주특별자치도 서귀포시 표선면 토산리	존재
+```
+
+- 하위 5개를 보여준다.
+
+**info()**
+
+```python
+court_df.info()
+>
+<class 'pandas.core.frame.DataFrame'>
+RangeIndex: 46180 entries, 0 to 46179
+Data columns (total 3 columns):
+법정동코드    46180 non-null int64
+법정동명     46180 non-null object
+폐지여부     46180 non-null object
+dtypes: int64(1), object(2)
+memory usage: 1.1+ MB
+```
+
+- 정보를 출력해준다.
+
+##### 1. 폐지여부가 존재인 것들만  데이터 프레임으로 만들어 보자.
+
+```python
+subset_df = court_df[court_df['폐지여부'] == '존재']
+subset_df.info()
+>
+<class 'pandas.core.frame.DataFrame'>
+Int64Index: 20544 entries, 0 to 46179
+Data columns (total 3 columns):
+법정동코드    20544 non-null int64
+법정동명     20544 non-null object
+폐지여부     20544 non-null object
+dtypes: int64(1), object(2)
+memory usage: 642.0+ KB
+```
+
+- 인덱스에 `True` 와 `False` 가 들어가서 `True` 값만 담는다.
