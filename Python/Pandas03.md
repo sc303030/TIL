@@ -375,3 +375,188 @@ c	36	38	40	42
 ```
 
 - 마지막 행만 바꿔서 저장하였다. 
+
+### 데이터 갯수를 세어보자
+
+#### count()
+
+- 결측치를 제외하고 출력한다.
+
+```python
+s = pd.Series(range(10))
+s
+>
+0    0
+1    1
+2    2
+3    3
+4    4
+5    5
+6    6
+7    7
+8    8
+9    9
+dtype: int64
+```
+
+```python
+s[5] = np.NaN
+s[2] = np.NaN
+s.count()
+>
+8
+```
+
+```python
+np.random.seed(2)
+count_df = pd.DataFrame(np.random.randint(5,size=(4,4)), dtype=np.float)
+count_df
+>
+	0	1	2	3
+0	0.0	0.0	3.0	2.0
+1	3.0	0.0	2.0	1.0
+2	3.0	2.0	4.0	4.0
+3	4.0	3.0	4.0	2.0
+```
+
+```python
+count_df.count()
+>
+0    4
+1    4
+2    4
+3    4
+dtype: int64
+```
+
+- 각 열에대한 count임
+
+##### NaN 값 줘서 확인해보기
+
+```python
+count_df.iloc[1,0] = np.NaN
+count_df.iloc[3,0] = np.NaN
+count_df.iloc[2,3] = np.NaN
+display(count_df)
+count_df.count()
+>
+	0	1	2	3
+0	0.0	0.0	3.0	2.0
+1	NaN	0.0	2.0	1.0
+2	3.0	2.0	4.0	NaN
+3	NaN	3.0	4.0	2.0
+0    2
+1    4
+2    4
+3    3
+dtype: int64
+```
+
+- 열에 대한 count인 것을 알 수 있다.
+
+```
+import seaborn as sns 
+```
+
+- 시각화 라이브러리이며 데이터셋을 포함하고 있다.
+
+#### describe()
+
+- 요약정보
+
+```python
+titanic = sns.load_dataset('titanic')
+titanic.describe()
+>
+		survived	pclass			age			sibsp	parch			fare
+count	891.000000	891.000000	714.000000	891.000000	891.000000	891.000000
+mean	0.383838	2.308642	29.699118	0.523008	0.381594	32.204208
+std	0.486592	0.836071	14.526497	1.102743	0.806057	49.693429
+min	0.000000	1.000000	0.420000	0.000000	0.000000	0.000000
+25%	0.000000	2.000000	20.125000	0.000000	0.000000	7.910400
+50%	0.000000	3.000000	28.000000	0.000000	0.000000	14.454200
+75%	1.000000	3.000000	38.000000	1.000000	0.000000	31.000000
+max	1.000000	3.000000	80.000000	8.000000	6.000000	512.329200
+```
+
+```python
+titanic.count()
+>
+survived       891
+pclass         891
+sex            891
+age            714
+sibsp          891
+parch          891
+fare           891
+embarked       889
+class          891
+who            891
+adult_male     891
+deck           203
+embark_town    889
+alive          891
+alone          891
+dtype: int64
+```
+
+##### value_counts()
+
+- 특정 열에 대하여 count 가능하다.
+- 다만 시리즈만 계산 할 수 있다. 
+
+```python
+titanic['pclass'].value_counts()
+>
+3    491
+1    216
+2    184
+Name: pclass, dtype: int64
+```
+
+```python
+titanic['survived'].value_counts().values
+>
+array([549, 342], dtype=int64)
+```
+
+#### 새로운 열 추가 age_0 일괄적으로 0 할당
+
+```
+titanic['age_0'] = 0
+```
+
+```python
+titanic.columns
+>
+Index(['survived', 'pclass', 'sex', 'age', 'sibsp', 'parch', 'fare',
+       'embarked', 'class', 'who', 'adult_male', 'deck', 'embark_town',
+       'alive', 'alone', 'age_0'],
+      dtype='object')
+```
+
+```python
+titanic.head(5)
+>
+survived	pclass	sex	age	sibsp	parch	fare	embarked	class	who	adult_male	deck	embark_town	alive	alone	age_0
+0	0	3	male	22.0	1	0	7.2500	S	Third	man	True	NaN	Southampton	no	False	0
+1	1	1	female	38.0	1	0	71.2833	C	First	woman	False	C	Cherbourg	yes	False	0
+2	1	3	female	26.0	0	0	7.9250	S	Third	woman	False	NaN	Southampton	yes	True	0
+3	1	1	female	35.0	1	0	53.1000	S	First	woman	False	C	Southampton	yes	False	0
+4	0	3	male	35.0	0	0	8.0500	S	Third	man	True	NaN	Southampton	no	True	0
+```
+
+####  age의 각 값에 10을 곱한 age_by_10 컬럼 생성
+
+```python
+titanic['age_by_10'] = titanic['age']* 10
+titanic.head()
+>
+survived	pclass	sex	age	sibsp	parch	fare	embarked	class	who	adult_male	deck	embark_town	alive	alone	age_0	age_by_10
+0	0	3	male	22.0	1	0	7.2500	S	Third	man	True	NaN	Southampton	no	False	0	220.0
+1	1	1	female	38.0	1	0	71.2833	C	First	woman	False	C	Cherbourg	yes	False	0	380.0
+2	1	3	female	26.0	0	0	7.9250	S	Third	woman	False	NaN	Southampton	yes	True	0	260.0
+3	1	1	female	35.0	1	0	53.1000	S	First	woman	False	C	Southampton	yes	False	0	350.0
+4	0	3	male	35.0	0	0	8.0500	S	Third	man	True	NaN	Southampton	no	True	0	350.0
+```
+
