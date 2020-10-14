@@ -560,3 +560,118 @@ survived	pclass	sex	age	sibsp	parch	fare	embarked	class	who	adult_male	deck	emba
 4	0	3	male	35.0	0	0	8.0500	S	Third	man	True	NaN	Southampton	no	True	0	350.0
 ```
 
+#### parch와 sibsp 값과 1을 더한 fmaily_no 컬럼 생성
+
+```python
+titanic['fmaily_no'] = titanic['parch'] + titanic['sibsp'] + 1
+titanic.head()
+>
+survived	pclass	sex	age	sibsp	parch	fare	embarked	class	who	adult_male	deck	embark_town	alive	alone	age_0	age_by_10	fmaily_no
+0	0	3	male	22.0	1	0	7.2500	S	Third	man	True	NaN	Southampton	no	False	0	220.0	2
+1	1	1	female	38.0	1	0	71.2833	C	First	woman	False	C	Cherbourg	yes	False	0	380.0	2
+2	1	3	female	26.0	0	0	7.9250	S	Third	woman	False	NaN	Southampton	yes	True	0	260.0	1
+3	1	1	female	35.0	1	0	53.1000	S	First	woman	False	C	Southampton	yes	False	0	350.0	2
+4	0	3	male	35.0	0	0	8.0500	S	Third	man	True	NaN	Southampton	no	True	0	350.0	1
+```
+
+### 데이터 프레임 데이터 삭제
+
+- inplace = False는 원본에 영향 안 줌 -> 디폴트 값
+- True는 영향 준다.
+
+- axis = 행과 열
+- labels = 삭제할 컬럼명
+
+#### age_0 열을 삭제하고자 한다면?
+
+```python
+titanic.drop('age_0', axis=1).head()
+>
+	survived	pclass	sex	age	sibsp	parch	fare	embarked	class	who	adult_male	deck	embark_town	alive	alone	age_by_10	fmaily_no
+0	0	3	male	22.0	1	0	7.2500	S	Third	man	True	NaN	Southampton	no	False	220.0	2
+1	1	1	female	38.0	1	0	71.2833	C	First	woman	False	C	Cherbourg	yes	False	380.0	2
+2	1	3	female	26.0	0	0	7.9250	S	Third	woman	False	NaN	Southampton	yes	True	260.0	1
+3	1	1	female	35.0	1	0	53.1000	S	First	woman	False	C	Southampton	yes	False	350.0	2
+4	0	3	male	35.0	0	0	8.0500	S	Third	man	True	NaN	Southampton	no	True	350.0	
+```
+
+- age_0 열이 삭제되었다.
+
+변수에 다시 담아줘야 저장된다.
+
+```python
+titanic_drop_df = titanic.drop('age_0', axis=1).head()
+>
+survived	pclass	sex	age	sibsp	parch	fare	embarked	class	who	adult_male	deck	embark_town	alive	alone	age_by_10	fmaily_no
+0	0	3	male	22.0	1	0	7.2500	S	Third	man	True	NaN	Southampton	no	False	220.0	2
+1	1	1	female	38.0	1	0	71.2833	C	First	woman	False	C	Cherbourg	yes	False	380.0	2
+2	1	3	female	26.0	0	0	7.9250	S	Third	woman	False	NaN	Southampton	yes	True	260.0	1
+3	1	1	female	35.0	1	0	53.1000	S	First	woman	False	C	Southampton	yes	False	350.0	2
+4	0	3	male	35.0	0	0	8.0500	S	Third	man	True	NaN	Southampton	no	True	350.0	1
+```
+
+##### inplace 주기
+
+```python
+titanic.drop(['age_0','age_by_10','fmaily_no'],axis=1,inplace=True)
+titanic.head()
+>
+	survived	pclass	sex	age	sibsp	parch	fare	embarked	class	who	adult_male	deck	embark_town	alive	alone
+0	0	3	male	22.0	1	0	7.2500	S	Third	man	True	NaN	Southampton	no	False
+1	1	1	female	38.0	1	0	71.2833	C	First	woman	False	C	Cherbourg	yes	False
+2	1	3	female	26.0	0	0	7.9250	S	Third	woman	False	NaN	Southampton	yes	True
+3	1	1	female	35.0	1	0	53.1000	S	First	woman	False	C	Southampton	yes	False
+4	0	3	male	35.0	0	0	8.0500	S	Third	man	True	NaN	Southampton	no	True
+```
+
+- 자체 데이터에서 삭제가 반영되기 때문에 리턴받으면 None 가 뜬다.
+
+##### 0,1,2 행 삭제
+
+```python
+titanic.drop([0,1,2],inplace=True)
+titanic.head()
+>
+
+survived	pclass	sex	age	sibsp	parch	fare	embarked	class	who	adult_male	deck	embark_town	alive	alone
+3	1	1	female	35.0	1	0	53.1000	S	First	woman	False	C	Southampton	yes	False
+4	0	3	male	35.0	0	0	8.0500	S	Third	man	True	NaN	Southampton	no	True
+5	0	3	male	NaN	0	0	8.4583	Q	Third	man	True	NaN	Queenstown	no	True
+6	0	1	male	54.0	0	0	51.8625	S	First	man	True	E	Southampton	no	True
+7	0	3	male	2.0	3	1	21.0750	S	Third	child	False	NaN	Southampton	no	False
+```
+
+```python
+type(titanic.index)
+>
+pandas.core.indexes.numeric.Int64Index
+```
+
+```python
+titanic.index
+>
+Int64Index([  3,   4,   5,   6,   7,   8,   9,  10,  11,  12,
+            ...
+            881, 882, 883, 884, 885, 886, 887, 888, 889, 890],
+           dtype='int64', length=888)
+```
+
+- 넘파이의 vector랑 같다.
+
+````python
+titanic.index.values
+>
+array([  3,   4,   5,   6,   7,   8,   9,  10,  11,  12,  13,  14,  15,
+        16,  17,  18,  19,  20,  21,  22,  23,  24,  25,  26,  27,  28,
+````
+
+- 배열이다.
+
+```python
+type(titanic.index.values)
+>
+numpy.ndarray
+```
+
+
+
