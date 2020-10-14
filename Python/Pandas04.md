@@ -476,5 +476,5 @@ titanic_reset_index_df[['age',"child_adult" ]]
 0	35.0		adult
 ```
 
-- 
+- 리스트 컴프리헨션처럼 `:`  `True` 조건 `else` 값
 
