@@ -92,3 +92,139 @@ female    184
 Name: cat, dtype: int64
 ```
 
+#### fillna :  NaN을 원하는 값으로 변경할 수 있다.
+
+```python
+sample_df = pd.DataFrame({
+    'A' : [1,3,4,3,4],
+    'B' : [2,3,1,2,3],
+    'C' : [1,5,2,4,4]
+})
+sample_df
+>
+	A	B	C
+0	1	2	1
+1	3	3	5
+2	4	1	2
+3	3	2	4
+4	4	3	4
+```
+
+```python
+sample_df.iloc[2,2] = np.nan
+sample_df
+>
+	A	B	C
+0	1	2	1.0
+1	3	3	5.0
+2	4	1	NaN
+3	3	2	4.0
+4	4	3	4.0
+```
+
+```python
+sample_df.apply(pd.value_counts).fillna(0.0)
+>
+	A	B	C
+1.0	1.0	1.0	1.0
+2.0	0.0	2.0	0.0
+3.0	2.0	2.0	0.0
+4.0	2.0	0.0	2.0
+5.0	0.0	0.0	1.0
+```
+
+- `pd.value_counts` : 이렇게 하면 `NaN` 값만 몇개인지 나오니 그걸 0.0으로 바꿔라.
+
+#### astype() :  자료형 변환
+
+```python
+sample_df.apply(pd.value_counts).fillna(0).astype(int)
+>
+	A	B	C
+1.0	1	1	1
+2.0	0	2	0
+3.0	2	2	0
+4.0	2	0	2
+5.0	0	0	1
+```
+
+#### 타이타닉 승객 중 나이를 명시하지 않은 고객은 나이를 명시한 고객의 평균 나이 값으로 대체
+
+```python
+titanic['age'] = titanic['age'].fillna(titanic['age'].mean()).astype(int)
+```
+
+**타이타닉 승객에 대해 나이와 성별에 의한 age_gender_cat 열을 만들고**
+
+- 조건1. 성별을 나타내는 문자열 male 또는 female로 시작한다.
+- 조건2. 성별을 나타내는 문자열 뒤에 나이를 나태나는 문자열로 변경하라
+- 조건 3. 예시) 남성의 나이가 27이라면 -> male27
+
+```python
+titanic["age_gender_cat"] = titanic["sex"] + titanic["age"].apply(str)
+titanic.head()
+>
+survived	pclass	sex	age	sibsp	parch	fare	embarked	class	who	adult_male	deck	embark_town	alive	alone	age_gender_cat
+0	0	3	male	22	1	0	7.2500	S	Third	man	True	NaN	Southampton	no	False	male22
+1	1	1	female	38	1	0	71.2833	C	First	woman	False	C	Cherbourg	yes	False	female38
+2	1	3	female	26	0	0	7.9250	S	Third	woman	False	NaN	Southampton	yes	True	female26
+3	1	1	female	35	1	0	53.1000	S	First	woman	False	C	Southampton	yes	False	female35
+4	0	3	male	35	0	0	8.0500	S	Third	man	True	NaN	Southampton	no	True	male35
+```
+
+- 나이를 문자열로 바꾸고 결합하였다.
+
+#### 데이터 프레임 인덱스 조작하는 방법
+
+- set_index : 기존 행 인덱스를 제거하고 데이터 열 중 하나를 인덱스로 설정
+- reset_index : 기존 행 인덱스를 제거하고 인덱스를 데이터 열로 추가
+
+```python
+np.random.seed(100)
+index_df = pd.DataFrame(np.vstack([list('ABCDE'),
+                                  np.round(np.random.rand(3,5),2)]).T,
+                       columns=['col01','col02','col03','col04'])
+index_df
+>
+	col01	col02	col03	col04
+0		A	0.54	0.12	0.89
+1		B	0.28	0.67	0.21
+2		C	0.42	0.83	0.19
+3		D	0.84	0.14	0.11
+4		E	0.0		0.58	0.22
+```
+
+**col01을 인덱스로**
+
+```python
+index_df2 = index_df.set_index('col01')
+index_df2
+>
+		col02	col03	col04
+col01			
+A		0.54	0.12	0.89
+B		0.28	0.67	0.21
+C		0.42	0.83	0.19
+D		0.84	0.14	0.11
+E		0.0		0.58	0.22
+```
+
+**col02를 인덱스로**
+
+```python
+index_df3 = index_df2.set_index('col02')
+index_df3
+>
+		col03	col04
+col02		
+0.54	0.12	0.89
+0.28	0.67	0.21
+0.42	0.83	0.19
+0.84	0.14	0.11
+0.0		0.58	0.22
+```
+
+
+
+
+
