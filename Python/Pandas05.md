@@ -643,3 +643,94 @@ pd.merge(pop_df01, pop_df02, left_on= ['city','year'], right_index=True)
 
 - 오른쪽 데이터의 인덱스가 다중인덱스여서 왼쪽의 컬럼과 오른쪽 데이터의 인덱스랑 비교한다는 옵션을 추가시켜야 한다.
 - 시티와 연도가 모두 동일해야 값이 출력된다.
+- right_index를 기준으로 left_on을 매치한다.
+
+#### 다중 인덱스가 아닌 단일 인덱스를 이용하는 방법
+
+```python
+data1 = { "이름" : ["펭수","뿡뿡이","물범","뽀로로"],
+          "학년" : [2,4,1,3]}
+
+data2 = { "학과" : ["CS","MATH","MATH","CS"],
+          "학점" : [3.4,2.9,4.5,1.2]}
+```
+
+```python
+df01 = pd.DataFrame(data1, index=[1,2,3,4])
+df02 = pd.DataFrame(data2, index=[1,2,4,5])
+>
+
+	이름	학년
+1	펭수	2
+2	뿡뿡이	4
+3	물범	1
+4	뽀로로	3
+학	과	학점
+1	CS	3.4
+2	MATH	2.9
+4	MATH	4.5
+5	CS	1.2
+```
+
+- 인덱스가 다르다.
+- 동일한 컬럼인덱스가 없어서 merge가 안 된다.
+
+```python
+pd.merge(df01, df02, right_index= True, left_index=True)
+>
+	이름	학년	학과	학점
+1	펭수	2	CS	3.4
+2	뿡뿡이	4	MATH	2.9
+4	뽀로로	3	MATH	4.5
+```
+
+- 공통된 인덱스만 출력된다.
+
+```python
+merge_df.iloc[2]
+>
+이름     뽀로로
+학년       3
+학과    MATH
+학점     4.5
+Name: 4, dtype: object
+```
+
+- 행으로 접근한다.
+
+```python
+merge_df.loc[2]
+>
+이름     뿡뿡이
+학년       4
+학과    MATH
+학점     2.9
+Name: 2, dtype: object
+```
+
+- 인덱스의 이름으로 찾아서.
+
+#### join()
+
+```python
+df01.join(df02)
+>
+	이름	학년	학과	학점
+1	펭수	2	CS		3.4
+2	뿡뿡이	4	MATH	2.9
+3	물범	1	NaN		NaN
+4	뽀로로	3	MATH	4.5
+```
+
+- 조인의 디폴트는 outer
+
+```python
+df01.join(df02, how='inner')
+>
+	이름	학년	학과	학점
+1	펭수	2	CS		3.4
+2	뿡뿡이	4	MATH	2.9
+4	뽀로로	3	MATH	4.5
+```
+
+- how를 주면 된다.
