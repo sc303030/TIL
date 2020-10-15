@@ -412,7 +412,7 @@ pd.merge(stu_df,major_df)
 
 **pd.merge(data1,data2, on='기준', how='inner')**
 
-- on = 열 인덱스 디폴트 같이 있는거
+- on = 열 인덱스 디폴트 같이 있는거 (공통의 인덱스)
 - how  = 어떻게 합칠 것인지. 디폴트 inner
 
 **how = 'left'**
@@ -459,3 +459,187 @@ pd.merge(stu_df,major_df, on='학번', how='outer')
 ```
 
 - 모든 데이터 출력한다.
+
+#### 컬럼의 인덱스가 다은 경우merge
+
+```python
+data1 = {
+    '학번' : [1,2,3,4],
+    '이름' : ['펭수','펭하','펭빠','펭펭'],
+    '학년' : [2,4,1,3]
+}
+data2 = {
+    '과목코드' : [1,2,4,5],
+    '학과' : ['CS','Math','Math','CS'],
+    '학점' : [2.4,4.5,3.4,3.9]
+}
+```
+
+```python
+stu_df = pd.DataFrame(data1)
+major_df = pd.DataFrame(data2)
+display(stu_df)
+display(major_df)
+>
+	학번	이름	학년
+0	1	펭수	2
+1	2	펭하	4
+2	3	펭빠	1
+3	4	펭펭	3
+과목코드	학과	학점
+0	1	CS	2.4
+1	2	Math	4.5
+2	4	Math	3.4
+3	5	CS	3.9
+```
+
+```python
+pd.merge(stu_df,major_df)
+> MergeError: No common columns to perform merge on. Merge options: left_on=None, right_on=None, left_index=False, right_index=False
+```
+
+- 오류 난다.
+
+```python
+pd.merge(stu_df,major_df, left_on='학번', right_on='과목코드',how='inner')
+>
+	학번	이름	학년	과목코드	학과	학점
+0		1	펭수	2	1	CS	2.4
+1		2	펭하	4	2	Math	4.5
+2		4	펭펭	3	4	Math	3.4
+```
+
+- 컬럼의 이름은 다르지만 같은 인덱스로 보라고 `left_on	` 과 `right_on` 을 준다.
+
+```python
+iris_df01 = pd.DataFrame({
+    '품종' : ['setosa', 'setosa','virginica', 'virginica'],
+    '꽃잎길이': [1.4,1.3,1.5,1.3,]},
+columns=['품종','꽃잎길이'])
+iris_df01
+>
+		품종	꽃잎길이
+0	setosa		1.4
+1	setosa		1.3
+2	virginica	1.5
+3	virginica	1.3	
+```
+
+```python
+iris_df02 = pd.DataFrame({
+    '품종' : ['setosa','virginica', 'virginica','versicolor'],
+    '꽃잎너비': [0.4,0.3,0.5,0.3,]},
+    columns=['품종','꽃잎너비'])
+iris_df02
+>
+		품종	꽃잎너비
+0	setosa		0.4
+1	virginica	0.3
+2	virginica	0.5
+3	versicolor	0.3
+```
+
+```python
+pd.merge(iris_df01, iris_df02)
+>
+	품종		꽃잎길이	꽃잎너비
+0	setosa		1.4		0.4
+1	setosa		1.3		0.4
+2	virginica	1.5		0.3
+3	virginica	1.5		0.5
+4	virginica	1.3		0.3
+5	virginica	1.3		0.5
+```
+
+- 누락된것을 가져오고 싶으면 `outer` 하면 된다. 
+
+- 품종이 다르기 때문에 열이 추가되고 중복되는 만큼 늘어난다. 
+
+```pascal
+iris_df01 = pd.DataFrame({
+    '품종' : ['setosa', 'setosa','virginica', 'virginica'],
+    '꽃잎너비': [1.4,1.3,1.5,1.3,],
+    '개화시기' : ['202012','202010','202009','202010']})
+iris_df02 = pd.DataFrame({
+    '품종' : ['setosa','virginica', 'virginica','versicolor'],
+    '꽃잎너비': [0.4,0.3,0.5,0.3,]})
+    
+```
+
+```python
+pd.merge(iris_df01, iris_df02)
+>
+	품종	꽃잎너비	개화시기
+```
+
+- 기준이 되지 않는 동일한 컬럼이 있을 경우 데이터가 서로 일치하지 않아서 값이 나오지 않는다. 
+
+- 품종 + 꽃잎너비 모두 일치해야 값이 나온다.
+
+```python
+pd.merge(iris_df01, iris_df02, on='품종')
+>
+		품종	꽃잎너비_x	개화시기	꽃잎너비_y
+0	setosa		1.4		202012		0.4
+1	setosa		1.3		202010		0.4
+2	virginica	1.5		202009		0.3
+3	virginica	1.5		202009		0.5
+4	virginica	1.3		202010		0.3
+5	virginica	1.3		202010		0.5
+```
+
+- `on`을 줘서 기준 컬럼을 명시해야 한다.
+- 그럼 중복되는 다른 컬럼은 `x` 와 `y` 가 붙어서 나온다.
+  - 왼쪽에 있는 데이터의 컬럼에 `x` , 오른쪽에 있는 데이터는 `y` 가 붙는다.
+
+#### 컬럼인덱스가 아닌 인덱스를 기준으로 병합한다면?
+
+- left_index, right_index 를 줘야 한다.
+
+```python
+pop_df01 = pd.DataFrame({
+    'city' : ['seoul','seoul','seoul','busan','busan'],
+    'year' : [2010, 2005, 2020, 2018, 2015],
+    'pop'  : [1234567, 2345678, 3456789, 4567890, 5678901]
+})
+pop_df01
+>
+	city	year	pop
+0	seoul	2010	1234567
+1	seoul	2005	2345678
+2	seoul	2020	3456789
+3	busan	2018	4567890
+4	busan	2015	5678901
+```
+
+#### 다중인덱스
+
+```python
+pop_df02 = pd.DataFrame(np.arange(12).reshape(6,2),
+    index = [['busan','busan','seoul','seoul','seoul','seoul'],
+             [2010, 2005, 2020, 2018, 2015,2010]],
+    columns = ['col01','col02']
+)
+pop_df02
+>
+			col01	col02
+busan	2010	0		1
+		2005	2		3
+seoul	2020	4		5
+		2018	6		7
+		2015	8		9
+		2010	10		11
+```
+
+- 인덱스에 인덱스를 준다.
+
+```python
+pd.merge(pop_df01, pop_df02, left_on= ['city','year'], right_index=True)
+>
+	city	year	pop	col01	col02
+0	seoul	2010	1234567	10	11
+2	seoul	2020	3456789	4	5
+```
+
+- 오른쪽 데이터의 인덱스가 다중인덱스여서 왼쪽의 컬럼과 오른쪽 데이터의 인덱스랑 비교한다는 옵션을 추가시켜야 한다.
+- 시티와 연도가 모두 동일해야 값이 출력된다.
