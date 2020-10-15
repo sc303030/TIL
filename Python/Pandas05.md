@@ -224,7 +224,238 @@ col02
 0.0		0.58	0.22
 ```
 
+##### reset_index
 
+```python
+index_df2.reset_index()
+>
+	col01	col02	col03	col04
+0	A		0.54	0.12	0.89
+1	B		0.28	0.67	0.21
+2	C		0.42	0.83	0.19
+3	D		0.84	0.14	0.11
+4	E		0.0		0.58	0.22
+```
 
+- 인덱스가 다시 생겼다.
 
+##### reset_index(drop=True)
 
+```python
+index_df2.reset_index(drop=True)
+>
+	col02	col03	col04
+0	0.54	0.12	0.89
+1	0.28	0.67	0.21
+2	0.42	0.83	0.19
+3	0.84	0.14	0.11
+4	0.0		0.58	0.22
+```
+
+- `col01` 인덱스가 새로운 열로 생기지 않고 삭제되었다.
+
+#### 5명의 학생의 국어, 영어, 수학 점수를 나타내는 데이터프레임을 만든다.
+
+- 학생 이름을 나타내는 열을 포함시키지 않고  데이터프레임 df_score1 을 생성한 후, df_score1.index 속성에 학생 이름을 나타내는 열을 지정하여 인덱스를 지정한다.  
+- reset_index 명령으로 이 인덱스 열을 명령으로 일반 데이터열로 바꾸여 데이터프레임 df_score2을 만든다.
+
+```python
+df_score1 = pd.DataFrame({
+    '국어' : [100,95,90],
+    '영어' : [87,90,89],
+    '수학' : [90,97,95]
+})
+df_score1.index = ['펭하','펭빠','펭펭']
+df_score1.index.name = '이름'
+df_score2 = df_score1.reset_index()
+df_score2
+>
+	이름	국어	영어	수학
+0	펭하	100	  87	90
+1	펭빠	95	  90	97
+2	펭펭	90	  89	95
+```
+
+- 학생 이름을 나타내는 열이 일반 데이터 열을 포함하는 데이터프레임 df_score2에 set_index 명령을 적용하여 다시 학생 이름을 나타내는 열을 인덱스로 변경한다.
+
+```python
+df_score2 = df_score2.set_index('이름')
+df_score2
+>
+	국어	영어	수학
+이름			
+펭하	100	87	  90
+펭빠	95	90	  97
+펭펭	90	89	  95
+```
+
+- np.random.randint : 정수난수 1개 생성
+- np.random.rand : 0 ~ 1 사이의 분포된 난수 생성
+- np.random.randn : 가우시안 표준 정규분포에서 난수 생성
+
+```python
+np.random.randint(6) # 0~ 5
+> 3
+```
+
+- 정수 난수
+
+```python
+np.random.randint(1, 20) # 1~ 19
+> 13
+```
+
+- 범위를 줄 수도 있다.
+
+```python
+np.random.rand(6) # 0 ~ 1
+>
+array([0.81168315, 0.17194101, 0.81622475, 0.27407375, 0.43170418,
+       0.94002982])
+```
+
+- 넘파이의 1차원array
+
+```python
+np.random.rand(3,2)
+>
+array([[0.81764938, 0.33611195],
+       [0.17541045, 0.37283205],
+       [0.00568851, 0.25242635]])
+```
+
+- 행렬의 매트릭스가 된다.
+
+```python
+np.random.randn(3,2)
+>
+array([[ 1.61898166,  1.54160517],
+       [-0.25187914, -0.84243574],
+       [ 0.18451869,  0.9370822 ]])
+```
+
+- 정규분포라 `-` 가 있을 수 있다.
+
+```python
+np.random.randn(6) # 가우시안 정규분포 난수
+>
+array([ 0.73100034,  1.36155613, -0.32623806,  0.05567601,  0.22239961,
+       -1.443217  ])
+```
+
+### DataFrmae merge
+
+```python
+data1 = {
+    '학번' : [1,2,3,4],
+    '이름' : ['펭수','펭하','펭빠','펭펭'],
+    '학년' : [2,4,1,3]
+}
+data2 = {
+    '학번' : [4,3,2,1],
+    '학과' : ['CS','Math','Math','CS'],
+    '학점' : [2.4,4.5,3.4,3.9]
+}
+```
+
+```python
+stu_df = pd.DataFrame(data1)
+major_df = pd.DataFrame(data2)
+display(stu_df)
+display(major_df)
+>
+	학번	이름	학년
+0	1		펭수	2
+1	2		펭하	4
+2	3		펭빠	1
+3	4		펭펭	3
+	학번	학과		학점
+0	4		CS		2.4
+1	3		Math	4.5
+2	2		Math	3.4
+3	1		CS		3.9
+```
+
+#### pd.merge()
+
+```python
+pd.merge(stu_df,major_df)
+>
+	학번	이름	학년	학과		학점
+0	1	펭수		2	CS		3.9
+1	2	펭하		4	Math	3.4
+2	3	펭빠		1	Math	4.5
+3	4	펭펭		3	CS		2.4
+```
+
+- 학번 수정 후 해보기
+
+```python
+data2 = {
+    '학번' : [1,2,4,5],
+    '학과' : ['CS','Math','Math','CS'],
+    '학점' : [2.4,4.5,3.4,3.9]
+}
+```
+
+```python
+pd.merge(stu_df,major_df)
+>
+
+	학번	이름	학년	학과		학점
+0	1	펭수	2		CS		2.4
+1	2	펭하	4		Math	4.5
+2	4	펭펭	3		Math	3.4
+```
+
+- 학번 있는 데이터만 출력됨
+
+**pd.merge(data1,data2, on='기준', how='inner')**
+
+- on = 열 인덱스 디폴트 같이 있는거
+- how  = 어떻게 합칠 것인지. 디폴트 inner
+
+**how = 'left'**
+
+```python
+pd.merge(stu_df,major_df, on='학번', how='left')
+>
+		학번	  이름	학년	학과	    학점
+0		1		펭수		2	CS		2.4
+1		2		펭하		4	Math	4.5
+2		3		펭빠		1	NaN		NaN
+3		4		펭펭		3	Math	3.4
+```
+
+- 왼쪽데이터를 매칭되지 않더라도 모두 출력
+  - 매칭되는 값이 없기에 NaN값으로 들어간다.
+
+**how = 'right'**
+
+```python
+pd.merge(stu_df,major_df, on='학번', how='right')
+>
+	학번	이름	학년	학과	     학점
+0	1	 펭수	 2.0	CS	    2.4
+1	2	 펭하	 4.0	Math	4.5
+2	4	 펭펭	 3.0	Math	3.4
+3	5	 NaN   NaN	  CS	 3.9
+```
+
+- 오른쪽 데이터를 매칭되지 않더라도 모두 출력
+  - 매칭되는 값이 없기에 NaN값으로 들어간다.
+
+**how = 'outer'**
+
+```python
+pd.merge(stu_df,major_df, on='학번', how='outer')
+>
+	학번		이름	학년	 	학과		학점
+0	1		펭수		2.0		CS		2.4
+1	2		펭하		4.0		Math	4.5
+2	3		펭빠		1.0		NaN		NaN
+3	4		펭펭		3.0		Math	3.4
+4	5		NaN		  NaN	  CS	  3.9
+```
+
+- 모든 데이터 출력한다.
