@@ -54,6 +54,7 @@ users.info()
 
 ```python
 users = users.iloc[:,0:3]
+# users.drop([3,4],axis=1,inplace=True)
 ```
 
 ```python
@@ -67,172 +68,170 @@ users.columns = ["userId", "gender"," age"]
 #### 3. 공통 컬럼을 이용한 데이터 병합
 
 ```python
-r_m_df = pd.merge(ratings_df,movies_df,on='movieId')
-r_m_df.head()
+movies_df = pd.merge(pd.merge(ratings_df,movies_df),users_df)
 >
-	userId	movieId	rating	timestamp	title									genres
-0		1		1193	5	978300760	One Flew Over the Cuckoo's Nest (1975)	Drama
-1		2		1193	5	978298413	One Flew Over the Cuckoo's Nest (1975)	Drama
-2		12		1193	4	978220179	One Flew Over the Cuckoo's Nest (1975)	Drama
-3		15		1193	4	978199279	One Flew Over the Cuckoo's Nest (1975)	Drama
-4		17		1193	5	978158471	One Flew Over the Cuckoo's Nest (1975)	Drama
-```
-
-```python
-r_m_u_df = pd.merge(r_m_df, users, on='userId')
-r_m_u_df.head()
->
-userId	movieId	rating	timestamp	title	genres	ender	age
+userId	movieId	rating	timestamp	title	genres	gender	age
 0	1	1193	5	978300760	One Flew Over the Cuckoo's Nest (1975)	Drama	F	1
 1	1	661	3	978302109	James and the Giant Peach (1996)	Animation|Children's|Musical	F	1
-2	1	914	3	978301968	My Fair Lady (1964)	Musical|Romance	F	1
-3	1	3408	4	978300275	Erin Brockovich (2000)	Drama	F	1
-4	1	2355	5	978824291	Bug's Life, A (1998)	Animation|Children's|Comedy	F	1
 ```
 
-- 한 번에 3개의 데이터를 합칠 수 없어서 우선 `movieId` 를 가진 영화와 별점을 합쳤다.
-- 그 다음에 `userId` 로 유저 데이터를 합쳤다.
+- 한 번에 merge를 하면 편리하다.
 
 #### 4.user 평점 갯수 순위 확인
 
 ```python
-user_cnt = pd.DataFrame(r_m_u_df['userId'].value_counts())
-user_cnt.index.name = 'userId'
-user_cnt.columns = ['cnt']
-display(user_cnt)
->
-		cnt
+user_rating = movies_df.groupby('userId')[['rating']].count()
+user_rating.sort_values(by='rating',ascending=False)
+>		rating
 userId	
 4169	2314
 1680	1850
-4277	1743
 ```
 
-- 유저 컬럼에서 중복이 몇개인지 확인하였다. 그 값이 평점 개수이다.
+- 그룹을 통해 유저의 영화 개수를 구했고 다시 내림차순해서 순위를 구하였다.
+
+#### 5. 각 영화의 성별 평균 평점
+
+```python
+movies_df.pivot_table('rating',"gender","movieId",aggfunc=np.mean)
+>
+movieId		1				2	
+gender																					
+F		4.187817       3.278409
+M		4.130552	   3.175238
+```
+
+- 피벗테이블로 바로 하면 이렇게 나온다.
+
+#### 6.  평점이 220개 이상인 영화만 필터링
+
+```python
+mo_220 = movies_df.groupby('movieId')["rating"].agg(['count']).reset_index()
+m_data = mo_220[mo_220['count'] >= 220]
+movie_rating_220 = pd.merge(m_data,movies_df,on="movieId",how='inner')
+movie_rating_220
+>
+movieId	count	userId	rating	timestamp	title	genres	gender	age
+0	1	2077	1	5	978824268	Toy Story (1995)	Animation|Children's|Comedy	F	1
+1	1	2077	18	4	978154768	Toy Story (1995)	Animation|Children's|Comedy	F	18
+```
+
+- 영화아이디로 그룹하고 평점의 개수를 센다.
+- 그 다음에 평점의 개수가 220개 이상인 것들을 다시 뽑는다.
+- 머지해서 다른 정보들도 출력해본다.
 
 #### 7. 평점이 200개 이상인 영화들의 성별 평균 평점
 
 ```python
-movie_cnt = pd.DataFrame(r_m_u_df['movieId'].value_counts())
-movie_cnt.index.name = 'movieId'
-movie_cnt.columns = ['cnt']
-movie_cnt
+mo_200 = mo_220[mo_220['count']>= 200]
+mo_200_df =  pd.merge(mo_200,movies_df,on="movieId",how='inner')
+mo_200_df.groupby(['title','gender'])['rating'].agg(['mean'])
 >
-		cnt
-movieId	
-2858	3428
-260		2991
-1196	2990
-1210	2883
+														mean
+title								gender	
+'burbs, The (1989)					F				2.793478
+									M				2.962085
+10 Things I Hate About You (1999)	F				3.646552
+									M				3.311966
 ```
 
-- 우선 영화마다 평점이 몇 개인지 뽑았다.
-
-```python
-m_200_id =  movie_cnt[movie_cnt['cnt'] >= 200].index
-```
-
-- 그 다음에 200이 넘는 것들의 영화id만 다시 변수에 담았다.
-
-```python
-a = r_m_u_df[ r_m_u_df['movieId'].isin(m_200_id)]
-female = a[a['ender']=='F']['rating'].mean()
-male = a[a['ender']=='M']['rating'].mean()
-```
-
-- 만약에 영화 아이디가 내가 만든 변수에 있다면 그 데이터들만 다시 새로운 변수에 담았다. 거기서 성별로 평균을 추출하였다.
-
-```python
-print('F : ',female)
-print('M : ', male)
->
-F :  3.688517650906957
-M :  3.650922994518683
-```
+- 위에서 만들었던 mo_200에서 다시 200넘는것들만 추출한다.
+- 그걸 원본 데이터와 합쳐서 정보를 가져온다.
+- 영화 제목과 성별로 그룹나누고 평점 평균을 구한다.
 
 #### 8. 여성이 가장 좋아하는 영화 순위
 
 ```python
-f_b = r_m_u_df[r_m_u_df['ender']=='F']
-f_best = pd.DataFrame(f_b['movieId'].value_counts())
-f_best.index.name = 'movieId'
-f_best.columns = ['cnt']
-f_best["rank"] = range(1,len(f_best)+1)
-f_best.head()
+movies_df_f = movies_df[movies_df['gender']=='F']
+movies_df_f_no = movies_df_f.groupby('movieId')['rating'].agg(['count']).reset_index()
+movies_df_f_no = movies_df_f_no.sort_values(by='count',ascending=False)
+movies_df_f_no
 >
-		cnt	rank
-movieId		
-2858	946		1
-2396	798		2
-593		706		3
-2762	664		4
-1265	658		5
+	movieId		count
+2503	2858	946
+2070	2396	798
+559		593		706
 ```
 
 - 원본 데이터에서 여성인 데이터만들 추출하였다.
-- 그 데이터로 다시 영화 갯수를 카운트 하였다.
-- 순위를 매기고 출력하였다.
+- 영화 제목과 평점으로 갯수를 카운트하고 내림차순으로 정리하여 출력하였다.
 
 #### 9. 남녀간의 평균 평점 차이
 
 ```python
-f_mean = r_m_u_df[r_m_u_df['ender']=='F']['rating'].mean()
-m_mean = r_m_u_df[r_m_u_df['ender']=='M']['rating'].mean()
-print('차이 : ', f_mean- m_mean)
-> 
-F :  3.6203660120110372
-M :  3.5688785290984373
-차이 :  0.05148748291259997
-```
-
-- 여자가 좀 더 높다.
-
-#### 10 . Comedy영화 중 평점이 낮은 영화의 제목
-
-```python
-c_low = r_m_u_df[r_m_u_df['genres'] == 'Comedy']
-c_titile = c_low[c_low['rating'] == c_low['rating'].min()]['title']
-c_titile.value_counts()
+gender_diff = movies_df.groupby('gender')['rating'].agg(['mean']).reset_index()
+gender_diff.loc[0,'mean'] - gender_diff.loc[1,'mean'] 
 >
-Austin Powers: The Spy Who Shagged Me (1999)                108
-Dumb & Dumber (1994)                                        105
-Ace Ventura: When Nature Calls (1995)                        98
-Baby Geniuses (1999)                                         96
+0.05148748291259997
 ```
 
-- 장르가 코미디인을 먼저 추출하여 새로운 변수에 할당하였다.
-- 그 다음에 평점이 최저인 것들의 제목만 뽑아서 중복되는 것들을 정리해서 제목들만 뽑았다.
+- 성별로 그룹지어 평점의 평균을 구했다.
+- 그 다음에 여성에서 남성을 뺐다.
+- 여성이 조금 높다.
 
-#### 11. 평균 평점이 가장 높은 영화의 제목(동률이 있을 경우 모두 출력)
-
-```python
-title_list = pd.DataFrame(r_m_u_df['title'].value_counts()).index
-title_list
-t1 = [r_m_u_df[r_m_u_df['title']  == title_list[i]]["rating"].mean() for i in range(len(title_list)) ]
-t1 = np.array(t1)
-title_list[t1.argmax()]
-> 'Gate of Heavenly Peace, The (1995)'
-```
-
-- 우선 제목을 리스트로 만든다.
-- for루프를 통해 원본데이터와 리스트로 만든 영화 제목을 비교해 평균 평점을 리스트 컴프리헨션한다.
-- 그러면 리스트에 담긴 평점이랑 타이틀 리스트랑 인덱스가 같으니깐 거기서 최대값의 리스트를 다시 제목 리스트에 부여하면 제목이 출력된다.
-
-#### 12. 각 영화별 평균 평점
+#### 10. 평점의 표준편차가 큰 영화
 
 ```python
-movie_ra = pd.DataFrame({
-    '제목' : title_list,
-    '평균 평점' : t1
-})
-movie_ra
+movie_std = movies_df.groupby('movieId')['rating'].agg(['std']).reset_index()
+movie_std.sort_values(by='std',ascending=False)
 >
-						제목								평균 평점
-0	American Beauty (1999)								4.317386
-1	Star Wars: Episode IV - A New Hope (1977)			4.453694
-2	Star Wars: Episode V - The Empire Strikes Back...	4.292977
+		movieId		std
+558		572		2.828427
+3557	3800	2.309401
 ```
 
-- 위에서 만들어 놓은 리스트덕분에 바로 데이터 프레임을 만들 수 있었다.
+- 집계함수에 표준편차를 줘서 내림차순으로 정리하였다.
+
+#### 11 . Comedy영화 중 평점이 낮은 영화의 제목
+
+```python
+comedy_movie = movies_df[movies_df['genres']=='Comedy']
+comedy_movie.groupby('title')['rating'].agg(['min']).reset_index()
+>
+				title		min
+0	'burbs, The (1989)		1
+1	20 Dates (1998)			1
+2	28 Days (2000)			1
+```
+
+- 코미디 장르만 추출하였다.
+- 제목으로 그룹지어 평점이 가장 낮은 영화들을 출력하였다.
+
+#### 12. 평균 평점이 가장 높은 영화의 제목(동률이 있을 경우 모두 출력)
+
+```python
+movie_rs_max = movies_df.groupby('title')['rating'].agg(['mean']).reset_index()
+movie_rs_max[movie_rs_max['mean'] == movie_rs_max['mean'].max()]
+>
+											title	mean
+249									Baby, The (1973)	5.0
+407							Bittersweet Motel (2000)	5.0
+1203							Follow the Bitch (1998)	5.0
+1297				Gate of Heavenly Peace, The (1995)	5.0
+2025									Lured (1947)	5.0
+2453						One Little Indian (1973)	5.0
+2903		Schlafes Bruder (Brother of Sleep) (1995)	5.0
+3044							Smashing Time (1967)	5.0
+3087							Song of Freedom (1936)	5.0
+3477							Ulysses (Ulisse) (1954)	5.0
+```
+
+- 제목으로 그룹을 지어 평점의 평균을 구한다.
+- 그 다음 데이터에 max조건을 줘서 출력한다.
+
+#### 13. 각 영화별 평균 평점
+
+```python
+movies_df.groupby('title')['rating'].agg(['mean'])
+>
+							mean
+				title	
+$1,000,000 Duck (1971)	3.027027
+'Night Mother (1986)	3.371429
+```
+
+- 제목으로 그룹짓고 평점에 평균함수를 주었다.
+
+- 데이터 프레임으로 만들고 싶어서 []을 해줬다.
 
   
