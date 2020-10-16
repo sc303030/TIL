@@ -1,4 +1,4 @@
-# tPandas_06
+# Pandas_06
 
 ### 그룹분석 및 피봇
 
@@ -492,4 +492,184 @@ sex
 female	81	233
 male	468	109
 ```
+
+```python
+data = {
+    "도시": ["서울", "서울", "서울", "부산", "부산", "부산", "인천", "인천"],
+    "연도": ["2015", "2010", "2005", "2015", "2010", "2005", "2015", "2010"],
+    "인구": [9904312, 9631482, 9762546, 3448737, 3393191, 3512547, 2890451, 263203],
+    "지역": ["수도권", "수도권", "수도권", "경상권", "경상권", "경상권", "수도권", "수도권"]
+}
+columns = ["도시", "연도", "인구", "지역"]
+pivot_sample_df = pd.DataFrame(data, columns=columns)
+pivot_sample_df
+>
+	도시	연도			인구		지역
+0	서울	2015	9904312		수도권
+1	서울	2010	9631482		수도권
+2	서울	2005	9762546		수도권
+3	부산	2015	3448737		경상권
+4	부산	2010	3393191		경상권
+5	부산	2005	3512547		경상권
+6	인천	2015	2890451		수도권
+7	인천	2010	263203		수도권
+```
+
+```python
+pivot_sample_df.pivot_table('인구','도시','연도')
+>
+연도	2005			2010	    2015
+도시			
+부산	3512547.0	3393191.0	3448737.0
+서울	9762546.0	9631482.0	9904312.0
+인천	NaN			 263203.0	2890451.0
+```
+
+- 2번째가 훨씬 더 보기 편하다.
+
+#### pivot_table option
+
+- data : 데이터 프레임
+- values : 분석할 열
+- index
+- columns
+- aggfunc : 집계 함수
+- fill_value : NaN 대체값
+- margins : 분석결과를 오른쪽과 아래에 붙일지 여부
+- margins_name : 마진 열(행)의 이름
+
+```python
+pivot_sample_df.pivot_table('인구','도시','연도', margins=True)
+>
+연도		2005		2010	2015				All
+도시				
+부산	3512547.0	3393191.0	3448737.0	3.451492e+06
+서울	9762546.0	9631482.0	9904312.0	9.766113e+06
+인천	NaN			263203.0	2890451.0	1.576827e+06
+All	6637546.5	4429292.0	5414500.0	5.350809e+06
+```
+
+- 분석결과가 All로 나타남
+
+```python
+pivot_sample_df.pivot_table('인구','도시','연도', margins=True, margins_name='분석결과')
+>
+연도			2005	2010		2015		분석결과
+도시				
+부산		3512547.0	3393191.0	3448737.0	3.451492e+06
+서울		9762546.0	9631482.0	9904312.0	9.766113e+06
+인천			NaN			263203.0	2890451.0	1.576827e+06
+분석결과	6637546.5	4429292.0	5414500.0	5.350809e+06
+```
+
+- 마진에 이름을 줄 수 있다.
+
+```python
+tips = sns.load_dataset('tips')
+tips.head()
+>
+total_bill	tip	sex	smoker	day	time	size
+0	16.99	1.01	Female	No	Sun	Dinner	2
+1	10.34	1.66	Male	No	Sun	Dinner	3
+2	21.01	3.50	Male	No	Sun	Dinner	3
+3	23.68	3.31	Male	No	Sun	Dinner	2
+4	24.59	3.61	Female	No	Sun	Dinner	4
+```
+
+#### 식사대금 대비 팁의 비율이 어떤 경우에 가장 높은지를 찾는다면?
+
+```python
+tips['tip/pct'] = tips['tip'] / tips['total_bill']
+tips.head()
+>
+total_bill	tip	sex	smoker	day	time	size	tip/pct
+0	16.99	1.01	Female	No	Sun	Dinner	2	0.059447
+1	10.34	1.66	Male	No	Sun	Dinner	3	0.160542
+2	21.01	3.50	Male	No	Sun	Dinner	3	0.166587
+3	23.68	3.31	Male	No	Sun	Dinner	2	0.139780
+4	24.59	3.61	Female	No	Sun	Dinner	4	0.146808
+```
+
+```python
+tips.groupby('sex').count()
+>
+	total_bill	tip	smoker	day	time	size	tip/pct
+sex							
+Male	157		157		157	157	157		157		157
+Female	87		87		87	87	87		87		87
+```
+
+#### 성별과 흡연유무로 나누어서 데이터의 갯수를 세어본다면?
+
+```python
+tips.groupby(['sex','smoker']).count()
+>
+
+			total_bill	tip	day	time	size	tip/pct
+sex	smoker						
+Male	Yes			60	60	60	60	60	60
+		No			97	97	97	97	97	97
+Female	Yes			33	33	33	33	33	33
+		No			54	54	54	54	54	54
+```
+
+```python
+tips.groupby(['sex','smoker']).size()
+>
+sex     smoker
+Male    Yes       60
+        No        97
+Female  Yes       33
+        No        54
+dtype: int64
+```
+
+```python
+tips.pivot_table('tip/pct','sex','smoker',aggfunc='count',margins=True)
+>
+smoker	No	Yes	All
+sex			
+Female	54	33	87
+Male	97	60	157
+All		151	93	244
+```
+
+#### 성별과 흡연여부에 따른 팁 비율 살펴본다면?
+
+```python
+tips.groupby(['sex','smoker'])[['tip/pct']].mean()
+>
+			tip/pct
+sex	smoker	
+Male	Yes	0.152771
+		No	0.160669
+Female	Yes	0.182150
+		No	0.156921
+```
+
+```python
+tips.pivot_table('tip/pct','sex','smoker',aggfunc='mean',margins=True)
+>
+
+smoker	No			Yes			All
+sex			
+Female	0.156921	0.182150	0.166491
+Male	0.160669	0.152771	0.157651
+All		0.159328	0.163196	0.160803
+```
+
+- 이렇게 한 번에 구할 수 있다.
+
+#### 통계값을 확인 한다면?
+
+```python
+tips.groupby(['sex','smoker']).describe().T
+>
+	sex					Male						Female
+		smoker			Yes			No		Yes			No
+size	count	60.000000	97.000000	33.000000	54.000000
+		mean	2.500000	2.711340	2.242424	2.592593
+```
+
+
 
