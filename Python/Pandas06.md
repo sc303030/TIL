@@ -1,4 +1,4 @@
-# Pandas_06
+# tPandas_06
 
 ### 그룹분석 및 피봇
 
@@ -352,3 +352,144 @@ virginica	6.588	7.9		2.974	3.8
 ```
 
 - agg는 원하는 집계함수 한번에 사용 가능
+
+### pivot
+
+- 데이터프레임에서 두 개의 열을 이용하여 행/열 인덱스 reshape 된 테이블
+
+- 새로운 테이블에서 새로운 기준으로 집계
+- pivot(index, columns,value) 하나의 value만 가능
+- pivot_table(data, values, index, columns, aggfunc='집계함수') 다수의 value 가능
+
+```python
+titanic= sns.load_dataset('titanic')
+titanic.head()
+>
+survived	pclass	sex	age	sibsp	parch	fare	embarked	class	who	adult_male	deck	embark_town	alive	alone
+0	0	3	male	22.0	1	0	7.2500	S	Third	man	True	NaN	Southampton	no	False
+1	1	1	female	38.0	1	0	71.2833	C	First	woman	False	C	Cherbourg	yes	False
+2	1	3	female	26.0	0	0	7.9250	S	Third	woman	False	NaN	Southampton	yes	True
+3	1	1	female	35.0	1	0	53.1000	S	First	woman	False	C	Southampton	yes	False
+4	0	3	male	35.0	0	0	8.0500	S	Third	man	True	NaN	Southampton	no	True
+```
+
+```python
+titanic_df01 = pd.DataFrame(titanic, columns=['sex', 'pclass'])
+titanic_df01.head()
+>
+sex	pclass
+0	male	3
+1	female	1
+2	female	3
+3	female	1
+4	male	3
+```
+
+```python
+titanic_df01 = titanic.groupby(['sex', 'pclass'])
+titanic_df01
+>
+<pandas.core.groupby.groupby.DataFrameGroupBy object at 0x00000289CC1A5550>
+```
+
+- 데이터 프레임이다.
+
+```python
+titanic_df01 = titanic.groupby(['sex', 'pclass']).size()
+titanic_df01
+>
+sex     pclass
+female  1          94
+        2          76
+        3         144
+male    1         122
+        2         108
+        3         347
+dtype: int64
+```
+
+- 이렇게 분류해준다.
+
+```python
+titanic_df01 = titanic.groupby(['sex', 'pclass']).size().reset_index(name='cnt')
+titanic_df01
+>
+	sex	pclass	cnt
+0	female	1	94
+1	female	2	76
+2	female	3	144
+3	male	1	122
+4	male	2	108
+5	male	3	347
+```
+
+```python
+titanic_df01.pivot('sex', 'pclass','cnt')
+>
+pclass	1	2	3
+sex			
+female	94	76	144
+male	122	108	347
+```
+
+- 피벗을 쓰려면 그룹을 먼저 만들어서 해야한다.
+
+#### 성별과 생존여부에 따른 승객 수 집계한다면?
+
+```python
+titanic_df02 = titanic.groupby(['sex','survived']).size().reset_index(name='cnt')
+titanic_df02
+>
+	sex		survived	cnt
+0	female		0		81
+1	female		1		233
+2	male		0		468
+3	male		1		109
+```
+
+- 우선 그룹한다.
+
+```python
+titanic_df02.pivot('sex','survived','cnt')
+>
+
+survived	0		1
+sex		
+female		81		233
+male		468		109
+```
+
+- 이렇게 피벗하면 보기편하다.
+
+#### pivot_table(data, values, index, columns, aggfunc='집계함수')로 만들어보자
+
+```python
+titanic['cnt'] = 1
+titanic.head()
+>
+survived	pclass	sex	age	sibsp	parch	fare	embarked	class	who	adult_male	deck	embark_town	alive	alone	cnt
+0	0	3	male	22.0	1	0	7.2500	S	Third	man	True	NaN	Southampton	no	False	1
+1	1	1	female	38.0	1	0	71.2833	C	First	woman	False	C	Cherbourg	yes	False	1
+```
+
+```python
+titanic.pivot_table('cnt','sex','pclass',aggfunc=np.sum)
+>
+
+pclass	1	2	3
+sex			
+female	94	76	144
+male	122	108	347
+```
+
+- groupby 하지 않고 바로 할 수 있다.
+
+```python
+titanic.pivot_table('cnt','sex','survived',aggfunc=np.sum)
+>
+survived	0	1
+sex		
+female	81	233
+male	468	109
+```
+
