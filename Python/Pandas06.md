@@ -196,6 +196,7 @@ virginica	1.612245	1.727273	1.533333	1.785714
 
 - 위에서 만든 함수를 넣으면 비율을 보여준다.
 - 시리즈별로 적용된다.
+- 함수 호출할 때 () 넣지 않는다.
 
 ```python
 iris.groupby(iris.species).describe().T
@@ -212,3 +213,142 @@ mean	3.428000	2.770000	2.974000
 ```
 
 - 전치행렬을 주면 종별로 정보 파악 가능하다.
+
+#### 붓꽃 종별로 가장 큰 꽃잎 길이가 큰 3개의 데이터를 뽑아내는 함수 정의
+
+```python
+def select_3(df):
+    return df.sort_values(by='petal_length', ascending=False)[:3]
+```
+
+```python
+iris.sort_values(by='petal_length', ascending=False)[:3]
+>
+
+	sepal_length	sepal_width	petal_length	petal_width		species
+118			7.7				2.6			6.9			2.3			virginica
+122			7.7				2.8			6.7			2.0			virginica
+117			7.7				3.8			6.7			2.2			virginica
+```
+
+- 함수에 적용했던 걸 일반적으로 적용해보았다.
+
+```python
+iris.groupby(iris.species).apply(select_3)
+```
+
+![groupby01](./img/groupby01.jpg)
+
+- 다음과 같이 종별로 길이가 큰 것들 순으로 3개씩 뽑아준다.
+- apply는 데이터프레임으로 돌려준다.
+
+####  transform : 데이터 프레임 자체를 변화시키는 함수
+
+-  원본 프레임과 크기가 같다.
+
+##### 각 붓꽃 꽆잎길이가 해당 좋 내에서 대/중/소 어느것에 해당되는지에 대한 프레임을 만들고 싶다면?
+
+```python
+iris.groupby(iris.species)
+> <pandas.core.groupby.groupby.DataFrameGroupBy object at 0x00000289CBF30E10>
+```
+
+- 데이터 프레임의 그룹
+
+```python
+iris.groupby(iris.species).groups
+>
+{'setosa': Int64Index([ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15, 16,
+             17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33,
+             34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49],
+            dtype='int64'),
+ 'versicolor': Int64Index([50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66,
+             67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83,
+             84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99],
+            dtype='int64'),
+ 'virginica': Int64Index([100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112,
+             113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125,
+             126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138,
+             139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149],
+            dtype='int64')}
+```
+
+```python
+iris.groupby(iris.species).petal_length
+>
+<pandas.core.groupby.groupby.SeriesGroupBy object at 0x00000289CBF30CC0>
+```
+
+- 시리즈 형식의 그룹
+
+```python
+iris.groupby(iris.species).petal_length.size()
+>
+species
+setosa        50
+versicolor    50
+virginica     50
+Name: petal_length, dtype: int64
+```
+
+#### cut()  : 동일 길이(length)로 나누어서 범주를 만들어서 그룹에 대한 통계량
+
+#### qcut() : 동일 갯수(범주안에 갯수)로 나누어서 범주를 만들어서 그룹에 대한 통계량
+
+```python
+def cat3_petal_length(s):
+    return pd.qcut(s,3, labels=['소','중',"대"]).astype(str)
+```
+
+- `qcut` 를 이용하여 s를 3개로 나누고 거기서 소,중,대를 준다음 혹시 모르니 문자열로 타입변환한다.
+
+```python
+iris['category'] = iris.groupby(iris.species).petal_length.transform(cat3_petal_length)
+iris.head()
+```
+
+![g2](./img/groupby02.jpg)
+
+- 다음과 같이 추가된다.
+
+agg()와 apply()의 차이
+
+- agg() : 여러개의 집계함수 사용가능
+- apply() : 인자로 하나의 함수만 실행 할 수 있음
+
+#### 붓꽃 데이터에서 붓꽃 종별로 꽃잎길이(sepal_length), 꽃잎폭(sepal_width)등의 평균을 구하라
+
+```python
+iris.groupby('species').mean()
+>
+		sepal_length	sepal_width	petal_length	petal_width
+species				
+setosa		5.006			3.428			1.462		0.246
+versicolor	5.936			2.770			4.260		1.326
+virginica	6.588			2.974			5.552		2.026
+```
+
+```python
+iris.groupby('species').agg(np.mean).iloc[:,0:2]
+>
+			sepal_length	sepal_width
+species		
+setosa				5.006		3.428
+versicolor			5.936		2.770
+virginica			6.588		2.974
+```
+
+- loc[: ,['sepal_length','sepal_width']]
+
+```python
+iris.groupby('species').agg([np.mean,np.max]).loc[: ,['sepal_length','sepal_width']]
+>
+			sepal_length	sepal_width
+			mean	amax	mean	amax
+species				
+setosa		5.006	5.8		3.428	4.4
+versicolor	5.936	7.0		2.770	3.4
+virginica	6.588	7.9		2.974	3.8
+```
+
+- agg는 원하는 집계함수 한번에 사용 가능
