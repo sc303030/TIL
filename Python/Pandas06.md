@@ -671,5 +671,59 @@ size	count	60.000000	97.000000	33.000000	54.000000
 		mean	2.500000	2.711340	2.242424	2.592593
 ```
 
+1. qcut 명령으로 세 개의 나이 그룹을 만든다.
+0~19  : A
+20~59 : B
+60 ~  : C
+2. 성별, 선실, 나이 그룹에 의한 생존율을 데이터프레임으로 계산한다. 
+행에는 성별 및 나이 그룹에 대한 다중 인덱스를 사용하고 열에는 
+선실 인덱스를 사용한다. 
+생존률은 해당 그룹의 생존 인원수를 전체 인원수로 나눈 값이다.
+3. 성별 및 선실에 의한 생존율을 피봇 데이터 형태로 만든다.
+
+1번
+
+```python
+titanic['age_abc'] = pd.qcut(titanic.age, q=3, labels=['A', 'B', 'C'])
+titanic.head()
+>
+survived	pclass	sex	age	sibsp	parch	fare	embarked	class	who	adult_male	deck	embark_town	alive	alone	age_abc
+0	0	3	male	22.0	1	0	7.2500	S	Third	man	True	NaN	Southampton	no	False	A
+1	1	1	female	38.0	1	0	71.2833	C	First	woman	False	C	Cherbourg	yes	False	C
+2	1	3	female	26.0	0	0	7.9250	S	Third	woman	False	NaN	Southampton	yes	True	B
+3	1	1	female	35.0	1	0	53.1000	S	First	woman	False	C	Southampton	yes	False	C
+4	0	3	male	35.0	0	0	8.0500	S	Third	man	True	NaN	Southampton	no	True	C
+```
+
+- 3을 주면 알아서 정해진다.
+
+2번
+
+```python
+cnt_df = titanic.pivot_table('survived',['sex','age_abc'],'pclass',aggfunc='count',margins=True,margins_name='sur_ratio')
+all_cnt = cnt_df.loc['sur_ratio','sur_ratio'][0]
+survi_ra_df = cnt_df / all_cnt
+survi_ra_df
+>
+pclass	1	2	3	sur_ratio
+sex	age_abc				
+female	A	0.030812	0.028011	0.082633	0.141457
+C	0.026611	0.046218	0.037815	0.110644
+B	0.061625	0.029412	0.022409	0.113445
+male	A	0.014006	0.039216	0.149860	0.203081
+C	0.030812	0.054622	0.128852	0.214286
+B	0.096639	0.044818	0.075630	0.217087
+sur_ratio		0.260504	0.242297	0.497199	1.000000
+```
+
+3번
+
+```python
+cnt_df = titanic.pivot_table('survived','sex','pclass',aggfunc='count',margins=True,margins_name='sur_ratio')
+all_cnt = titanic.shape[0]
+survi_ra_df = cnt_df / all_cnt
+survi_ra_df
+```
+
 
 
