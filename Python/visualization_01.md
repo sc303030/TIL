@@ -430,3 +430,136 @@ plt.show()
 ![vi17](./img/vi17.png)
 
 - 이렇게 하면 한 번에 다 볼 수 있다.
+
+### car_mpg.xls [실습]
+
+```python
+xls = pd.ExcelFile('./data/car_mpg.xlsx')
+data_df = xls.parse(xls.sheet_names[0])
+data_df.head()
+>
+manufacturer	model	displ	year	cyl	trans		drv	cty	hwy	fl	class
+1	audi		a4		1.8		1999	4	auto(l5)	f	18	29	p	compact
+2	audi		a4		1.8		1999	4	manual(m5)	f	21	29	p	compact
+3	audi		a4		2.0		2008	4	manual(m6)	f	20	31	p	compact
+4	audi		a4		2.0		2008	4	auto(av)	f	21	30	p	compact
+5	audi		a4		2.8		1999	6	auto(l5)	f	16	26	p	compact
+```
+
+- 엑셀은 `ExcelFile` 로 읽어온다.
+- 그 다음에 `parse(xls.sheet_names[0])` 로 몇번 시트를 읽어올지 지정해준다.
+
+```python
+data_df.info()
+>
+<class 'pandas.core.frame.DataFrame'>
+Int64Index: 234 entries, 1 to 234
+Data columns (total 11 columns):
+manufacturer    234 non-null object
+model           234 non-null object
+displ           234 non-null float64
+year            234 non-null int64
+cyl             234 non-null int64
+trans           234 non-null object
+drv             234 non-null object
+cty             234 non-null int64
+hwy             234 non-null int64
+fl              234 non-null object
+class           234 non-null object
+dtypes: float64(1), int64(4), object(6)
+memory usage: 21.9+ KB
+```
+
+```python
+data_df['fl'].head()
+>
+1    p
+2    p
+3    p
+4    p
+5    p
+Name: fl, dtype: object
+```
+
+```python
+row, col = data_df.shape
+print(row, col)
+>
+234 11
+```
+
+```python
+# 기술통계 값
+data_df.describe()
+>
+		displ		year		cyl			cty			hwy
+count	234.000000	234.000000	234.000000	234.000000	234.000000
+mean	3.471795	2003.500000	5.888889	16.858974	23.440171
+std		1.291959	4.509646	1.611534	4.255946	5.954643
+min		1.600000	1999.000000	4.000000	9.000000	12.000000
+25%		2.400000	1999.000000	4.000000	14.000000	18.000000
+50%		3.300000	2003.500000	6.000000	17.000000	24.000000
+75%		4.600000	2008.000000	8.000000	19.000000	27.000000
+max		7.000000	2008.000000	8.000000	35.000000	44.000000
+```
+
+- 양적자료 : 요약정보에 집계가 되는 컬럼으로 관측된 값이 수치 형태의 속성을 가지는 자료
+- 양적자료의 시각화 : boxplot
+- 배기량, 생산년도, 실린더 개수, 도시연비, 고속도로 연비
+
+
+
+- 질적자료 : 범주형 또는 순서 형태의 속성을 가지는 자료로서 도수 분포표, 히스트그램으로 데이터의 분포를 확인해야하는 값들
+- 제조회사, 모델명, 변속기의 종류, 구동방식 ,연료종류, 자동차 종류
+
+####  양적자료 데이터 분포 확인(boxplot)
+
+```python
+data_df.boxplot(["displ",'cyl','cty','hwy'])
+plt.show()
+```
+
+![vi18](./img/vi18.png)
+
+- 먼저 이러한 데이터를 분석해야 한다.
+
+#### 질적 자료의 데이터 분포 확인
+
+```python
+data_df['manufacturer'].value_counts()
+>
+dodge         37
+toyota        34
+volkswagen    27
+ford          25
+chevrolet     19
+audi          18
+hyundai       14
+subaru        14
+nissan        13
+honda          9
+jeep           8
+pontiac        5
+land rover     4
+mercury        4
+lincoln        3
+Name: manufacturer, dtype: int64
+```
+
+#### 자동차 배기량(dipal)에 따라 고속도로 연비(hwy)가 다른지를 알아보자
+
+- 배기량이 4 이하인 자동차와 5이상인 자동차 중 어떤 자동차의 고속도로 연비가 평균적으로  높은지를 알아보자
+
+```python
+data_4 = data_df[data_df['displ'] <= 4  ]['hwy']
+data_5 = data_df[data_df['displ'] >= 5  ]['hwy']
+display(data_4.mean())
+display(data_5.mean())
+>
+25.96319018404908
+18.07894736842105
+```
+
+- 우선 연비가 4 이하인 것과 5이상인 것들의 고속도로 연비 컬럼만 뽑아서 변수에 담는다.
+- 평균을 출력해서 비교해본다.
+- 4이하인 것들의 평균 고속도로 연비가 더 높다.
