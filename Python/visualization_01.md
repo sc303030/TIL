@@ -268,3 +268,165 @@ plt.show()
 ```
 
 ![vi14](./img/vi14.png)
+
+```python
+import seaborn as sns
+iris = sns.load_dataset('iris')
+iris.head()
+>
+	sepal_length	sepal_width	petal_length	petal_width	species
+0			5.1				3.5			1.4			0.2		setosa
+1			4.9				3.0			1.4			0.2		setosa
+2			4.7				3.2			1.3			0.2		setosa
+3			4.6				3.1			1.5			0.2		setosa
+4			5.0				3.6			1.4			0.2		setosa
+```
+
+```python
+iris.rename(columns={iris.columns[0] : 'SL',
+                    iris.columns[1] : 'SW',
+                    iris.columns[2] : 'PL',
+                    iris.columns[3] : 'PW',
+                    iris.columns[4] : 'Y'},inplace=True)
+iris
+>
+	SL	SW	PL	PW		Y
+0	5.1	3.5	1.4	0.2	setosa
+1	4.9	3.0	1.4	0.2	setosa
+```
+
+```python
+iris.loc[:5,['SL','SW']]
+iris[['SL','SW']][:5]
+>
+	SL	SW
+0	5.1	3.5
+1	4.9	3.0
+2	4.7	3.2
+3	4.6	3.1
+4	5.0	3.6
+5	5.4	3.9
+```
+
+##### 종을 기준으로 그룹화를 하여 각 그룹의 평균을 구해보자
+
+```python
+spec_mean = iris.groupby('Y').agg('mean')
+spec_mean
+>
+			SL		SW			PL		PW
+Y				
+setosa		5.006	3.428	1.462	0.246
+versicolor	5.936	2.770	4.260	1.326
+virginica	6.588	2.974	5.552	2.026
+```
+
+```python
+spec_mean.columns.name = 'SP'
+spec_mean
+>	
+SP			SL		SW		PL		PW
+Y				
+setosa		5.006	3.428	1.462	0.246
+versicolor	5.936	2.770	4.260	1.326
+virginica	6.588	2.974	5.552	2.026
+```
+
+- columns.name = 'SP' : 컬럼에 이름을 준다.
+
+```python
+spec_mean.T
+>
+Y	setosa	versicolor	virginica
+SP			
+SL	5.006	5.936		6.588
+SW	3.428	2.770		2.974
+PL	1.462	4.260		5.552
+PW	0.246	1.326		2.026
+```
+
+#### 그래프 그려보기
+
+```python
+spec_mean.T.plot.bar(rot=0)
+plt.title('각 변수별 평균')
+plt.xlabel('평균')
+plt.ylabel('변수')
+plt.ylim(0,8)
+plt.show()
+```
+
+![vi15](./img/vi15.png)
+
+- rot는 x축의 문자의 각도를 말한다.
+
+##### iris boxplot
+
+```python
+iris[['SL','Y']].head()
+>
+	SL	Y
+0	5.1	setosa
+1	4.9	setosa
+2	4.7	setosa
+3	4.6	setosa
+4	5.0	setosa
+```
+
+```python
+iris[['SL','Y']].boxplot(by='Y')
+plt.title('종에 따른 SL의 boxplot')
+plt.xlabel('종')
+plt.ylabel('길이')
+plt.tight_layout(pad=2)
+plt.show()
+```
+
+- 기준을 Y로 하겠다.
+- pad=2 : 제목의 간격을 2로 주겠다.
+
+![vi16](./img/vi16.png)
+
+- 이상치를 확인 할 수 있다.
+
+**한 화면에서 비교해보자**
+
+```python
+fig, axes = plt.subplots(nrows=2, ncols=2, figsize=(20,10))
+
+ax = axes.flatten() 
+
+iris[['SL','Y']].boxplot(by='Y', ax = ax[0])
+plt.title('종에 따른 SL의 boxplot')
+plt.xlabel('종')
+plt.ylabel('길이')
+
+
+iris[['SW','Y']].boxplot(by='Y', ax = ax[1])
+plt.title('종에 따른 SW의 boxplot')
+plt.xlabel('종')
+plt.ylabel('길이')
+
+
+iris[['PL','Y']].boxplot(by='Y', ax = ax[2])
+plt.title('종에 따른 PL의 boxplot')
+plt.xlabel('종')
+plt.ylabel('길이')
+
+
+iris[['PW','Y']].boxplot(by='Y', ax = ax[3])
+plt.title('종에 따른 PW의 boxplot')
+plt.xlabel('종')
+plt.ylabel('길이')
+
+plt.show()
+```
+
+- 행과 열, plot을 그릴 개수를 받는다.
+- ax : figure안에 들어가는 plot의 개수. 
+- flatten : 그림을 그리겠다.
+- ax = ax[0] : 위치를 지정한다.
+
+![vi17](./img/vi17.png)
+
+- 이렇게 하면 한 번에 다 볼 수 있다.
