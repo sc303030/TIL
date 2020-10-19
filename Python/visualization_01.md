@@ -563,3 +563,65 @@ display(data_5.mean())
 - 우선 연비가 4 이하인 것과 5이상인 것들의 고속도로 연비 컬럼만 뽑아서 변수에 담는다.
 - 평균을 출력해서 비교해본다.
 - 4이하인 것들의 평균 고속도로 연비가 더 높다.
+
+#### query() 이용
+
+```python
+print(data_df.query('displ <= 4')['hwy'].mean())
+print(data_df.query('displ >= 5')['hwy'].mean())
+>
+25.96319018404908
+18.07894736842105
+```
+
+#### 자동차 제조 화시에 따라 도시 연비가 다른지 알아보려고 한다.
+
+- audi 와 toyota 중 어느 manufacturer의 cty가 평균적으로 더 높은지 알아보시오.
+
+```python
+print(data_df.query('manufacturer == "audi"')['cty'].mean())
+print(data_df.query('manufacturer == "toyota"')['cty'].mean())
+>
+17.61111111111111
+18.529411764705884
+```
+
+- toyota가 더 높다.
+
+#### 쉐보레, 포드, 혼다 자동차의 고속도로 연비 평균을 알아보려고 한다.
+
+- 이 회사들의 데이터를 추출한 후 hwy 전체 평균을 확인하시오.
+
+```python
+print(data_df.query('manufacturer == "chevrolet" | manufacturer == "ford" | manufacturer ==  "honda"')['hwy'].mean())
+> 22.50943396226415
+```
+
+```python
+manufac_car = ["chevrolet", "ford","honda"]
+print(data_df.query('manufacturer in @manufac_car')['hwy'].mean()) 
+22.50943396226415
+```
+
+- @manufac_car : `@` 는 외부 변수를 가져다 쓰겠다라는 의미.
+
+```python
+print(data_df[(data_df['manufacturer'] == 'chevrolet') | (data_df['manufacturer'] == 'ford') |  (data_df['manufacturer'] == 'honda') ]['hwy'].mean())
+>
+22.50943396226415
+```
+
+```python
+c_idx = data_df['manufacturer'] == 'chevrolet'
+f_idx = data_df['manufacturer'] == 'ford'
+h_idx = data_df['manufacturer'] == 'honda'
+
+temp_df = data_df.loc[c_idx |f_idx |h_idx,:]
+mean_df = temp_df[['manufacturer','hwy']].groupby(temp_df.manufacturer).agg(np.mean)
+mean_df.plot.bar()
+print('세 자동차 회사의 hwy의 평균 : ', temp_df['hwy'].mean())
+```
+
+- df로 만들어서 차트를 그릴 수 있다.
+
+![vi19](./img/vi19.png)
