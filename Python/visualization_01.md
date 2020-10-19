@@ -625,3 +625,144 @@ print('세 자동차 회사의 hwy의 평균 : ', temp_df['hwy'].mean())
 - df로 만들어서 차트를 그릴 수 있다.
 
 ![vi19](./img/vi19.png)
+
+```python
+fl_df = pd.DataFrame({
+    'fl' : ['c','d','e','p','r'],
+    'price' : [2.35,2.38,2.11,2.76,2.22]
+})
+fl_df
+>
+	fl	price
+0	c	2.35
+1	d	2.38
+2	e	2.11
+3	p	2.76
+4	r	2.22
+
+```
+
+#### 우리가 만든 연료 가격 프레임을 원본 프레임에 병합
+
+```python
+data_df_merge = pd.merge(data_df,fl_df,on='fl')
+data_df_merge.head()
+>
+manufacturer	model	displ	year	cyl	trans		drv	cty	hwy	fl	class	price
+0	audi		a4		1.8		1999	4	auto(l5)	f	18	29	p	compact	2.76
+1	audi		a4		1.8		1999	4	manual(m5)	f	21	29	p	compact	2.76
+2	audi		a4		2.0		2008	4	manual(m6)	f	20	31	p	compact	2.76
+3	audi		a4		2.0		2008	4	auto(av)	f	21	30	p	compact	2.76
+4	audi		a4		2.8		1999	6	auto(l5)	f	16	26	p	compact	2.76
+```
+
+#### 머지한 데이터 프레임에서 model, fl, price_fl만 추출
+
+```python
+data_df_merge[['model','fl','price_fl']].head()
+data_df_merge.filter(['model','fl','price_fl']).head()
+>
+	model	fl	price_fl
+0	a4		p	2.76
+1	a4		p	2.76
+2	a4		p	2.76
+3	a4		p	2.76
+4	a4		p	2.76
+```
+
+#### 결측치 확인
+
+```python
+data_df_merge.isna().sum()
+>
+manufacturer    0
+model           0
+displ           0
+year            0
+cyl             0
+trans           0
+drv             0
+cty             0
+hwy             0
+fl              0
+class           0
+price_fl        0
+dtype: int64
+```
+
+#### 구동방식(div) 별 고속도로 연비(hwy)평균
+
+- 임의적으로 결측값 처러를 위해서 더미 값을 넣어보도록 하자
+
+```python
+data_df_merge.loc[65,'hwy'] = np.nan
+data_df_merge.loc[120,'hwy'] = np.nan
+data_df_merge.loc[154,'hwy'] = np.nan
+data_df_merge.loc[189,'hwy'] = np.nan
+data_df_merge.loc[219,'hwy'] = np.nan
+data_df_merge.loc[230,'hwy'] = np.nan
+```
+
+#### 데이터 전처리 과정에서 결측값 확인하기
+
+```python
+data_df_merge[['drv','hwy']].isna().sum()
+>
+drv    0
+hwy    6
+dtype: int64
+```
+
+```python
+data_df_merge['drv'].value_counts()
+>
+f    106
+4    103
+r     25
+Name: drv, dtype: int64
+```
+
+#### hwy 변수의 결측값을 제외하고 어떤 구동방식의 고속도로 평균 연비가 높은지 알아보자.
+
+```python
+data_df_merge_is_na_df = data_df_merge[['drv','hwy']].dropna()
+data_df_merge_is_na_df.info()
+>
+<class 'pandas.core.frame.DataFrame'>
+Int64Index: 228 entries, 0 to 233
+Data columns (total 2 columns):
+drv    228 non-null object
+hwy    228 non-null float64
+dtypes: float64(1), object(1)
+memory usage: 5.3+ KB
+```
+
+```python
+data_df_merge_is_na_df.groupby('drv').mean()
+>
+		hwy
+drv	
+4	19.174757
+f	27.960000
+r	21.000000
+```
+
+#### 구동방식별 연비평균을 비교하기 위한 막대 그래프를 시각화 해 보자
+
+```python
+data_bar.plot.bar(rot=0)
+plt.title('구동방식별 평균연비')
+plt.xlabel('구동방식')
+plt.ylabel('연비')
+plt.grid()
+plt.show()
+```
+
+![vi20](./img/vi20.png)
+
+#### 위에서 했던 방식과 동일하게 구동 방식별 고속도로, 도시연비의 평균을 구해보고 이를 데이터 프레임으로 만들어서 시각화 해 보자
+
+```
+
+```
+
