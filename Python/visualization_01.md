@@ -762,7 +762,44 @@ plt.show()
 
 #### 위에서 했던 방식과 동일하게 구동 방식별 고속도로, 도시연비의 평균을 구해보고 이를 데이터 프레임으로 만들어서 시각화 해 보자
 
+```python
+data_hwy_cty = data_df_merge[['drv','hwy','cty']]dropna()
+data_hwy_cty = data_df_merge.groupby('drv')['cty','hwy'].mean()
+data_hwy_cty.plot.bar(rot=0)
 ```
 
+![vi21](./img/vi21.png)
+
+- 그룹으로 구동 방식을 묶어주고 도시연비와 고속도로 연비의 평균을 구하면 된다.
+
+#### 자동차(class) 중에서 어떤 지동차가 많은지 알아보려고 한다. 종류별 빈도를 막대바로 시각화 해 보자.
+
+```python
+car_num = pd.DataFrame(data_df_merge['class'].value_counts())
+car_num.plot.bar(rot=45)
 ```
 
+![vi22](./img/vi22.png)
+
+- class의 개수를 df로 만들고 시각화 한다.
+
+#### 어떤 회사에서 생산한 suv 차종의 도시 연비가 높은지를 알아보려고 한다. suv 차종을 대상으로 평균 도시연비가 가장 높은 회사 다섯곳을 막대 바로 시각화 해 보자.
+
+```python
+df_suv = data_df_merge[data_df_merge['class'] == 'suv']
+df_suv_gro = df_suv.groupby('manufacturer')[['cty']].mean()
+df_suv_gro = df_suv_gro.sort_values(by='cty',ascending=False)[:5]
+df_suv_gro.plot.bar(rot=45)
+```
+
+![vi23](./img/vi23.png)
+
+- suv인것만 뽑아서 생산회사로 그룹을 묶어 고속도로 연비의 평균을 구한다.
+- 내림차순으로 정렬하고 시각화 하면 끝이다.
+
+```python
+data_df_merge.rename({'class' : 'grade'}, inplace=True)
+data_df_merge.query('class == "suv"')
+```
+
+- 이름을 바꿔서 이렇게 해줘도 된다.
