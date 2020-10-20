@@ -309,3 +309,226 @@ outlier_clean_df.dropna().groupby('성별').mean()
 ```
 
 - 최종으로 그룹지어서 평균을 하면 된다.
+
+---
+
+```python
+gender_salary_df = data_df_col.filter(['성별','일한달의 월 평균 임금'])
+gender_salary_df.head()
+>
+	성별	일한달의 월 평균 임금
+0	2		NaN
+1	2		NaN
+2	1		NaN
+3	1		108.9
+4	2		NaN
+```
+
+```python
+gender_salary_df['성별'] = np.where(gender_salary_df['성별'] == 1,'남자','여자')
+gender_salary_df.head()
+>
+	성별	일한달의 월 평균 임금
+0	여자		NaN
+1	여자		NaN
+2	남자		NaN
+3	남자		108.9
+4	여자		NaN
+```
+
+```python
+print(gender_salary_df.isna().sum())
+gender_salary_df.dropna(inplace=True)
+print('*'*50)
+print(gender_salary_df.isna().sum())
+>
+성별                  0
+일한달의 월 평균 임금    10915
+dtype: int64
+**************************************************
+성별              0
+일한달의 월 평균 임금    0
+dtype: int64
+```
+
+```python
+gender_salary_df['일한달의 월 평균 임금'] = np.where(
+    ((gender_salary_df['일한달의 월 평균 임금'] < 1)|(gender_salary_df['일한달의 월 평균 임금'] > 9998)),np.nan,gender_salary_df['일한달의 월 평균 임금']
+)
+gender_salary_df.head()
+>
+	성별	일한달의 월 평균 임금
+3	남자		108.9
+10	여자		20.0
+16	남자		322.0
+17	여자		120.0
+24	남자		300.0
+```
+
+```python
+print(gender_salary_df.isna().sum())
+gender_salary_df.dropna(inplace=True)
+print('*'*50)
+print(gender_salary_df.isna().sum())
+>
+성별               0
+일한달의 월 평균 임금    14
+dtype: int64
+**************************************************
+성별              0
+일한달의 월 평균 임금    0
+dtype: int64
+```
+
+```python
+gender_salary_mean = gender_salary_df.groupby('성별').mean()
+```
+
+```python
+gender_salary_mean.plot.bar()
+plt.title('성별에 따른 평균 급여 차이 분석 시각화')
+plt.grid()
+plt.xlabel('성별')
+plt.ylabel('급여')
+
+for idx, value in enumerate(list(gender_salary_mean['일한달의 월 평균 임금'])):
+    txt = '%d만원' % value
+    plt.text(idx,value,txt, horizontalalignment='center',
+            verticalalignment='bottom',fontsize=10, color='red')
+plt.show()
+```
+
+![vi44](./img/vi44.png)
+
+#### 나이에 따른 평균 급여 변화
+
+- 데이터 전처리 (태어난 년도, 월급에 대한 컬럼 추출, 나이를 계산하여 파생변수 추가)
+
+```python
+data_df_age= data_df_col[['태어난 연도','일한달의 월 평균 임금']]
+def age(x):
+    sec =''
+    if 90 <= dt.datetime.now().year - x <= 100:
+        sec = '90대'    
+    elif 80 <= dt.datetime.now().year - x <= 89:
+        sec = '80대'
+    elif 70 <= dt.datetime.now().year - x <= 79:
+        sec = '70대'
+    elif 60 <= dt.datetime.now().year - x <= 69:
+        sec = '60대'
+    elif 50 <= dt.datetime.now().year - x <= 59:
+        sec = '50대'
+    elif 40 <= dt.datetime.now().year - x <= 49:
+        sec = '40대'
+    elif 30 <= dt.datetime.now().year - x <= 39:
+        sec = '30대'
+    elif 20 <= dt.datetime.now().year - x <= 29:
+        sec = '20대'
+    elif 10 <= dt.datetime.now().year - x <= 19:
+        sec = '10대'
+    else:
+        sec = '10대 이하'      
+    return sec
+data_df_age['나이대'] = data_df_age['태어난 연도'].apply(lambda x : age(x))
+```
+
+1. 나이대로 나누기 위하여 lambda를 이용하여 구분하였다.
+
+- 데이터 정제(결측값 확인, 결측값 제거, 이상치 결측 처리)
+
+```python
+print(data_df_age.isna().sum())
+data_df_age.dropna(inplace=True)
+print('*'*50)
+print(data_df_age.isna().sum())
+>
+태어난 연도              0
+일한달의 월 평균 임금    10915
+나이대                 0
+dtype: int64
+**************************************************
+태어난 연도          0
+일한달의 월 평균 임금    0
+나이대             0
+dtype: int64
+```
+
+1. na가 있는지 확인하고 제거하였다.
+
+- 이상치 제거
+
+```python
+data_df_age['일한달의 월 평균 임금'] = np.where(
+    ((data_df_age['일한달의 월 평균 임금'] < 1)|(data_df_age['일한달의 월 평균 임금'] > 9998)),np.nan,data_df_age['일한달의 월 평균 임금']
+)
+data_df_age['태어난 연도'] = np.where(
+    ((data_df_age['태어난 연도'] < 1900)|(data_df_age['태어난 연도'] > 2014)),np.nan,data_df_age['태어난 연도']
+)
+data_df_age.head()
+>
+		태어난 연도	일한달의 월 평균 임금	나이대
+3		1942.0					108.9	70대
+10		1940.0					20.0	80대
+16		1978.0					322.0	40대
+17		1975.0					120.0	40대
+24		1975.0					300.0	40대
+```
+
+```python
+print(data_df_age.isna().sum())
+data_df_age.dropna(inplace=True)
+print('*'*50)
+print(data_df_age.isna().sum())
+>
+태어난 연도           0
+일한달의 월 평균 임금    14
+나이대              0
+dtype: int64
+**************************************************
+태어난 연도          0
+일한달의 월 평균 임금    0
+나이대             0
+dtype: int64
+```
+
+1. 월 평균 임금의 이상치와 태어난 연도의 이상치를 nan으로 바꾸고 제거하였다.
+
+- 데이터 분석(나이별 따른 급여평균)
+
+```python
+data_df_age_mean = data_df_age.groupby('나이대')[['일한달의 월 평균 임금']].mean()
+data_df_age_mean
+>
+		일한달의 월 평균 임금
+나이대	
+20대			161.152226
+30대			260.162110
+40대			331.645619
+50대			309.827605
+60대			212.970065
+70대			89.584098
+80대			32.689655
+90대			20.000000
+```
+
+1. 나이대에 따라 평균 임금을 구하였다.
+
+- 데이터 시각화
+
+```python
+data_df_age_mean.plot.bar(rot=0)
+plt.title('나이대에 따른 평균 급여 차이 분석 시각화')
+plt.grid()
+plt.xlabel('나이대')
+plt.ylabel('급여')
+
+for idx, value in enumerate(list(data_df_age_mean['일한달의 월 평균 임금'])):
+    txt = '%d만원' % value
+    plt.text(idx,value,txt, horizontalalignment='center',
+            verticalalignment='bottom',fontsize=10, color='red')
+plt.show()
+```
+
+![vi45](./img/vi45.png)
+
+- 최종마무리 바 그래프로 시각화 하였다.
