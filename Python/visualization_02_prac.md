@@ -227,3 +227,85 @@ plt.axis('equal')
 
 - 이렇게 파이차트도 가능하다.
 
+#### 성별에 따른 평균 급여 차이를 분석
+
+- 성별과 월급 데이터만 추출
+- 성별을 남자와 여자로 변환
+- 데이터 정제(결측값 확인, 결측값 제거, 이상치 결측 처리)
+- 데이터 분석(성별로 그룹화하여 그룹별 평균)
+- 데이터 시각화
+
+```python
+data_df_ge_sa = data_df_col[['성별',"일한달의 월 평균 임금"]]
+data_df_ge_sa['성별2'] = np.where(data_df_ge_sa['성별'] == 1 , '남', '여자')
+```
+
+- 우선 성별을 남자와 여자로 바꾸었다.
+
+```python
+data_df_ge_sa.dropna(inplace=True)
+data_df_sa = data_df_ge_sa['일한달의 월 평균 임금']
+```
+
+- 결측값들을 제거하고 이상치를 확인하기 위해 월 평균 임슴만 따로 변수에 저장한다.
+
+```python
+data_df_ge_sa[['일한달의 월 평균 임금']].boxplot()
+```
+
+- 이상치 그래프를 그려본다.
+
+![vi43](./img/vi43.png)
+
+```python
+quantile25 = data_df_sa.quantile(q=0.25)
+quantile25
+>
+135.0
+
+quantile75 = data_df_sa.quantile(q=0.75)
+quantile75
+>
+336.0
+
+iqr = quantile75 - quantile25
+iqr
+>
+201.0
+```
+
+- 1사분위수와 3사분위수를 구하여 iqr을 계산한다.
+
+```python
+lower_fence = quantile25 - 1.5 * iqr
+upper_fence = quantile75 + 1.5 * iqr
+lower_outlier = data_df_sa[data_df_sa > lower_fence].min()
+upper_outlier = data_df_sa[data_df_sa < upper_fence].max()
+```
+
+- 최저한계치와 최고한계치를 구해서 `data_df_sa` 에서 이 수치들보다 높은 것들을 뽑는다.
+
+```python
+outlier_clean_df = data_df_ge_sa.copy()
+sa_out = data_df_ge_sa[data_df_ge_sa['일한달의 월 평균 임금'] > upper_outlier]
+for idx in sa_out.index:
+    outlier_clean_df.loc[idx,'일한달의 월 평균 임금'] = np.nan
+outlier_clean_df.isna().sum()
+>
+성별                0
+일한달의 월 평균 임금    207
+dtype: int64
+```
+
+- `lower_outlier ` 가 boxplot에서 없었기 때문에 upper의 이상치만 nan으로 바꾸었다.
+
+```python
+outlier_clean_df.dropna().groupby('성별').mean()
+>
+		일한달의 월 평균 임금
+성별	
+남			289.125203
+여자			170.066146
+```
+
+- 최종으로 그룹지어서 평균을 하면 된다.
