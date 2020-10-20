@@ -255,3 +255,119 @@ plt.show()
   - 커질 수록 밀집한다.
 
 ![vi28](./img/vi28.png)
+
+####  scatter plot
+
+- 2차원 데이터
+- 데이터 집합의 상관관계 살펴보기 위한
+
+```python
+np.random.seed(100)
+X = np.random.normal(0,1,100)
+Y = np.random.normal(0,1,100)
+plt.title('scotter plot')
+plt.scatter(X,Y)
+plt.show()
+```
+
+![vi29](./img/vi29.png)
+
+- 이건 2차원만 가능
+
+```python
+np.random.seed(100)
+X = np.random.rand(30)
+Y1 = np.random.rand(30)
+Y2 = np.random.rand(30)
+Y3 = np.pi = (15 *  np.random.rand(30)) ** 2
+plt.title('bubble chart')
+plt.scatter(X,Y1,c=Y2,s=Y3)
+plt.show()
+```
+
+- s : 사이즈, c:컬러
+- 이건 scatter말고 버블 차트라고 한다.
+
+![vi30](./img/vi30.png)
+
+#### DF의 시각화
+
+```python
+np.random.seed(100)
+sample_df = pd.DataFrame(np.random.randn(100,3),
+                        index=pd.date_range('1/1/2020', periods=100),
+                        columns=['A','B','C'])
+sample_df
+>
+					A			B			C
+2020-01-01	-1.749765	0.342680	1.153036
+2020-01-02	-0.252436	0.981321	0.514219		
+```
+
+```python
+sample_df.plot()
+plt.xlabel('월')
+plt.ylabel('데이터')
+plt.show()
+```
+
+![vi31](./img/vi31.png)
+
+```python
+iris.sepal_length[:20].plot(kind='bar', rot=0)
+plt.show()
+```
+
+- `kind` 에 원하는 차트 모양 입력 가능
+
+![vi32](./img/vi32.png)
+
+```python
+iris[:5].plot(kind='bar',rot=0)
+iris[:5].plot.bar(rot=0)
+plt.show()
+```
+
+- 둘 중 어느거 써도 상관 없다.
+
+![vi33](./img/vi33.png)
+
+#### 그룹분석으로 각 붓꽃의 평균을 구하고 시각화 한다면?
+
+```python
+iris.groupby('species').mean().plot(kind='bar', rot=0)
+```
+
+![vi34](./img/vi34.png)
+
+```python
+iris_bar_df = iris.groupby(iris.species).mean()
+iris_bar_df.columns.name = 'feature'
+iris_bar_df.plot.bar()
+```
+
+- 이렇게 해도 같은 결과가 나온다.
+
+#### x와 y축 바꾸기
+
+```python
+iris_bar_df.T.plot.bar(rot=0)
+```
+
+![vi35](./img/vi35.png)
+
+#### autopct 사용법
+
+- '%0.2f' — 소숫점 두번째자리 까지 보여준다. 4.08
+  '%0.2f%%' — 소숫점 두번째자리까지 보여주고 맨 뒤에 ‘%’ 기호를 붙인다. 4.08%.
+  (% 기호를 두 번 쓰는 이유는 문자열 포매팅 할 때 처음 % 기호가 이스케이프 문자처럼 작동하기 때문이다.)
+  '%d%%' — 가장 가까운 정수로 반올림하고 맨 뒤에 % 기호를 붙인다.
+
+#### pie, hist, box, scatter
+
+#### 선실별 승객 수 비율을 파이 차트로 구현해 본다면?
+
+```python
+pclass_cnt = titanic['pclass'].value_counts()
+```
+
