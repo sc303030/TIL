@@ -369,5 +369,35 @@ iris_bar_df.T.plot.bar(rot=0)
 
 ```python
 pclass_cnt = titanic['pclass'].value_counts()
+pclass_cnt.plot.pie(autopct='%d%%')
+plt.axis('equal')
+plt.show()
 ```
+
+![vi36](./img/vi36.png)
+
+#### iris 각 피쳐별 빈도수를 히스토그램으로 시각화 한다면?
+
+```python
+iris.plot.hist()
+plt.show()
+```
+
+![vi37](./img/vi37.png)
+
+#### KDE(Kernel Density Plot)
+
+```python
+iris.plot.kde()
+plt.show()
+```
+
+![vi38](./img/vi38.png)
+
+```python
+iris.plot.box()
+plt.show()
+```
+
+![vi39](./img/vi39.png)
 
