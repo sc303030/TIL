@@ -610,3 +610,125 @@ plt.show()
 ```
 
 ![vi47](./img/vi47.png)
+
+#### 성별과 연령대 분포 분석하고 시각화
+
+```python
+df_gender_year = data_df_col[['성별','태어난 연도']]
+df_gender_year
+```
+
+1. 사용할 컬럼만 가져오기
+
+##### 성별 값을 남,여로 
+
+```python
+df_gender_year['성별'] = np.where(df_gender_year['성별'] == 1,'남자','여자')
+df_gender_year.head()
+>
+	성별	태어난 연도
+0	여자		1936
+1	여자		1945
+2	남자		1948
+3	남자		1942
+4	여자		1923
+```
+
+##### 연령대 계산하여 파생변수 추가
+
+```python
+df_gender_year['연령대'] =  (( dt.datetime.now().year - df_gender_year['태어난 연도']) + 1) // 10  * 10
+```
+
+- 나이를 계산해서 연랭대로 추가한다.
+
+#####  데이터정제 : 이상치 확인 및 결측값 확인 후 제거
+
+```python
+df_gender_year.isna().sum()
+df_gender_year['태어난 연도'] = np.where(((df_gender_year['태어난 연도'] < 1900) | (df_gender_year['태어난 연도'] > 2014)),np.nan,df_gender_year['태어난 연도'])
+```
+
+- 태어난 연도의 범위가 1900~2014여서 밖에 해당하는 값들을 nan으로 바꾼다.
+
+```python
+df_gender_year.isna().sum()
+>
+성별          0
+태어난 연도    134
+연령대         0
+dtype: int64
+```
+
+##### nan 값 제거하기
+
+```python
+print(df_gender_year.isna().sum())
+df_gender_year.dropna(inplace=True)
+print('*'*50)
+print(df_gender_year.isna().sum())
+>
+성별          0
+태어난 연도    134
+연령대         0
+dtype: int64
+**************************************************
+성별        0
+태어난 연도    0
+연령대       0
+dtype: int64
+```
+
+##### 성별과 연령대별로 빈도수 계산
+
+```python
+df_gender_year_gb = df_gender_year.groupby(['성별',"연령대"],as_index=False).agg('count')
+df_gender_year_gb = df_gender_year_gb.rename({'태어난 연도' : '명'},axis=1)
+df_gender_year_gb
+```
+
+- as_index=False : 그룹지은 컬림이 인덱스로 들어가지 않는다.
+
+##### 성별이 컬럼, 연령대가 인덱스로 사용되고 인원수가 데이터 배치되도록 피벗구성
+
+```python
+df_gender_year_pivot = df_gender_year_gb.pivot('연령대','성별','명')
+df_gender_year_pivot
+>
+성별	남자		여자
+연령대		
+0	163.0	173.0
+10	732.0	710.0
+20	710.0	857.0
+30	636.0	679.0
+40	981.0	965.0
+50	1004.0	990.0
+60	888.0	1060.0
+70	834.0	1356.0
+80	820.0	1328.0
+90	132.0	254.0
+100	6.0		9.0
+110	NaN		1.0
+```
+
+- 피벗 테이블을 만든다.
+
+##### 인덱스 이름을 변경
+
+```python
+df_gender_year_re = {}
+for idx in list(df_gender_year_pivot.index):
+    df_gender_year_re[idx] = '%d대' % idx
+df_gender_year_pivot.rename(index=df_gender_year_re, inplace=True)
+```
+
+- 인덱스에 문자를 추가해서 다시 바꿔주었다.
+
+##### 시각화
+
+```python
+df_gender_year_pivot.plot.bar(rot=0)
+plt.grid()
+```
+
+![vi49](./img/vi49.png)
