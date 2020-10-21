@@ -430,9 +430,11 @@ def age(x):
         sec = '10대 이하'      
     return sec
 data_df_age['나이대'] = data_df_age['태어난 연도'].apply(lambda x : age(x))
+data_df_age['나이'] = data_df_age['태어난 연도'].apply(lambda x : (dt.datetime.now().year - x) + 1)
 ```
 
 1. 나이대로 나누기 위하여 lambda를 이용하여 구분하였다.
+2. 나이도 구하였다.
 
 - 데이터 정제(결측값 확인, 결측값 제거, 이상치 결측 처리)
 
@@ -445,11 +447,13 @@ print(data_df_age.isna().sum())
 태어난 연도              0
 일한달의 월 평균 임금    10915
 나이대                 0
+나이                  0
 dtype: int64
 **************************************************
 태어난 연도          0
 일한달의 월 평균 임금    0
 나이대             0
+나이              0
 dtype: int64
 ```
 
@@ -466,12 +470,13 @@ data_df_age['태어난 연도'] = np.where(
 )
 data_df_age.head()
 >
-		태어난 연도	일한달의 월 평균 임금	나이대
-3		1942.0					108.9	70대
-10		1940.0					20.0	80대
-16		1978.0					322.0	40대
-17		1975.0					120.0	40대
-24		1975.0					300.0	40대
+		
+	태어난 연도	일한달의 월 평균 임금		나이대	나이
+3		1942.0				108.9		70대		79
+10		1940.0				20.0		80대		81
+16		1978.0				322.0		40대		43
+17		1975.0				120.0		40대		46
+24		1975.0				300.0		40대		46
 ```
 
 ```python
@@ -483,11 +488,13 @@ print(data_df_age.isna().sum())
 태어난 연도           0
 일한달의 월 평균 임금    14
 나이대              0
+나이               0
 dtype: int64
 **************************************************
 태어난 연도          0
 일한달의 월 평균 임금    0
 나이대             0
+나이              0
 dtype: int64
 ```
 
@@ -496,22 +503,18 @@ dtype: int64
 - 데이터 분석(나이별 따른 급여평균)
 
 ```python
-data_df_age_mean = data_df_age.groupby('나이대')[['일한달의 월 평균 임금']].mean()
+data_df_age_mean = data_df_age.groupby(['나이대','나이'])[['일한달의 월 평균 임금']].mean()
 data_df_age_mean
 >
-		일한달의 월 평균 임금
-나이대	
-20대			161.152226
-30대			260.162110
-40대			331.645619
-50대			309.827605
-60대			212.970065
-70대			89.584098
-80대			32.689655
-90대			20.000000
+		
+			일한달의 월 평균 임금
+나이대		나이	
+20대		22		89.333333
+		23		136.720000
+		24		140.807692
 ```
 
-1. 나이대에 따라 평균 임금을 구하였다.
+1. 나이대와 나이에 따라 평균 임금을 구하였다.
 
 - 데이터 시각화
 
@@ -531,4 +534,77 @@ plt.show()
 
 ![vi45](./img/vi45.png)
 
+![vi46](./img/vi46.png)
+
 - 최종마무리 바 그래프로 시각화 하였다.
+
+##### 연령대 구하기 다른 방법
+
+```python
+data_df_age['나이대2'] = (data_df_age['나이'] // 10 ) * 10
+data_df_age.head()
+>
+	태어난 연도	일한달의 월 평균 임금	나이대	나이	나이대2
+3		1942.0				108.9	70대		79		70
+10		1940.0				20.0	80대		81		80
+16		1978.0				322.0	40대		43		40
+17		1975.0				120.0	40대		46		40
+24		1975.0				300.0	40대		46		40
+```
+
+##### 연령대에 대한 빈도수 확인
+
+```python
+age_gen_df = data_df_age.filter(['나이','나이대']).groupby('나이대').count().sort_values(by='나이',ascending=False)
+>
+	 나이
+나이대	
+40대	1177
+50대	1083
+30대	842
+60대	677
+70대	334
+20대	252
+80대	137
+90대	5
+```
+
+```python
+year_dd = pd.DataFrame(data_df_age['나이대'].value_counts())
+year_dd.sort_index(inplace=True)
+year_dd
+>
+	나이대
+20대	252
+30대	842
+40대	1177
+50대	1083
+60대	677
+70대	334
+80대	137
+90대	5
+```
+
+##### 인덱스가 그냥 10,20 이런식일때
+
+```python
+reindex = {}
+for idx in list(year_dd.index):
+    reindex[idx] = '%d대' % idx
+year_dd.rename(index=reindex, inplace=True)
+```
+
+```python
+year_dd.plot.bar(rot=0)
+plt.title('연령대 분석 시각화')
+plt.grid()
+plt.xlabel('연령대')
+plt.ylabel('명')
+for idx, value in enumerate(list(year_dd['나이대'])):
+    txt = '%d명' % value
+    plt.text(idx,value,txt, horizontalalignment='center',
+            verticalalignment='bottom',fontsize=10, color='red')
+plt.show()
+```
+
+![vi47](./img/vi47.png)
