@@ -905,3 +905,40 @@ plt.show()
 ```
 
 ![vi49](./img/vi49.png)
+
+#### 시각화 pie
+
+##### 연령별
+
+```python
+plt.rcParams['figure.figsize'] = (10,10)
+
+fig = plt.figure()
+area01 = fig.add_subplot(1,3,1)
+area02 = fig.add_subplot(1,3,2)
+area03 = fig.add_subplot(1,3,3)
+
+region_age_pivot['청년층'].plot.pie(ax=area01,autopct='%0.1f%%')
+area01.title.set_text('청년층')
+area01.set(ylabel='')
+area01.axis('equal')
+
+
+
+region_age_pivot['중년층'].plot.pie(ax=area02,autopct='%0.1f%%')
+area02.title.set_text('중년층')
+area02.set(ylabel='')
+area02.axis('equal')
+
+region_age_pivot['노년층'].plot.pie(ax=area03,autopct='%0.1f%%')
+area03.title.set_text('노년층')
+area03.set(ylabel='')
+area03.axis('equal')
+
+plt.show()
+```
+
+- 1행 3열의 캔버서를 그린 후 연령대별로 파이차트를 그린다.
+
+![vi50](./img/vi50.PNG)
+
