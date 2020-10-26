@@ -40,3 +40,176 @@
 #### 사이킷런
 
 - Estimator
+
+---
+
+```python
+from sklearn.datasets import load_iris
+from sklearn.tree     import DecisionTreeClassifier
+from sklearn.model_selection import train_test_split
+import pandas as pd
+import numpy as np
+```
+
+### 간단한 머신러닝을 구현
+
+```python
+import sklearn
+print(sklearn.__version__)
+```
+
+#### 1. 데이터 로딩
+
+```python
+iris = load_iris()
+print(type(iris))
+> <class 'sklearn.utils.Bunch'>
+print(iris.head())
+> error
+```
+
+- 내장 데이터는 데이터 프레임이 아니라서 head()가 안 된다.
+  -  우리가 데이터 프레임으로 만들어야 한다.
+
+```python
+keys = iris.keys()
+print('dataset keys', keys)
+>
+dataset keys dict_keys(['data', 'target', 'target_names', 'DESCR', 'feature_names'])
+```
+
+- data : 피처
+
+- target : 레이블, 정답이 들어 있다.
+
+- target_names : 레이블의 이름 (세토사, 버지니아, 버지니카)
+
+- DESCR  :설명들
+
+```python
+print( 'key data\n', iris.data)
+>
+key data
+ [[5.1 3.5 1.4 0.2]
+ [4.9 3.  1.4 0.2]
+ [4.7 3.2 1.3 0.2]...
+```
+
+```python
+print('key target\n', iris.target)
+>
+key target
+ [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+ 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+ 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 2 2 2 2 2 2 2 2 2 2 2
+ 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
+ 2 2]
+```
+
+- target의 이름을 target_names로 알 수 있다.
+
+```python
+print('key target_names\n', iris.target_names)
+>
+key target_names
+ ['setosa' 'versicolor' 'virginica']
+```
+
+- 아까 0,1,2 값들의 이름이다.
+
+```python
+print('key feature_names\n', iris.feature_names)
+>
+key feature_names
+ ['sepal length (cm)', 'sepal width (cm)', 'petal length (cm)', 'petal width (cm)']
+```
+
+- [5.1 3.5 1.4 0.2] 이것들의 이름이다.
+
+```python
+print('key DESCRs\n', iris.DESCR)
+>
+Data Set Characteristics:
+    :Number of Instances: 150 (50 in each of three classes)
+    :Number of Attributes: 4 numeric, predictive attributes and the class
+    :Attribute Information:
+        - sepal length in cm
+        - sepal width in cm
+        - petal length in cm
+        - petal width in cm
+        - class:
+                - Iris-Setosa
+                - Iris-Versicolour
+                - Iris-Virginica
+```
+
+- 이러한 정보들이 나온다.
+
+#### 피처 데이터세트 확인
+
+```python
+iris_data = iris.data
+iris_data
+>
+array([[5.1, 3.5, 1.4, 0.2],
+       [4.9, 3. , 1.4, 0.2],
+       [4.7, 3.2, 1.3, 0.2],
+       [4.6, 3.1, 1.5, 0.2],
+```
+
+#### 레이블(결정값, 타켓, 클래스) 데이터를 확인
+
+```python
+iris_label = iris.target
+iris_label
+print(iris.target_names)
+>
+array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+       0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+       1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+       1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+       2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+       2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2])
+['setosa' 'versicolor' 'virginica']
+```
+
+####  데이터 프레임 변환
+
+```python
+iris_df = pd.DataFrame(data = iris.data, columns=iris.feature_names)
+iris_df
+>
+	sepal length (cm)	sepal width (cm)	petal length (cm)	petal width (cm)
+0				5.1					3.5					1.4					0.2
+```
+
+```python
+iris_df['target'] = iris_label
+>
+sepal length (cm)	sepal width (cm)	petal length (cm)	petal width (cm)	target
+0			5.1					3.5					1.4					0.2			0
+```
+
+#### 학습 데이터, 테스트 데이터 분리
+
+```python
+X_train, X_test, y_train, y_test =train_test_split(iris_data, iris_label, test_size = 0.2,  random_state=20)
+```
+
+- 언패킹해서 값을 받는다.
+- 테스트 데이터 20% , 학습 80% 
+
+- 
+
+```python
+print('train delte\n' ,X_train )
+print('train label\n' ,y_train )
+print('*'*50)
+print('test delta\n' ,X_test )
+print('test label\n' ,y_test )
+```
+
+- X_train , y_train : 학습한 데이터
+- X_test :  예측은 이 값으로 한다.
+- y_test : 이거랑 원본 데이터랑 비교해서 정확도 측정
