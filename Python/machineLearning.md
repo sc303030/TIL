@@ -547,9 +547,13 @@ print('\n 평균 검증 정확도 : ', np.mean(cv_accuracy))
 - 교차 검증 정확도는 할 때마다 달라진다. 
   - random_state 를 지정하지 않아서 그렇다.
 
-### Stratifird KFold : 불균형한 분포도를 가진 레이블 데이터 집합을 위한 KFold 방식
+### Stratified KFold : 불균형한 분포도를 가진 레이블 데이터 집합을 위한 KFold 방식
 
 #### 레이블의 분포를 먼저 고려한 뒤 이 분포와 동일하게 학습과 검증 데이터 세트로 분할
+
+#### 분류만 쓸 수 있고, 회귀에서는 사용할 수 없다.
+
+#### 회귀는 연속된 숫자값이기 때문에 지원하지 않는다.
 
 ##### 기존 KFold의 문제점 다시 한번 확인
 
@@ -610,3 +614,233 @@ Name: target, dtype: int64
 - 레이블이 50개씩 들어있다. kfold로 나눠보면 2번과1번이 50개, 0이 50개다. 학습한건 2번과 1번인데 실제 데이터는 0밖에 없다. 정확도가 0% 나온다.
 - 각각 3번씩 돌렸는데 보면 각각의 학습과 테스트 데이터들의 레이블이 다르다.정확도 0%가 나온다.
 - 전체 레이블의 분포의 값을 반영하지 못하는 문제가 발생한다. 그래서 **Stratifird KFold**를 써야한다.
+
+#### 레이블 값의 분포를 반영해 주지 못하는 문제를 해결하기 위해서 StratifiedKFold를 이용
+
+```python
+from sklearn.model_selection import StratifiedKFold
+skf_iris = StratifiedKFold(n_splits=3)
+cnt_iter = 0
+for train_idx, test_idx in skf_iris.split(kfold_iris_data_df, kfold_iris_data_df['target']):
+#     print(train_idx, test_idx)
+    cnt_iter += 1
+    label_train = kfold_iris_data_df['target'].iloc[train_idx]
+    label_test = kfold_iris_data_df['target'].iloc[test_idx]
+#     print('label_train\n', label_train)
+    print('교차검증 : {}'.format(cnt_iter))
+    print('학습 레이블 데이터 분포 : \n', label_train.value_counts())
+    print('검증 레이블 데이터 분포 : \n', label_test.value_counts())
+>
+교차검증 : 1
+학습 레이블 데이터 분포 : 
+ 2    33
+1    33
+0    33
+Name: target, dtype: int64
+검증 레이블 데이터 분포 : 
+ 2    17
+1    17
+0    17
+Name: target, dtype: int64
+교차검증 : 2
+학습 레이블 데이터 분포 : 
+ 2    33
+1    33
+0    33
+Name: target, dtype: int64
+검증 레이블 데이터 분포 : 
+ 2    17
+1    17
+0    17
+Name: target, dtype: int64
+교차검증 : 3
+학습 레이블 데이터 분포 : 
+ 2    34
+1    34
+0    34
+Name: target, dtype: int64
+검증 레이블 데이터 분포 : 
+ 2    16
+1    16
+0    16
+Name: target, dtype: int64
+```
+
+- 비율을 맞춰서 검증할 수 있게 데이터가 설정되어 있다.
+
+### 붓꽃 데이터 세트에서 StratifiedKFold를 이용해서 교차검증을(3,5) 진행하고 평균정확도를 확인
+
+#### randim_state = 100
+
+```python
+cnt = []
+from sklearn.model_selection import StratifiedKFold
+skf_iris = StratifiedKFold(n_splits=3)
+cnt_iter = 0
+for train_idx, test_idx in skf_iris.split(kfold_iris_data_df, kfold_iris_data_df['target']):
+    cnt_iter += 1
+    label_train = kfold_iris_data_df['target'].iloc[train_idx]
+    label_test = kfold_iris_data_df['target'].iloc[test_idx]
+    features_train =  kfold_iris_data_df.iloc[train_idx,:-1]
+    features_test =  kfold_iris_data_df.iloc[test_idx,:-1]
+    
+     # 학습을 진행하겠다면?
+    iris_dtc = DecisionTreeClassifier(random_state=100, criterion='gini')
+    iris_dtc.fit(features_train, label_train)
+    # 예측
+    fold_pred = iris_dtc.predict(features_test)
+    
+    accuracy = np.round(accuracy_score(label_test, fold_pred),4)
+    print('\n{}교차검증 정확도 :  {}, 학습 데이터 크기 : {}, 검증 데이터 크기 : {}'.format(cnt_iter, accuracy,X_train.shape[0], X_test.shape[0]))
+    cnt.append(accuracy)
+
+print('\n\n')
+print('\n 평균 검증 정확도 : ', np.mean(cnt))
+>
+1교차검증 정확도 :  0.9804, 학습 데이터 크기 : 102, 검증 데이터 크기 : 48
+
+2교차검증 정확도 :  0.9216, 학습 데이터 크기 : 102, 검증 데이터 크기 : 48
+
+3교차검증 정확도 :  0.9792, 학습 데이터 크기 : 102, 검증 데이터 크기 : 48
+
+ 평균 검증 정확도 :  0.9604
+```
+
+- 이렇게 해도 되고
+
+```python
+cnt = []
+from sklearn.model_selection import StratifiedKFold
+skf_iris = StratifiedKFold(n_splits=5)
+cnt_iter = 0
+for train_idx, test_idx in skf_iris.split(kfold_iris_data_df, kfold_iris_data_df['target']):
+    cnt_iter += 1
+    label_train = kfold_iris_data_df['target'].iloc[train_idx]
+    label_test = kfold_iris_data_df['target'].iloc[test_idx]
+    features_train =  kfold_iris_data_df.iloc[train_idx,:-1]
+    features_test =  kfold_iris_data_df.iloc[test_idx,:-1]
+    
+     # 학습을 진행하겠다면?
+    iris_dtc = DecisionTreeClassifier(random_state=100, criterion='gini')
+    iris_dtc.fit(features_train, label_train)
+    # 예측
+    fold_pred = iris_dtc.predict(features_test)
+    
+    accuracy = np.round(accuracy_score(label_test, fold_pred),4)
+    print('\n{}교차검증 정확도 :  {}, 학습 데이터 크기 : {}, 검증 데이터 크기 : {}'.format(cnt_iter, accuracy,X_train.shape[0], X_test.shape[0]))
+    cnt.append(accuracy)
+
+print('\n\n')
+print('\n 평균 검증 정확도 : ', np.mean(cnt))
+>
+1교차검증 정확도 :  0.9667, 학습 데이터 크기 : 102, 검증 데이터 크기 : 48
+
+2교차검증 정확도 :  0.9667, 학습 데이터 크기 : 102, 검증 데이터 크기 : 48
+
+3교차검증 정확도 :  0.9, 학습 데이터 크기 : 102, 검증 데이터 크기 : 48
+
+4교차검증 정확도 :  0.9333, 학습 데이터 크기 : 102, 검증 데이터 크기 : 48
+
+5교차검증 정확도 :  1.0, 학습 데이터 크기 : 102, 검증 데이터 크기 : 48
+
+
+ 평균 검증 정확도 :  0.9533400000000001
+```
+
+- 5개로 나누었을 때 값이다.
+
+```python
+result_iris = load_iris()
+result_features = result_iris.data
+result_label = result_iris.target
+
+result_clf = DecisionTreeClassifier(random_state=100)
+result_skfold = StratifiedKFold(n_splits=3)
+idx_iter = 0
+cv_accur = []
+```
+
+```python
+for train_idx, test_idx in result_skfold.split(features, label):
+    X_train , X_test = features[train_idx], features[test_idx]
+    y_train, y_test  = label[train_idx], label[test_idx]
+    
+     # 학습을 진행하겠다면?
+    result_clf.fit(X_train, y_train)
+    pred = result_clf.predict(X_test)
+    idx_iter += 1
+    accuracy = np.round(accuracy_score(y_test, pred),4)
+    train_size = X_train.shape[0]
+    test_size = X_test.shape[0]
+    print('\n#{0}교차검증 정확도 :  {1}, 학습 데이터 크기 : {2}, 검증 데이터 크기 : {3}'
+          .format(idx_iter, accuracy, train_size, test_size))
+    print('#{0} 검증 세트 인덱스 : {1}'.format(idx_iter, test_size))
+    cv_accur.append(accuracy)
+print('\n\n')
+print('\n 평균 검증 정확도 : ', np.mean(cv_accur))
+>
+#1교차검증 정확도 :  0.9804, 학습 데이터 크기 : 99, 검증 데이터 크기 : 51
+#1 검증 세트 인덱스 : 51
+
+#2교차검증 정확도 :  0.9216, 학습 데이터 크기 : 99, 검증 데이터 크기 : 51
+#2 검증 세트 인덱스 : 51
+
+#3교차검증 정확도 :  0.9792, 학습 데이터 크기 : 102, 검증 데이터 크기 : 48
+#3 검증 세트 인덱스 : 48
+
+
+ 평균 검증 정확도 :  0.9604
+```
+
+- 위랑 같은 값이다.
+
+```python
+result_iris = load_iris()
+result_features = result_iris.data
+result_label = result_iris.target
+
+result_clf = DecisionTreeClassifier(random_state=100)
+result_skfold = StratifiedKFold(n_splits=5)
+idx_iter = 0
+cv_accur = []
+```
+
+```python
+for train_idx, test_idx in result_skfold.split(features, label):
+    X_train , X_test = features[train_idx], features[test_idx]
+    y_train, y_test  = label[train_idx], label[test_idx]
+    
+     # 학습을 진행하겠다면?
+    result_clf.fit(X_train, y_train)
+    pred = result_clf.predict(X_test)
+    idx_iter += 1
+    accuracy = np.round(accuracy_score(y_test, pred),4)
+    train_size = X_train.shape[0]
+    test_size = X_test.shape[0]
+    print('\n#{0}교차검증 정확도 :  {1}, 학습 데이터 크기 : {2}, 검증 데이터 크기 : {3}'
+          .format(idx_iter, accuracy, train_size, test_size))
+    print('#{0} 검증 세트 인덱스 : {1}'.format(idx_iter, test_size))
+    cv_accur.append(accuracy)
+print('\n\n')
+print('\n 평균 검증 정확도 : ', np.mean(cv_accur))
+>
+#1교차검증 정확도 :  0.9667, 학습 데이터 크기 : 120, 검증 데이터 크기 : 30
+#1 검증 세트 인덱스 : 30
+
+#2교차검증 정확도 :  0.9667, 학습 데이터 크기 : 120, 검증 데이터 크기 : 30
+#2 검증 세트 인덱스 : 30
+
+#3교차검증 정확도 :  0.9, 학습 데이터 크기 : 120, 검증 데이터 크기 : 30
+#3 검증 세트 인덱스 : 30
+
+#4교차검증 정확도 :  0.9333, 학습 데이터 크기 : 120, 검증 데이터 크기 : 30
+#4 검증 세트 인덱스 : 30
+
+#5교차검증 정확도 :  1.0, 학습 데이터 크기 : 120, 검증 데이터 크기 : 30
+#5 검증 세트 인덱스 : 30
+
+
+ 평균 검증 정확도 :  0.9533400000000001
+```
+
+- 같은 값이 나온다.
