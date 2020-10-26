@@ -500,3 +500,113 @@ y_test [2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2]
 ```
 
 - X_train : 학습데이터 / y_train : 정답 데이터
+
+- 셔플이 되어있지 않다. 분포가 다양하지 않다.
+
+```python
+n_iter = 0
+for train_idx, test_idx in kfold.split(features):
+#     print(train_idx, test_idx)
+    X_train, X_test = features[train_idx],features[test_idx]
+#     print('X_train\n',X_train)
+#     print('X_test\n', X_test)
+    y_train, y_test = label[train_idx], label[test_idx]
+#     print('y_train', y_train)
+#     print('y_test', y_test)
+    # 학습을 진행하겠다면?
+    fold_df_clf.fit(X_train, y_train)
+    # 예측
+    fold_pred = fold_df_clf.predict(X_test)
+    
+    # 정확도 측정
+    n_iter += 1
+    accuracy = np.round(accuracy_score(y_test, fold_pred),4)
+    print('\n{}교차검증 정확도 :  {}, 학습 데이터 크기 : {}, 검증 데이터 크기 : {}'.format(n_iter, accuracy,X_train.shape[0], X_test.shape[0]))
+    cv_accuracy.append(accuracy)
+
+print('\n\n')
+print('\n 평균 검증 정확도 : ', np.mean(cv_accuracy))
+>
+
+1교차검증 정확도 :  1.0, 학습 데이터 크기 : 120, 검증 데이터 크기 : 30
+
+2교차검증 정확도 :  0.9667, 학습 데이터 크기 : 120, 검증 데이터 크기 : 30
+
+3교차검증 정확도 :  0.8333, 학습 데이터 크기 : 120, 검증 데이터 크기 : 30
+
+4교차검증 정확도 :  0.9333, 학습 데이터 크기 : 120, 검증 데이터 크기 : 30
+
+5교차검증 정확도 :  0.8, 학습 데이터 크기 : 120, 검증 데이터 크기 : 30
+
+
+
+
+ 평균 검증 정확도 :  0.9099933333333333
+```
+
+- 교차 검증 정확도는 할 때마다 달라진다. 
+  - random_state 를 지정하지 않아서 그렇다.
+
+### Stratifird KFold : 불균형한 분포도를 가진 레이블 데이터 집합을 위한 KFold 방식
+
+#### 레이블의 분포를 먼저 고려한 뒤 이 분포와 동일하게 학습과 검증 데이터 세트로 분할
+
+##### 기존 KFold의 문제점 다시 한번 확인
+
+```python
+kfold_iris_data = load_iris()
+kfold_iris_data_df = pd.DataFrame(data=kfold_iris_data.data, columns=kfold_iris_data.feature_names)
+kfold_iris_data_df['target'] = kfold_iris_data.target
+print(' value_counts : \n', kfold_iris_data_df['target'].value_counts())
+>
+ value_counts : 
+ 2    50
+1    50
+0    50
+Name: target, dtype: int64
+```
+
+```python
+kfold_iris = KFold(n_splits=3)
+cnt_iter = 0
+for train_idx, test_idx in kfold_iris.split(kfold_iris_data_df):
+#     print(train_idx, test_idx)
+    cnt_iter += 1
+    label_train = kfold_iris_data_df['target'].iloc[train_idx]
+    label_test = kfold_iris_data_df['target'].iloc[test_idx]
+#     print('label_train\n', label_train)
+    print('교차검증 : {}'.format(cnt_iter))
+    print('학습 레이블 데이터 분포 : \n', label_train.value_counts())
+    print('검증 레이블 데이터 분포 : \n', label_test.value_counts())
+>
+교차검증 : 1
+학습 레이블 데이터 분포 : 
+ 2    50
+1    50
+Name: target, dtype: int64
+검증 레이블 데이터 분포 : 
+ 0    50
+Name: target, dtype: int64
+교차검증 : 2
+학습 레이블 데이터 분포 : 
+ 2    50
+0    50
+Name: target, dtype: int64
+검증 레이블 데이터 분포 : 
+ 1    50
+Name: target, dtype: int64
+교차검증 : 3
+학습 레이블 데이터 분포 : 
+ 1    50
+0    50
+Name: target, dtype: int64
+검증 레이블 데이터 분포 : 
+ 2    50
+Name: target, dtype: int64
+```
+
+- 데이터 분포가 어떻게 되는지 중간점검으로 확인해본다.
+
+- 레이블이 50개씩 들어있다. kfold로 나눠보면 2번과1번이 50개, 0이 50개다. 학습한건 2번과 1번인데 실제 데이터는 0밖에 없다. 정확도가 0% 나온다.
+- 각각 3번씩 돌렸는데 보면 각각의 학습과 테스트 데이터들의 레이블이 다르다.정확도 0%가 나온다.
+- 전체 레이블의 분포의 값을 반영하지 못하는 문제가 발생한다. 그래서 **Stratifird KFold**를 써야한다.
