@@ -203,13 +203,147 @@ X_train, X_test, y_train, y_test =train_test_split(iris_data, iris_label, test_s
 - 
 
 ```python
-print('train delte\n' ,X_train )
+print('train data\n' ,X_train )
 print('train label\n' ,y_train )
 print('*'*50)
-print('test delta\n' ,X_test )
+print('test data\n' ,X_test )
 print('test label\n' ,y_test )
 ```
 
 - X_train , y_train : 학습한 데이터
 - X_test :  예측은 이 값으로 한다.
-- y_test : 이거랑 원본 데이터랑 비교해서 정확도 측정
+- y_test : 이거랑 예측 데이터랑 비교해서 정확도 측정
+
+#### 학습을 위한 학습기 - 알고리즘으로 이루어져 있는 객체
+
+```python
+iris_dtc = DecisionTreeClassifier(random_state=20)
+iris_dtc.fit(X_train, y_train)
+>
+DecisionTreeClassifier(class_weight=None, criterion='gini', max_depth=None,
+            max_features=None, max_leaf_nodes=None,
+            min_impurity_decrease=0.0, min_impurity_split=None,
+            min_samples_leaf=1, min_samples_split=2,
+            min_weight_fraction_leaf=0.0, presort=False, random_state=20,
+            splitter='best')
+```
+
+```python
+iris_dtc = DecisionTreeClassifier(random_state=20, criterion='entropy')
+iris_dtc.fit(X_train, y_train)
+>
+DecisionTreeClassifier(class_weight=None, criterion='entropy', max_depth=None,
+            max_features=None, max_leaf_nodes=None,
+            min_impurity_decrease=0.0, min_impurity_split=None,
+            min_samples_leaf=1, min_samples_split=2,
+            min_weight_fraction_leaf=0.0, presort=False, random_state=20,
+            splitter='best')
+```
+
+- 지니계수나 엔트로피 계수 모두 93%의 예측을 보여준다.
+
+#### 예측(Predict) 수행
+
+```python
+predition = iris_dtc.predict(X_test)
+print(' y_test\n', y_test)
+print(' prediction\n', predition)
+```
+
+- y_test : 실제 데이터
+- prediction : 예측 데이터
+
+#### 예측 정확도 평가
+
+```python
+from sklearn.metrics import accuracy_score
+print('예측 정확도 : %.2f' % accuracy_score(y_test, predition))
+>
+예측 정확도 : 0.93
+```
+
+#### 데이터 프레임 형식을 나누는 방법 두 번째
+
+> 테스트와 트렌인, 피처와 레이블이 나누어 있지 않을 때
+
+##### 피처와 레이블 나누기
+
+```python
+feature_df = iris_df.iloc[:,:-1]
+display(feature_df.head())
+>
+	sepal length (cm)	sepal width (cm)	petal length (cm)	petal width (cm)
+0					5.1				3.5				1.4						0.2
+1					4.9				3.0				1.4						0.2
+```
+
+```python
+label_df   = iris_df.iloc[:,-1]
+display(label_df)
+>
+0      0
+1      0
+2      0
+3      0
+4      0
+```
+
+```python
+X_train, X_test, y_train, y_test =train_test_split(feature_df, label_df, test_size = 0.2,  random_state=20)
+print('train data\n' ,X_train )
+print('train label\n' ,y_train )
+print('*'*50)
+print('test data\n' ,X_test )
+print('test label\n' ,y_test )
+print(type(X_train),type(y_train),type(X_test),type(y_test))
+>
+Name: target, dtype: int32
+<class 'pandas.core.frame.DataFrame'> <class 'pandas.core.series.Series'> <class 'pandas.core.frame.DataFrame'> <class 'pandas.core.series.Series'>
+```
+
+- 데이터 프레임으로 넘어오는 것을 알 수 있다.
+
+#### 학습을 위한 학습기 - 알고리즘으로 이루어져 있는 객체
+
+```python
+iris_dtc = DecisionTreeClassifier(random_state=20, criterion='entropy')
+iris_dtc.fit(X_train, y_train)
+predition = iris_dtc.predict(X_text)
+```
+
+#### 예측 정확도 평가
+
+```python
+from sklearn.metrics import accuracy_score
+print('예측 정확도 : %.2f' % accuracy_score(y_test, predition))
+>
+예측 정확도 : 0.93
+```
+
+- 같은 결과를 도출한다.
+
+random_state : 1번 부터 120번까지 랜덤하게 선택할 때 같은 데이터로 해라.
+
+#### random_state  다르게 해보기
+
+```python
+X_train, X_test, y_train, y_test =train_test_split(feature_df, label_df, test_size = 0.2,  random_state=11)
+print('train data\n' ,X_train )
+print('train label\n' ,y_train )
+print('*'*50)
+print('test data\n' ,X_test )
+print('test label\n' ,y_test )
+print(type(X_train),type(y_train),type(X_test),type(y_test))
+```
+
+```python
+iris_dtc = DecisionTreeClassifier(random_state=20, criterion='entropy')
+iris_dtc.fit(X_train, y_train)
+predition = iris_dtc.predict(X_test)
+from sklearn.metrics import accuracy_score
+print('예측 정확도 : %.2f' % accuracy_score(y_test, predition))
+>
+예측 정확도 : 0.90
+```
+
+- 예측 정확도가 달라진다.
