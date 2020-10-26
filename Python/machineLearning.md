@@ -761,9 +761,9 @@ cv_accur = []
 ```
 
 ```python
-for train_idx, test_idx in result_skfold.split(features, label):
-    X_train , X_test = features[train_idx], features[test_idx]
-    y_train, y_test  = label[train_idx], label[test_idx]
+for train_idx, test_idx in result_skfold.split(result_features, result_label):
+    X_train , X_test = result_features[train_idx], result_features[test_idx]
+    y_train, y_test  = result_label[train_idx], result_label[test_idx]
     
      # 학습을 진행하겠다면?
     result_clf.fit(X_train, y_train)
@@ -806,9 +806,9 @@ cv_accur = []
 ```
 
 ```python
-for train_idx, test_idx in result_skfold.split(features, label):
-    X_train , X_test = features[train_idx], features[test_idx]
-    y_train, y_test  = label[train_idx], label[test_idx]
+for train_idx, test_idx in result_skfold.split(result_features, result_label):
+    X_train , X_test = result_features[train_idx], result_features[test_idx]
+    y_train, y_test  = result_label[train_idx], result_label[test_idx]
     
      # 학습을 진행하겠다면?
     result_clf.fit(X_train, y_train)
