@@ -185,3 +185,151 @@ df
 ```
 
 - `StringIO` : 코드상의 문자열을 데이터로 만들어서 csv로 불러올 수 있다.
+
+```python
+df.isnull()
+>
+		x1		x2		x3		x4		x5
+0	False	False	False	False	False
+1	False	True	True	False	False
+2	False	True	False	False	False
+3	True	False	False	False	False
+4	False	False	False	False	False
+5	True	True	True	False	False
+6	False	False	False	True	False
+7	False	False	False	False	False
+8	False	False	True	False	False
+```
+
+```python
+df.isna().sum()
+>
+x1    2
+x2    3
+x3    3
+x4    1
+x5    0
+dtype: int64
+```
+
+- 이렇게 결측치를 한 번에 확인할 수 있다.
+
+```python
+import missingno as msno
+
+msno.matrix(df)
+plt.show()
+```
+
+- 결측치의 데이터를 검색해주는 패키지
+
+- 데이터가 많으면 하나씩 True, False보기 힘들다.
+
+![ml04](./img/ml04.png)
+
+- 결측치가 있으면 흰색, 없으면 검은색
+- 오른쪽 스파크 라인 : 해당 row에 결측 값이 없는 개수를 센다. -> 행의 완성도 -> 라인이 그려진다.
+
+#### 만약 각 열에 결측 데이터가 얼마나 존재하는지 시각화하고 싶다면?
+
+```python
+msno.bar(df)
+plt.show()
+```
+
+![ml05](./img/ml05.png)
+
+#### 타이타닉 생존자 데이터를 이용한 missingno 쓰임새를 알아보자
+
+```python
+titanic = sns.load_dataset('titanic')
+```
+
+##### missingno를 이용하여 타이타닉 데이터에서 age, dexk, embarked, embark_town 열에 대한 결측 데이터 확인
+
+```python
+msno.matrix(titanic)
+plt.show()
+```
+
+![ml06](./img/ml06.png)
+
+```python
+msno.bar(titanic)
+plt.show()
+```
+
+![ml07](./img/ml07.png)
+
+### 결측된 데이터를 처리하는 방법
+
+- 결측된 데이터가 넘 많은 경우 해당 데이터의 열 전체를 삭제
+- 결측된 데이터가 일부인 경우 가장 그럴듯한 값으로 대체 (평균,중위수 등...)
+
+##### dropna() : axis로 이용해서 na지울 수 있다.
+
+```python
+df.dropna()
+>
+	x1	x2	x3			x4	x5
+0	1.0	0.1	1.0	2019-01-01	A
+4	5.0	0.5	5.0	2019-01-05	B
+7	8.0	0.8	8.0	2019-01-08	B
+```
+
+```python
+df.dropna(axis=1)
+>
+	x5
+0	A
+1	B
+2	C
+3	A
+4	B
+5	C
+6	A
+7	B
+8	C
+```
+
+#### thresh() : 특정 갯수 이상의 비결측 데이터가 있는 행 또는 열만 남긴다.
+
+```python
+df.dropna(thresh=7, axis=1)
+>
+	x1			x4	x5
+0	1.0	2019-01-01	A
+1	2.0	2019-01-02	B
+2	3.0	2019-01-03	C
+3	NaN	2019-01-04	A
+4	5.0	2019-01-05	B
+5	NaN	2019-01-06	C
+6	7.0	NaN	A
+7	8.0	2019-01-08	B
+8	9.0	2019-01-09	C
+```
+
+- thresh=7이면 비결측데이터가 7개 이하인 것들을 날린다.
+
+#### deck 열을 삭제하고 싶다면?
+
+```python
+titanic.dropna(thresh=int(len(titanic) * 0.5), axis=1, inplace=True)
+msno.matrix(titanic)
+plt.show()
+```
+
+- 보통 열의 50%가 넘어가면 삭제해도 괜찮다.
+
+![ml08](./img/ml08.png)
+
+#### 결측값 데이터를 대체하는 방법
+
+##### sklearn SimpleImputer(평균, 중앙, 최빈)
+
+#### fit transform 대체값이 채워진 데이터 프레임을 생성할 수 있다.
+
+```
+
+```
+

@@ -423,3 +423,4 @@ plot_decision_regions(X=x_combind_std,y=y_combind,classifier=criterion_dtc,test_
 - 카테고리내의 비율인데 빠져나간게 보인다.
 
 ![ml03](./img/ml03.png)
+
