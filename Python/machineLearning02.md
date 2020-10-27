@@ -322,5 +322,104 @@ guess :  [1 1 1 1 1 0 0 0 0 1 1 1 1 1 0 1 1 1 1 1 1 1 0 0 0 0 1 1 0 1 1 1 0 1 1 
 테스트 세트의 정확도 :  0.9415204678362573
 ```
 
+### 불순도를 이용한 분류
 
+- criterion (지니, 엔트로피, 분류오류)
 
+```python
+criterion_iris = load_iris()
+X = criterion_iris.data[:,[2,3]]
+# print(X)
+y = criterion_iris.target
+# print(y)
+```
+
+```python
+X_train, X_test, y_train, y_test = train_test_split(X,y,test_size=0.3, random_state=0)
+```
+
+### X_train 평균, 표준편차를 구하기 위해서 표준화
+
+```python
+from sklearn.preprocessing import StandardScaler
+sc = StandardScaler()
+sc.fit(X_train)
+
+X_train_std = sc.transform(X_train) #트레이닝 데이터의 표준화
+X_test_std = sc.transform(X_test) # 테스트 데이터의 표준화
+```
+
+- `from sklearn.preprocessing import StandardScaler` 추가한다.
+
+- 표준화 
+  - 학습데이터와 테스트 데이터가 같이 표준화 되어야 한다.
+
+```python
+criterion_dtc = DecisionTreeClassifier(criterion='entropy', max_depth=3, random_state=0)
+# 표준화 작업 했으면 표준화 된 데이터를 넣는다.
+criterion_dtc.fit(X_train_std, y_train)
+```
+
+- 표준화 작업 했으면 표준화 된 데이터를 넣는다.
+
+- 예측을 할 때도` X_test_std` 로 해야한다.
+
+```python
+y_pred = criterion_dtc.predict(X_test_std)
+print('총 테스트 개수 : %d, 오류의 개수 : %d' % ( len(y_test), (y_test != y_pred).sum()) )
+print('정확도 : %.2f' % accuracy_score(y_test, y_pred))
+>
+총 테스트 개수 : 45, 오류의 개수 : 1
+정확도 : 0.98
+```
+
+- 데이터의 편차를 정규분포로 맞추는 것이 정규화
+  - 평균이0, 표준편차가 1인 것으로 맞춘다.
+- 변수의 범위가 다른데 일정한 수준으로 맞춰서 거기에 대한 정확도, 예측값을 받아오는 작업
+
+### 2차원 배열을 병합
+
+#### np.vstack, np.hstack
+
+```python
+a = np.array([[1,2],[3,4]])
+b = np.array([[5,6],[7,8]])
+c = np.hstack([a,b])
+d = np.vstack([a,b])
+print(a)
+print('*'*50)
+print(b)
+print('*'*50)
+print(c)
+print('*'*50)
+print(d)
+>
+[[1 2]
+ [3 4]]
+**************************************************
+[[5 6]
+ [7 8]]
+**************************************************
+[[1 2 5 6]
+ [3 4 7 8]]
+**************************************************
+[[1 2]
+ [3 4]
+ [5 6]
+ [7 8]]
+```
+
+-  np.hstack() : 열로 병합
+- np.vstack() : 행으로 병합
+
+### 불순도 검사
+
+```python
+x_combind_std = np.vstack((X_train_std, X_test_std))
+y_combind = np.hstack((y_train, y_test))
+plot_decision_regions(X=x_combind_std,y=y_combind,classifier=criterion_dtc,test_idx=range(105,150))
+```
+
+- 카테고리내의 비율인데 빠져나간게 보인다.
+
+![ml03](./img/ml03.png)
