@@ -174,6 +174,61 @@ print('encoder 결과', Embarked_digit_label)
 encoder 결과 [3 0 3 3 3 2 3 3 3 0 3 3 3 3 3 3 2 3 3 0 3 3 2 3 3 3 0 3 2 3 0 0 2 3 0 3 0...]
 ```
 
+#### 나이 구간 만들기
+
+```python
+titanic_df['Age'] = titanic_df['Age'].astype(int)
+```
+
+- 나이가 실수라 정수로 변환한다.
+
+```python
+def age_9(x):
+    loc = ''
+    if  0 <= x <=9:
+        loc = "10대 이하"
+    elif 10 <= x <= 19:
+        loc= '10대'
+    elif 20 <= x <= 29:
+        loc = '20대'
+    elif 30 <= x <= 39:
+        loc = '30대'
+    elif 40 <= x <= 49:
+        loc = '40대'
+    elif 50 <= x <= 59:
+        loc = '50대'
+    elif 60 <= x <= 69:
+        loc = '60대'
+    elif 70 <= x <= 79:
+        loc = '70대'
+    else:
+        loc = '80대 이상'
+    return loc
+```
+
+- 구간에 해당하는 함수를 만든다.
+
+```python
+titanic_df['Age_sec'] = titanic_df['Age'].apply(lambda x : age_9(x))
+```
+
+- 람다로 새로운 컬럼을 만든다.
+
+```python
+Age_sec_label = titanic_df['Age_sec']
+encoder = LabelEncoder()
+encoder.fit(Age_sec_label)
+Age_sec_digit_label = encoder.transform(Age_sec_label)
+```
+
+- 연령대별로 라벨링을 한다.
+
+```python
+titanic_df['Age_sec'] = Age_sec_digit_label
+```
+
+- 최종으로 적용한다.
+
 ### [ML학습]
 
 #### 1. feature데이터 셋과 Label 데이터 셋 추출
@@ -318,3 +373,23 @@ print('테스트 세트의 정확도 : ', accuracy_score(y_test,prediction))
 
 - random_state를 400으로 주니 85% 올라갔다.
   - 300일때는 81%였다.
+
+```python
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.linear_model import LogisticRegression
+
+rf_clf = RandomForestClassifier(random_state=11)
+lf_clf = LogisticRegression()
+
+rf_clf.fit(X_train, y_train)
+rf_pred = rf_clf.predict(X_test)
+print('RandomForestClassifier 정확도 : {0:.4f}'.format(accuracy_score(y_test, rf_pred)))
+
+lf_clf.fit(X_train, y_train)
+lf_pred = lf_clf.predict(X_test)
+print('LogisticRegression 정확도 : {0:.4f}'.format(accuracy_score(y_test, lf_pred)))
+>
+RandomForestClassifier 정확도 : 0.8603
+LogisticRegression 정확도 : 0.8380
+```
+
