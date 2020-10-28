@@ -327,9 +327,122 @@ plt.show()
 
 ##### sklearn SimpleImputer(평균, 중앙, 최빈)
 
-#### fit transform 대체값이 채워진 데이터 프레임을 생성할 수 있다.
+##### fit transform 대체값이 채워진 데이터 프레임을 생성할 수 있다.
 
+```python
+from sklearn.impute import SimpleImputer
 ```
 
+####  mean. median. most_frequent
+
+```python
+imputer = SimpleImputer(strategy = 'most_frequent')
+df = pd.DataFrame(imputer.fit_transform(df), columns=df.columns)
+df
+>
+	x1	x2		x3			x4	x5
+0	1	0.1		1	2019-01-01	A
+1	2	0.1		1	2019-01-02	B
+2	3	0.1		3	2019-01-03	C
+3	1	0.4		4	2019-01-04	A
+4	5	0.5		5	2019-01-05	B
+5	1	0.1		1	2019-01-06	C
+6	7	0.7		7	2019-01-01	A
+7	8	0.8		8	2019-01-08	B
+8	9	0.9		1	2019-01-09	C
 ```
+
+- fit_transform으로 대체값이 채워진 df로 변환
+- 결측값을 최빈값으로 변경하였다.
+
+#### 범주형은 최빈값으로 바꿔줘야 한다.
+
+```python
+sns.countplot(titanic.embark_town)
+plt.title('데이터분포')
+plt.show()
+```
+
+![ml09](./img/ml09.png)
+
+```python
+titanic_embark_town_imputer = SimpleImputer(strategy = 'most_frequent')
+titanic['embark_town'] = titanic_embark_town_imputer.fit_transform(titanic[['embark_town']])
+titanic['embarked'] = titanic_embark_town_imputer.fit_transform(titanic[['embarked']])
+msno.matrix(titanic)
+plt.show()
+```
+
+- 1차원의 df형식이 들어가야 하기 때문에 대괄호 [[]] 2개
+
+![ml10](./img/ml10.png)
+
+- 결측값이 대체된 것을 보았다.
+
+#### 확인결과 age 열만 결측값을 가지고 있고 수치형일 경우 데이터 분포를 확인하고 어떻게 대체할 것인지 고민
+
+```python
+sns.kdeplot(titanic.age, shade=True)
+plt.show()
+```
+
+![ml12](./img/ml12.png)
+
+- 나이 분포가 어떠한지 살펴본다.
+
+#### age 중앙값으로 대체한다면?
+
+```python
+titanic_age_imputer = SimpleImputer(strategy = 'median')
+titanic['age'] = titanic_age_imputer.fit_transform(titanic[['age']])
+msno.matrix(titanic)
+plt.show()
+```
+
+![ml11](./img/ml11.png)
+
+### Feature Scaling
+
+- 표준화는 데이터의 피처 각각이 평균이 0이고 분산이 1인 가우시안 정규 분포를 가진 값으로 변환하는 것을 의미
+  - 데이터의 최소값과 최대값을 모르는 경우 사용 
+- 정규화는 서로 다른 피터의 크기를 통일하기 위해 크기를 변환해주는 개념
+  - 데이터의 최소값과 최대값을 아는 경우
+  - 0과 1사이의 값을 리턴한다.
+  - 데이터 달라진다.
+- 표준화와 정규화를 통해 데이터의 범위를 일률적으로 낮출 수 있다.
+- StandardScaler : 평균이 0이고, 분산이 1인 정규 분포 형태로 변환
+  - 최대,최소를 몰라도 된다.
+- MinMaxScaler : 데이터값을 0과 1사이의 범위값으로 변환 (음수값이 있으면 -1에서 1값으로 변환한다.)
+  - 최대, 최소값을 알아햐 한다.
+
+####  Normalization(정규화) : 모든 피처가 0과 1사이의 값으로 변환 (음수가 있으면 1)
+
+- MinMaxScaler 
+- 데이터의 최소값과 최대값을 알고 있어야 한다.
+- 공식 : (X- X의 최소값) / (X의 최대값 - X의 최소값)
+
+```python
+df = pd.DataFrame({'A':[14.00,90.20,90.95,96.27,91.21],'B':[103.02,107.26,110.35,114.23,114.68], 'C':['big','small','big','small','small']})
+df
+>
+		A		B		C
+0	14.00	103.02	big
+1	90.20	107.26	small
+2	90.95	110.35	big
+3	96.27	114.23	small
+4	91.21	114.68	small
+```
+
+```python
+(df['A'] - df['A'].min()) / (df['A'].max() - df['A'].min())
+>
+0    0.000000
+1    0.926219
+2    0.935335
+3    1.000000
+4    0.938495
+Name: A, dtype: float64
+```
+
+- 0과 1사이의 값으로 나온다.
 
