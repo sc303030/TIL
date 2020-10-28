@@ -446,3 +446,218 @@ Name: A, dtype: float64
 
 - 0과 1사이의 값으로 나온다.
 
+#### Standardiztion(표준화) : 변수의 범위를 정규분포(평균 0, 편차 1) 변환
+
+- 데이터의 최소, 최대값을 모를 경우 사용하면 된다.
+
+- 공식 : (X-X평균값) / (X 표준편차)
+- StandardScaler
+
+```python
+df['B'].mean(), df['B'].std()
+>
+(109.90799999999999, 4.901619120249964)
+```
+
+```python
+df['B'] = (df['B'] - df['B'].mean()) / (df['B'].std())
+df
+>
+		A			B		C
+0	14.00	-1.405250	big
+1	90.20	-0.540230	small
+2	90.95	0.090174	big
+3	96.27	0.881749	small
+4	91.21	0.973556	small
+```
+
+- 값이 표준화 되었다.
+
+```python
+def feture_scaling(df, scaling_strategy="min-max", column=None):
+    if column == None:
+        column = [column_name for column_name in df.columns]
+    for column_name in column:
+        if scaling_strategy == "min-max":
+            df[column_name] = ( df[column_name] - df[column_name].min() ) /\
+                            (df[column_name].max() - df[column_name].min()) 
+        elif scaling_strategy == "z-score":
+            df[column_name] = ( df[column_name] - \
+                               df[column_name].mean() ) /\
+                            (df[column_name].std() )
+    return df
+```
+
+```python
+df = pd.DataFrame({'A':[14.00,90.20,90.95,96.27,91.21],'B':[103.02,107.26,110.35,114.23,114.68], 'C':['big','small','big','small','small']})
+df
+>
+		A		B		C
+0	14.00	103.02	big
+1	90.20	107.26	small
+2	90.95	110.35	big
+3	96.27	114.23	small
+4	91.21	114.68	small
+```
+
+```python
+scaling_df = feture_scaling(df, column=['A','B'])
+scaling_df
+>
+			A			B		C
+0	0.000000	0.000000	big
+1	0.926219	0.363636	small
+2	0.935335	0.628645	big
+3	1.000000	0.961407	small
+4	0.938495	1.000000	small
+```
+
+- 정규화
+
+```python
+def feture_scaling(df, scaling_strategy="z-score", column=None):
+    if column == None:
+        column = [column_name for column_name in df.columns]
+    for column_name in column:
+        if scaling_strategy == "min-max":
+            df[column_name] = ( df[column_name] - df[column_name].min() ) /\
+                            (df[column_name].max() - df[column_name].min()) 
+        elif scaling_strategy == "z-score":
+            df[column_name] = ( df[column_name] - \
+                               df[column_name].mean() ) /\
+                            (df[column_name].std() )
+    return df
+```
+
+```python
+scaling_df = feture_scaling(df, column=['A','B'])
+scaling_df
+>
+			A			B		C
+0	-1.784641	-1.405250	big
+1	0.390289	-0.540230	small
+2	0.411695	0.090174	big
+3	0.563541	0.881749	small
+4	0.419116	0.973556	small
+```
+
+- 표준화하기
+
+```python
+df = pd.io.parsers.read_csv(
+    'https://raw.githubusercontent.com/rasbt/pattern_classification/master/data/wine_data.csv',
+     header=None,
+     usecols=[0,1,2]
+    )
+df
+>
+0	1	2
+0	1	14.23	1.71
+1	1	13.20	1.78
+2	1	13.16	2.36 ...
+```
+
+```python
+df.columns = ['Class label', 'Alcohol','Malic acid']
+df
+>
+	Class label	Alcohol	Malic acid
+0			1	14.23		1.71
+1			1	13.20		1.78
+```
+
+```python
+alcohol_df = feture_scaling(df, scaling_strategy="z-score", column=['Alcohol','Malic acid'])
+alcohol_df
+>
+ 	Class label	Alcohol		Malic acid
+0			1	1.514341	-0.560668
+1			1	0.245597	-0.498009
+```
+
+#### sklearn feature scaling
+
+- fit(규칙생성), transform(규칙 적용)의 과정을 거친다.
+- fit_transform()
+
+- StandardScaler
+- MinMaxScaler
+
+```python
+from sklearn.preprocessing import  StandardScaler, MinMaxScaler
+```
+
+```python
+std_scaler  = StandardScaler()
+df_std = std_scaler.fit(df[['Alcohol','Malic acid']]).transform(df[['Alcohol','Malic acid']])
+df_std[:5]
+>
+array([[ 1.51861254, -0.5622498 ],
+       [ 0.24628963, -0.49941338],
+       [ 0.19687903,  0.02123125],
+       [ 1.69154964, -0.34681064],
+       [ 0.29570023,  0.22769377]])
+```
+
+- 우선 객체를 하나 만들고 거기에 fit 과 transform을 적용한다.
+- 표준화
+
+```python
+minmax_scaler  = MinMaxScaler()
+df_minmax = minmax_scaler.fit(df[['Alcohol','Malic acid']]).transform(df[['Alcohol','Malic acid']])
+df_minmax[:5]
+>
+array([[0.84210526, 0.1916996 ],
+       [0.57105263, 0.2055336 ],
+       [0.56052632, 0.3201581 ],
+       [0.87894737, 0.23913043],
+       [0.58157895, 0.36561265]])
+```
+
+- 정규화
+- 데이터가 편차가 크면 큰 값을 따라가기 때문에 정규화나 표준화를 실행하여 바꾼다.
+
+```python
+train_array=np.arange(0,11).reshape(-1,1)
+test_array=np.arange(0,6).reshape(-1,1)
+```
+
+```python
+scaler = MinMaxScaler()
+train_scaler = scaler.fit(train_array).transform(train_array)
+print('raw data : ', np.round(train_array.reshape(-1),2))
+print('scaler data : ', np.round(train_scaler.reshape(-1),2))
+>
+raw data :  [ 0  1  2  3  4  5  6  7  8  9 10]
+scaler data :  [0.  0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1. ]
+```
+
+- 트레이닝 데이터 피처 스케일링이 발생함.
+  - 학습을 시키고 예측을 하기 위해서는 testdata가 들어가야 한다.
+- 트레이닝 데이터는 스케일링이 일어났는데 test 데이터도 스케일링을 해야 할까?
+
+```python
+test_scaler = scaler.fit(test_array).transform(test_array)
+print('test data : ', np.round(test_array.reshape(-1),2))
+print('scaler data : ', np.round(test_scaler.reshape(-1),2))
+>
+test data :  [0 1 2 3 4 5]
+scaler data :  [0.  0.2 0.4 0.6 0.8 1. ]
+```
+
+- 머신러닝 알고리즘은 학습 데이터를 기반으로 학습했기때문에 학습데이터의 기준을 따라야 한다. 테스트 데이터도?
+- 근데 지금 규칙이 맞지 않는다.
+- 스케일링의 기준이 달라져버리면 학습의 의미가 사라진다. 
+- 학습데이터는 스케일링은 하지만 테스트는 스케일링을 하면 안 된다.
+
+```python
+test_scaler = scaler.transform(test_array)
+print('test data : ', np.round(test_array.reshape(-1),2))
+print('scaler data : ', np.round(test_scaler.reshape(-1),2))
+>
+test data :  [0 1 2 3 4 5]
+scaler data :  [0.  0.1 0.2 0.3 0.4 0.5]
+```
+
+- 테스트 데이터는 transform만 적용한다.
+- 규칙은 학습 데이터의 규칙을 따른다.
