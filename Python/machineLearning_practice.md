@@ -176,44 +176,7 @@ encoder 결과 [3 0 3 3 3 2 3 3 3 0 3 3 3 3 3 3 2 3 3 0 3 3 2 3 3 3 0 3 2 3 0 0 
 
 ### [ML학습]
 
-#### 1. 원본 데이터를 재로딩 하고, feature데이터 셋과 Label 데이터 셋 추출
-
-```python
-import numpy as np
-import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sns
-%matplotlib inline
-
-titanic_df = pd.read_csv('./data/titanic_train.csv')
-titanic_df.head(3)
-```
-
-**결측값 처리**
-
-```python
-titanic_df['Cabin'] = titanic_df['Cabin'].fillna('N')
-titanic_df['Embarked'] = titanic_df['Embarked'].fillna('N')
-titanic_age_imputer = SimpleImputer(strategy = 'mean')
-titanic_df['Age'] = titanic_age_imputer.fit_transform(titanic_df[['Age']])
-```
-
-**라벨인코딩**
-
-```python
-Sex_label = titanic_df['Sex']
-encoder = LabelEncoder()
-encoder.fit(Sex_label)
-Sex_digit_label = encoder.transform(Sex_label)
-cabin_label = titanic_df['Cabin']
-encoder = LabelEncoder()
-encoder.fit(cabin_label)
-cabin_digit_label = encoder.transform(cabin_label)
-Embarked_label = titanic_df['Embarked']
-encoder = LabelEncoder()
-encoder.fit(Embarked_label)
-Embarked_digit_label = encoder.transform(Embarked_label)
-```
+#### 1. feature데이터 셋과 Label 데이터 셋 추출
 
 ```python
 titanic_df['Sex'] = Sex_digit_label
@@ -221,10 +184,12 @@ titanic_df['Cabin'] = cabin_digit_label
 titanic_df['Embarked'] = Embarked_digit_label
 ```
 
+- 위에서 나누었던 라벨을 덮어씌운다.
+
 **feature, label 나누기**
 
 ```python
-titanic_feature = titanic_df.loc[:, ~titanic_df.columns.isin(['Survived', 'Name','Ticket'])]
+titanic_feature = titanic_df.loc[:, ~titanic_df.columns.isin(['Survived', 'Name','Ticket','PassengerId'])]
 ```
 
 ```python
@@ -240,7 +205,7 @@ X_train, X_test, y_train, y_test = train_test_split(titanic_feature,titanic_labe
 #### 3. 의사결정트리를 이용한 학습, 예측 및 정확도 확인
 
 ```python
-titanic_df_dtc = DecisionTreeClassifier(random_state=100)
+titanic_df_dtc = DecisionTreeClassifier(random_state=200)
 titanic_df_dtc.fit(X_train, y_train)
 predition = titanic_df_dtc.predict(X_test)
 print('예측 정확도 : %.2f' % accuracy_score(y_test, predition))
@@ -249,4 +214,107 @@ print('예측 정확도 : %.2f' % accuracy_score(y_test, predition))
 ```
 
 - 정확도가 낮다.
-- 
+
+#### 4. KFold=5 를 이용한 교차검증 및 평균정확도 확인
+
+```python
+from sklearn.model_selection import KFold
+```
+
+```python
+fold_df_clf = DecisionTreeClassifier(random_state=200)
+```
+
+```python
+kfold = KFold(n_splits=5)
+cv_accuracy = []
+```
+
+- 학습기를 만들고 폴드 개수를 나눈다.
+
+```python
+n_iter = 0
+for train_idx, test_idx in kfold.split(titanic_feature):
+    label_train = titanic_label.iloc[train_idx]
+    label_test = titanic_label.iloc[test_idx]
+    features_train =  titanic_feature.iloc[train_idx,:-1]
+    features_test =  titanic_feature.iloc[test_idx,:-1]
+    fold_df_clf.fit(features_train, label_train)
+    fold_pred = fold_df_clf.predict(features_test)
+    
+    # 정확도 측정
+    n_iter += 1
+    accuracy = np.round(accuracy_score(label_test, fold_pred),4)
+    cv_accuracy.append(accuracy)
+
+print('\n\n')
+print('\n 평균 검증 정확도 : ', np.mean(cv_accuracy))
+>
+평균 검증 정확도 :  0.78908
+```
+
+- 거의 비슷하다.
+
+#### 5. cross_val_score 를 이용한 교차검증 및 평균정확도 확인
+
+```python
+from sklearn.model_selection import cross_val_score, cross_validate
+```
+
+```python
+cvs_iris_dtc = DecisionTreeClassifier(random_state = 300)
+scoring = cross_val_score(cvs_iris_dtc, titanic_feature,titanic_label,scoring='accuracy',cv=5 )
+print('교차 검증별 정확도 :',scoring)
+print('평균 검증 정확도 :',np.mean(scoring))
+>
+교차 검증별 정확도 : [0.75418994 0.76404494 0.81460674 0.76966292 0.81460674]
+평균 검증 정확도 : 0.783422258489737
+```
+
+- random_state를 올리니 정확도가 높아졌다.
+
+#### 6.GridSearchCV 를 이용한 교차검증 및 평균정확도 확인
+
+```python
+from sklearn.model_selection import  GridSearchCV,train_test_split
+```
+
+```python
+X_train, X_test , y_train, y_test = train_test_split(titanic_feature, 
+                                                     titanic_label,
+                                                     test_size=0.2,
+                                                    random_state=400)
+titanic_tree = DecisionTreeClassifier()
+params = {'criterion' : ['gini', 'entropy'], 
+          'splitter' : ['random','best'], 
+          'max_depth' : [1,2,3,4,5], 
+          'min_samples_split' : [2,3]}
+```
+
+- 우선 테스트, 트레인 데이터를 나누고 학습기를 만든다.
+- 파라미터에 줄 옵션들을 저장한다.
+
+```python
+grid_titanic_tree = GridSearchCV(titanic_tree, param_grid = params,cv=5,refit=True )
+```
+
+```python
+grid_titanic_tree.fit(X_train, y_train)
+score_titanic_df = pd.DataFrame(grid_titanic_tree.cv_results_)
+score_titanic_df[['params', 'mean_test_score', 'rank_test_score','split0_test_score','split1_test_score','split2_test_score','split3_test_score','split4_test_score']]
+```
+
+- 학습을 진행하고 GridSearchCV의 결과를 데이터 프레임으로 만들어본다.
+
+```python
+estimator = grid_titanic_tree.best_estimator_
+prediction = estimator.predict(X_test)
+print('테스트 세트의 정확도 : ', accuracy_score(y_test,prediction))
+>
+테스트 세트의 정확도 :  0.8547486033519553
+```
+
+- max_depth을 1,2,3만 주었을 때는 78~9%였는데 1,2,3,4,5를 주니 81%가 되었다.
+
+- random_state를 400으로 주니 85% 올라갔다.
+  - 300일때는 81%였다.
