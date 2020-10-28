@@ -134,6 +134,94 @@ plt.show()
 
 ![ml17](./img/ml17.png)
 
+```python
+fig = plt.figure(figsize=(20,5))
+
+area01 = fig.add_subplot(1,3,1)
+area01.set_title('titanic survived - sex')
+area02 = fig.add_subplot(1,3,2)
+area02.set_title('titanic survived - sex hue')
+area03 = fig.add_subplot(1,3,3)
+area03.set_title('titanic survived - sex dodge')
+
+# 성별에 따른 생존률 시각화
+sns.barplot(x='Age_sec',y='Survived',data=titanic_df,ax=area01,palette='Set2')
+# hue =  그룹을 지어준다.
+sns.barplot(x='Age_sec',y='Survived',hue='Sex',data=titanic_df,ax=area02,palette='Set2')
+# dodge  = True : 멀티바, False : 누적막대바
+sns.barplot(x='Age_sec',y='Survived',hue='Sex',dodge=False,data=titanic_df,ax=area03,palette='Set2')
+
+plt.show()
+```
+
+![ml18](./img/ml18.png)
+
+```python
+# bat plot : 카테고리
+# 스타일 테마를 설정 5가지 (darkgrid, whitegrid, dark, white, ticks)
+
+sns.set_style('whitegrid')
+
+# 그래프 객체를 생성하기 위한 피겨객체 얻어오기
+fig = plt.figure(figsize=(20,5))
+
+area01 = fig.add_subplot(1,3,1)
+area01.set_title('titanic Age_sec')
+area02 = fig.add_subplot(1,3,2)
+area02.set_title('titanic Age_sec - Sex')
+area03 = fig.add_subplot(1,3,3)
+area03.set_title('titanic Age_sec - Sex(stacked)')
+
+
+# 성별에 따른 생존률 시각화
+sns.countplot(x='Age_sec',data=titanic_df,ax=area01)
+
+# hue =  그룹을 지어준다.
+sns.countplot(x='Age_sec',hue='Sex',palette='Set2',data=titanic_df,ax=area02)
+# dodge 
+sns.countplot(x='Age_sec',hue='Sex',dodge=False ,palette='Set3',data=titanic_df,ax=area03,edgecolor=".5")
+
+
+plt.show()
+```
+
+![ml19](./img/ml19.png)
+
+
+
+```python
+# bat plot : 카테고리
+# 스타일 테마를 설정 5가지 (darkgrid, whitegrid, dark, white, ticks)
+
+sns.set_style('whitegrid')
+
+# 그래프 객체를 생성하기 위한 피겨객체 얻어오기
+fig = plt.figure(figsize=(20,5))
+
+area01 = fig.add_subplot(1,3,1)
+area01.set_title('titanic Pclass')
+area02 = fig.add_subplot(1,3,2)
+area02.set_title('titanic Pclass - Sex')
+area03 = fig.add_subplot(1,3,3)
+area03.set_title('titanic Pclass - Sex(stacked)')
+
+
+# 성별에 따른 생존률 시각화
+sns.countplot(x='Pclass',data=titanic_df,ax=area01)
+
+# hue =  그룹을 지어준다.
+sns.countplot(x='Pclass',hue='Sex',palette='Set2',data=titanic_df,ax=area02)
+# dodge 
+sns.countplot(x='Pclass',hue='Sex',dodge=False,palette='Set3',data=titanic_df,ax=area03)
+
+
+plt.show()
+```
+
+![ml20](./img/ml20.png)
+
+
+
 #### 6. Sex , Cabin , Embarked 에 대한 라벨인코딩
 
 **Sex 라벨 인코딩**
@@ -378,7 +466,7 @@ print('테스트 세트의 정확도 : ', accuracy_score(y_test,prediction))
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
 
-rf_clf = RandomForestClassifier(random_state=11)
+rf_clf = RandomForestClassifier(random_state=400)
 lf_clf = LogisticRegression()
 
 rf_clf.fit(X_train, y_train)
@@ -389,7 +477,7 @@ lf_clf.fit(X_train, y_train)
 lf_pred = lf_clf.predict(X_test)
 print('LogisticRegression 정확도 : {0:.4f}'.format(accuracy_score(y_test, lf_pred)))
 >
-RandomForestClassifier 정확도 : 0.8603
+RandomForestClassifier 정확도 : 0.8659
 LogisticRegression 정확도 : 0.8380
 ```
 
