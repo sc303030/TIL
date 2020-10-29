@@ -138,10 +138,10 @@ array([[2, 0],
 
 #### 업무에 따른 재현율과 정밀도의 상대적 중요
 
-- 재현율
+- 재현율 (recall_score())
   - 실제 positive 양성인 데이터 예측을 Negitive음성으로 잘못 판단하게 되면 업무상 큰 영향이 발생하는 경우
     - 암진단, 금융사기 판별
-- 정밀도 
+- 정밀도 (precision_score())
   - 실제 음성인 데이터 예측을 양성으로 잘못 판단하게 되면 업무상 큰 영향이 발생하는 경우  
     - 스팸메일
 
@@ -213,3 +213,135 @@ titanic_feature_df.head()
 4	5	3	Allen, Mr. William Henry	male	35.0	0	0	373450	8.0500	NaN	S
 ```
 
+```python
+## Null 처리 함수
+def fillna(df):
+    df['Age'].fillna(df['Age'].mean(), inplace=True)
+    df['Cabin'].fillna('N', inplace=True)
+    df['Embarked'].fillna('N', inplace=True)
+    df['Fare'].fillna(0, inplace=True)
+    return df
+
+## 머신러닝에 불필요한 피처 제거
+def drop_features(df):
+    df.drop(['PassengerId', 'Name', 'Ticket'], axis=1, inplace=True)
+    return df
+
+## Label Encoding 수행
+def format_features(df):
+    df['Cabin'] = df['Cabin'].str[:1]
+    features = ['Cabin', 'Sex', 'Embarked']
+    for feature in features:
+        le = LabelEncoder()
+        le.fit(df[feature])
+        df[feature] = le.transform(df[feature])
+    return df
+
+## 앞에서 실행한 Data Preprocessing 함수 호출
+def transform_features(df):
+    df = fillna(df)
+    df = drop_features(df)
+    df = format_features(df)
+    return df
+
+```
+
+```python
+titanic_feature_df = transform_features(titanic_feature_df)
+titanic_feature_df.head()
+>
+Pclass	Sex	Age	SibSp	Parch	Fare	Cabin	Embarked
+0	3	1	22.0	1	0	7.2500	7	3
+1	1	0	38.0	1	0	71.2833	2	0
+2	3	0	26.0	0	0	7.9250	7	3
+3	1	0	35.0	1	0	53.1000	2	3
+4	3	1	35.0	0	0	8.0500	7	3
+```
+
+```python
+x_train, X_test, y_train, y_test = train_test_split(titanic_feature_df,
+                                                   titanic_label,
+                                                   test_size=0.2,
+                                                   random_state=10)
+```
+
+- 함수 적용하고 난 뒤 데이터를 나눈다.
+
+```python
+dummy_model = MyDummyClassifier()
+dummy_model.fit(x_train, y_train)
+```
+
+- 위에 만들어놓은 class를 만든다.
+- fit해서 학습한다.
+
+```python
+y_pred = dummy_model.predict(X_test)
+print('accuracy {}'.format(accuracy_score(y_test,y_pred)))
+>
+accuracy 0.8212290502793296
+```
+
+- 성별이 일치했을 때 0과 1로 반환해주는데 이걸 맹신할 수 없다. 왜?
+  - 여성이 더 많다. 그러니 정확성에 문제가 생긴다.
+
+```python
+from sklearn.metrics import recall_score, precision_score
+```
+
+```python
+def display_eval(y_test, y_pred):
+    confusion = confusion_matrix(y_test,y_pred)
+    accuracy  = accuracy_score(y_test, y_pred)
+    presicion = precisin_score(y_test, y_pred)
+    recall    = recall_score(y_test, y_pred)
+    
+    print()
+    print(confusion)
+    print('*'*50)
+    print()
+    print('정확도 : {}, 정밀도 : {}, 재현율 : {}'.format(accuracy,presicion, recall))
+```
+
+- 정확도, 정밀도, 재현율, 이진분류를 나타내는 함수를 만들었다.
+
+#### 로지스틱 회귀
+
+- 로지스틱 회귀를 분류로 보는 이유는??
+  - 대부분 이진 분류 값을 값으로 받는다.
+
+```python
+from sklearn.linear_model import LogisticRegression
+lr_model = LogisticRegression()
+lr_model.fit(x_train, y_train)
+prediction = lr_model.predict(X_test)
+display_eval(y_test, prediction)
+>
+[[101  16]
+ [ 15  47]]
+**************************************************
+
+정확도 : 0.8268156424581006, 정밀도 : 0.746031746031746, 재현율 : 0.7580645161290323
+```
+
+- LogisticRegression을 import한다.
+- 학습기 객체를 만든다.
+- 우리가 만든 함수를 실행한다.
+
+##### 공식대로 계산해서 맞는지 확인해보기
+
+```python
+print('accuracy : ',(101  + 47) / (101 + 16 + 15 + 47))
+print('Recall : ', 47 / (47 + 15))
+print('Precision : ', 47 / (47 + 16))
+>
+accuracy :  0.8268156424581006
+Recall :  0.7580645161290323
+Precision :  0.746031746031746
+```
+
+- 공식대로 해보니 값이 동일하다.
+
+#### [실습] - 우방암 관련 데이터 - 정확, 재현율이 중요 (Recall) 실제 P를  N으로 예측 하면 안 된다.
+
+- 재현율은 실제 양성을 양성으로 예측한 비율이므로 높을수록 좋은 성능모형이라 판단할 수 있다.
