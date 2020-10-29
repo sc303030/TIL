@@ -316,6 +316,12 @@ lr_model = LogisticRegression()
 lr_model.fit(x_train, y_train)
 prediction = lr_model.predict(X_test)
 display_eval(y_test, prediction)
+
+
+
+#       FALSE   TRUE
+#FALSE   TN      FP 
+#TRUE    FN      TP
 >
 [[101  16]
  [ 15  47]]
@@ -345,3 +351,119 @@ Precision :  0.746031746031746
 #### [실습] - 우방암 관련 데이터 - 정확, 재현율이 중요 (Recall) 실제 P를  N으로 예측 하면 안 된다.
 
 - 재현율은 실제 양성을 양성으로 예측한 비율이므로 높을수록 좋은 성능모형이라 판단할 수 있다.
+
+```python
+from sklearn.datasets import load_breast_cancer
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.preprocessing import LabelEncoder
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
+import pandas as pd
+import numpy as np
+import warnings
+warnings.filterwarnings('ignore')
+```
+
+- ensemble : 여러 알고리즘을 합습해서 최적의 결과를 도출해내는 모듈
+
+```python
+cancer = load_breast_cancer()
+print(type(cancer))
+>
+<class 'sklearn.utils.Bunch'>
+```
+
+- 키와 value로 이루어진 딕셔너리
+
+#### cancer_df 만들기
+
+```python
+cancer_df = pd.DataFrame(data=cancer.data, columns=cancer.feature_names)
+cancer_df['target'] =cancer.target
+cancer_df.head()
+>
+	mean radius	mean texture	mean perimeter	mean area	mean smoothness	mean compactness	mean concavity	mean concave points	mean symmetry	mean fractal dimension	...	worst texture	worst perimeter	worst area	worst smoothness	worst compactness	worst concavity	worst concave points	worst symmetry	worst fractal dimension	target
+0	17.99	10.38	122.80	1001.0	0.11840	0.27760	0.3001	0.14710	0.2419	0.07871	...	17.33	184.60	2019.0	0.1622	0.6656	0.7119	0.2654	0.4601	0.11890	0
+```
+
+##### 분류학습기 생성
+
+- 학습 및 평가 ( 교차 검증 )
+- 평가 지표들에 대한 평균값을 구해보자
+- accuracy, precision, recall
+
+```python
+ranfore = RandomForestClassifier(random_state=100)
+
+cancer_feature = cancer_df.drop(['target'],axis=1)
+cancer_label   = cancer_df['target']
+
+
+X_train, X_test, y_train, y_test = train_test_split(cancer_feature, cancer_label, test_size=0.3, random_state=100)
+ranfore.fit(X_train, y_train)
+can_pred = ranfore.predict(X_test)
+display_eval(y_test, can_pred)
+>
+[[ 62   7]
+ [  2 100]]
+**************************************************
+
+정확도 : 0.9473684210526315, 정밀도 : 0.9345794392523364, 재현율 : 0.9803921568627451
+```
+
+- 학습기만 RandomForestClassifier로 생성하면 뒤에는 다른 검증과 똑같다.
+
+##### KFold 교차검증
+
+```python
+from sklearn.model_selection import KFold
+kfold = KFold(n_splits=5)
+cv_accuracy = []
+cv_confusion = []
+cv_precision = []
+cv_recall = []
+```
+
+- kfold를 5개로 만들고 평균을 구하기 위해 리스트도 만든다.
+
+```python
+n_iter = 0
+for train_idx, test_idx in kfold.split(cancer_feature):
+    label_train = cancer_label.iloc[train_idx]
+    label_test = cancer_label.iloc[test_idx]
+    features_train =  cancer_feature.iloc[train_idx,:-1]
+    features_test =  cancer_feature.iloc[test_idx,:-1]
+    ranfore.fit(features_train, label_train)
+    can_pred = ranfore.predict(features_test)
+    
+    # 정확도 측정
+    n_iter += 1
+    confusion = confusion_matrix(label_test,can_pred)
+    cv_confusion.append(confusion)
+    accuracy  = accuracy_score(label_test,can_pred)
+    cv_accuracy.append(accuracy)
+    precision = precision_score(label_test,can_pred)
+    cv_precision.append(precision)
+    recall    = recall_score(label_test,can_pred)
+    cv_recall.append(recall)
+
+    
+    
+print(cv_confusion)
+print('\n\n')
+print('\n 평균 검증 정확도 : {}, 평균 재현율  : {} , 평균 정밀도 : {}'.format(np.mean(cv_accuracy),np.mean(cv_precision),np.mean(cv_recall)))
+>
+[array([[59,  9],
+       [ 1, 45]], dtype=int64), array([[46,  3],
+       [ 4, 61]], dtype=int64), array([[37,  3],
+       [ 0, 74]], dtype=int64), array([[28,  1],
+       [ 3, 82]], dtype=int64), array([[26,  0],
+       [ 2, 85]], dtype=int64)]
+
+
+
+
+ 평균 검증 정확도 : 0.9543549138332557, 평균 재현율  : 0.947089820320242 , 평균 정밀도 : 0.9716879569265142
+```
+
+- 루프 구문에 위에서 만들었던 재현율과 정밀도를 추가하며 평균을 구한다.
