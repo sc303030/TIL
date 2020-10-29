@@ -72,6 +72,144 @@ array([[2, 0, 0],
 
 즉 예측을 정확하게 했으면 앞에 T, 예측을 못했으면 F
 
-- FP : 양품인데 불량품으로 예측
+- FP : 양품을 불량품으로 잘못 예측
 
-- FN : 불량품인데 양품으로 예측
+- FN : 불량품을 양품으로 잘못 예측
+
+```
+  불량예측         정상예측
+
+불량품         TP               FN
+
+
+정상제품       FP               TN
+```
+
+```
+# 암 - 양성(p), 암x -> 음성(n)
+        예측 암    예측 암x
+    
+암        TP         FN
+암x       FP         TN
+
+# FN : 암인데 암이 아니라고 예측
+# FP : 암이 아닌데 암이라고 예측
+```
+
+```
+# 사기거래를 찾아내는 시스템
+         사기예측         사기x예측
+    
+사기       TP                FN
+
+사기x      FP                TN
+```
+
+```python
+y_true = [1,0,1,1,0,1]
+y_pred = [0,0,1,1,0,1]
+confusion_matrix(y_true,y_pred)
+>
+array([[2, 0],
+       [1, 3]], dtype=int64)
+```
+
+[[2, 0], : 실제 0인데 0을 예측한게 2개 / 0을 1로 예측 한 건 없음
+ [1, 3]], : 실제 1인데 0으로 예측한게 1개/ 1을 1로 예측한게 2개
+
+- Accuracy(맞게 검출한 비율) : T P + T N / (T P + T N + F P + F N) 
+  - 전체 데이터에서 음성을 음성으로, 양성을 양성으로 예측한 비율
+- Precision(P로 예측한 것 중 실제 P의 비율) : T P / T P + F P 
+  - 우리가 찾고자 하는 샘플 중 실제 양성으로 찾아낸 샘플의 비율
+- Sensitivity = Recal (실제 P를 P로 예측) : T P / T P + F N
+  - 실제 양성을 양성으로 판단한 비율/ 실제 사기인데 사기라고 예측한 비율/높으면 높을수록 좋은 학습 모형
+
+- Specificity(실제 N을 N로 예측) : T N / F P + T N
+  -  음성을 음성으로 예측한 비율
+
+- Error(오류율) : F N + F P / T P + F N + F P + T N
+- F1 score : 2 * (precision * recall) / (precision + recall) 
+  - 조합평균(정밀도 높아지면 재현율 낮아지는 trade off가 나타남) 평가지표로 활용할 때 이거 써야 한다.
+
+- FP : 1종 오류
+  - 회귀분석에서 제 1종 오류
+- FN : 2종 오류
+  - 회귀분석에서 제 2종 오류
+
+#### 업무에 따른 재현율과 정밀도의 상대적 중요
+
+- 재현율
+  - 실제 positive 양성인 데이터 예측을 Negitive음성으로 잘못 판단하게 되면 업무상 큰 영향이 발생하는 경우
+    - 암진단, 금융사기 판별
+- 정밀도 
+  - 실제 음성인 데이터 예측을 양성으로 잘못 판단하게 되면 업무상 큰 영향이 발생하는 경우  
+    - 스팸메일
+
+```python
+from sklearn.preprocessing import LabelEncoder
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
+import pandas as pd
+import numpy as np
+import warnings
+warnings.filterwarnings('ignore')
+```
+
+```python
+### fit() 메서드는 아무 것도 수행하지 않고, predict()는 Sex 피처가 1이면 0, 그렇지 않으면 1로 예측하는 단순한 분류기 생성
+from sklearn.base import BaseEstimator
+
+class MyDummyClassifier(BaseEstimator):
+    # fit 메서드는 아무것도 학습하지 않음
+    def fit(self, X, y=None):
+        pass
+    # predict 메서드는 단순히 Sex 피처가 1이면 0, 아니면 1로 예측
+    def predict(self, X):
+        pred = np.zeros( (X.shape[0],1) )
+        for i in range(X.shape[0]):
+            if X['Sex'].iloc[i] == 1:
+                pred[i] = 0
+            else :
+                pred[i] = 1 
+        return pred
+```
+
+```python
+titanic.info()
+>
+<class 'pandas.core.frame.DataFrame'>
+RangeIndex: 891 entries, 0 to 890
+Data columns (total 12 columns):
+PassengerId    891 non-null int64
+Survived       891 non-null int64
+Pclass         891 non-null int64
+Name           891 non-null object
+Sex            891 non-null object
+Age            714 non-null float64
+SibSp          891 non-null int64
+Parch          891 non-null int64
+Ticket         891 non-null object
+Fare           891 non-null float64
+Cabin          204 non-null object
+Embarked       889 non-null object
+dtypes: float64(2), int64(5), object(5)
+memory usage: 83.6+ KB
+```
+
+- object 중에서 필요없는건 버리고 필요한 것들은 labelencoding한다.
+- Label : Survived
+
+```python
+titanic_label = titanic['Survived']
+# print(titanic_label)
+titanic_feature_df = titanic.drop(['Survived'], axis=1)
+titanic_feature_df.head()
+>
+	PassengerId	Pclass	Name	Sex	Age	SibSp	Parch	Ticket	Fare	Cabin	Embarked
+0	1	3	Braund, Mr. Owen Harris	male	22.0	1	0	A/5 21171	7.2500	NaN	S
+1	2	1	Cumings, Mrs. John Bradley (Florence Briggs Th...	female	38.0	1	0	PC 17599	71.2833	C85	C
+2	3	3	Heikkinen, Miss. Laina	female	26.0	0	0	STON/O2. 3101282	7.9250	NaN	S
+3	4	1	Futrelle, Mrs. Jacques Heath (Lily May Peel)	female	35.0	1	0	113803	53.1000	C123	S
+4	5	3	Allen, Mr. William Henry	male	35.0	0	0	373450	8.0500	NaN	S
+```
+
