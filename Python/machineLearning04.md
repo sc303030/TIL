@@ -467,3 +467,120 @@ print('\n 평균 검증 정확도 : {}, 평균 재현율  : {} , 평균 정밀�
 ```
 
 - 루프 구문에 위에서 만들었던 재현율과 정밀도를 추가하며 평균을 구한다.
+
+---
+
+```python
+from sklearn.model_selection import cross_validate, KFold
+from sklearn.metrics import make_scorer, f1_score
+```
+
+```python
+fold = KFold(n_splits=20,
+            random_state=1,
+            shuffle=True)
+scoring = {
+    
+    'accuracy': make_scorer(accuracy_score),
+    'precision': make_scorer(precision_score),
+    'recall': make_scorer(recall_score),
+    'f1-score' : make_scorer(f1_score)
+}
+result = corss_validate(ranfore, cancer_feature, cancer_label, cv=fold,scoring=scoring)
+print(result,keys())
+>
+dict_keys(['fit_time', 'score_time', 'test_accuracy', 'test_precision', 'test_recall', 'test_f1-score'])
+```
+
+- 위에서는 for루프를 돌려서 각각의 평균을 구했다. 
+- cross_validate를 하면 루프를 돌리지 않아도 가능하다.
+  - kfold를 만들고, scoring를 설정해서 넣어주면 된다.
+- 각각의 폴더셋에 대한 scoring를 구해준다.
+
+- make_score : 결과에 대한 결과 지표를 말해준다.
+  - 세트 평균을 다시 평균지어서 리턴해준다.
+
+- scoring에 우리가 평가하고 싶은 지표들을 넣고 검증 함수를 불러올 수 있다.
+  - scoring에 측정치를 부여한 이름은 우리 마음대로 설정해도 된다. 함수만 제대로 불러오면 된다.
+- result에 있는 측정값에는 kfold로 나눈 개수 만큼 값이 들어있다.
+  - test_accuracy 안에 fold개수 만큼
+  - test_precision 안에도 fold개수 만큼 들어있다.
+
+```python
+print('accuracy : ', np.round(result['test_accuracy'].mean(),2))
+print('precision : ', np.round(result['test_precision'].mean(),2))
+print('recall : ', np.round(result['test_recall'].mean(),2))
+print('f1-score : ', np.round(result['test_f1-score'].mean(),2))
+>
+accuracy :  0.96
+precision :  0.97
+recall :  0.98
+f1-score :  0.97
+```
+
+- 이렇게 result에 담겨있는 key를 통해서 평균을 구할 수 있다.
+
+- f1-score :  0.97 : precision와 recall의 편차가 없다는 뜻이다.
+
+---
+
+```python
+X_train, X_test, y_train, y_test = train_test_split(cancer.data,
+                                                    cancer.target,
+                                                    test_size=0.2)
+
+
+
+from sklearn.model_selection import GridSearchCV
+
+random_forest = RandomForestClassifier(random_state=123)
+
+
+params = {
+    'n_estimators' : [200, 300],
+    'max_features' : [8, 10],
+    'max_depth'    : [4, 6]
+}
+
+
+Grid_rf = GridSearchCV(random_forest, 
+                       param_grid = params,
+                       cv         = 3,
+                       scoring    = 'recall')
+
+Grid_rf.fit(X_train, y_train)
+print(Grid_rf.best_params_)
+print(Grid_rf.best_score_)
+
+# {'max_depth': 4, 'max_features': 8, 'n_estimators': 200}
+# 0.9669922669922671
+
+
+# test set 예측
+
+y_pred = Grid_rf.best_estimator_.predict(X_test)
+# 모델성능평가 함수
+def display_eval(y_test, y_pred):
+    confusion = confusion_matrix(y_test, y_pred)
+    accuracy = accuracy_score(y_test, y_pred)
+    precision = precision_score(y_test, y_pred)
+    recall = recall_score(y_test, y_pred)
+    print('accuracy' , accuracy)
+    print('precision' , precision)
+    print('recall' , recall)
+>
+{'max_depth': 4, 'max_features': 10, 'n_estimators': 200}
+0.9645390070921986
+```
+
+- KFold 말고 GridSearchCV로 학습하였다.
+
+```python
+display_eval(y_test, y_pred)
+>
+accuracy 0.9473684210526315
+precision 0.96
+recall 0.96
+```
+
+- 위 4가지 경우 모두 random_state를 다르게 줘서 값들이 다르다. 이러한 것들을 조정해가며 가장 최적의 값을 찾는 것이 데이터 분석이 아닐까.
