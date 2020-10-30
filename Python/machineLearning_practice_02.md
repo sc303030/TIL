@@ -179,3 +179,74 @@ fi_sf1_scorecore :  0.6150215072518813
 - cross_validate로 scoring를 지정해서 계산하였다. 
   - 나아진 점이 없어보인다.
 
+#### 임계값을 주어서 정밀도 - 재현율 확인 및 시각화
+
+```python
+pred_pro_result = lr_reg.predict_proba(X_test)
+pred_pro_y_pred = lr_reg.predict(X_test)
+user_thred = 0.5
+positive_pred_proba = pred_pro_result[:,1].reshape(-1,1)
+uesr_predict = Binarizer(threshold = user_thred).fit(positive_pred_proba).transform(positive_pred_proba)
+evaluation(y_test,uesr_predict)
+>
+정확도 :  0.7532467532467533
+정밀도 :  0.6714285714285714
+재현율 :  0.5802469135802469
+```
+
+- 우선 임계값을 0.5로 줬을때는 위 lr_reg로 돌린 값과 똑같다.
+
+**임계값 0.4**
+
+```python
+정확도 :  0.7445887445887446
+정밀도 :  0.627906976744186
+재현율 :  0.6666666666666666
+```
+
+- 재현율이 올라갔다.
+
+```python
+pred_positive_label = lr_reg.predict_proba(X_test)[:,1]
+precisions, recalls, thresholds = precision_recall_curve(y_test, pred_positive_label)
+print('정밀도 : ',precisions)
+print('재현율 : ', recalls)
+>
+정밀도 :  [0.37674419 0.37383178 0.37558685 0.37735849 0.37914692 0.38095238
+ 0.38277512 0.38461538 0.38647343 0.38834951 0.3902439  0.39215686 ... ]
+재현율 :  [1.         0.98765432 0.98765432 0.98765432 0.98765432 0.98765432
+ 0.98765432 0.98765432 0.98765432 0.98765432 0.98765432 0.98765432...]
+```
+
+- precision_recall_curve로 값을 구해서 값이 어떻게 변하는지 관찰하자.
+
+- 임계값을 알아서 변화시키고 값을 구해주니 편하다.
+
+```python
+print(thresholds.shape)
+print(precisions.shape)
+print(recalls.shape)
+>
+(215,)
+(216,)
+(216,)
+```
+
+- thresholds의 개수가 1개 적다
+
+```python
+plt.figure(figsize=(20,10))
+
+plt.plot(thresholds, precisions[0:thresholds.shape[0]], label='precision', linestyle='--')
+plt.plot(thresholds, recalls[0:thresholds.shape[0]], label='recsll')
+
+plt.xlabel('threshold ratio')
+plt.ylabel('precision and recall value')
+plt.grid()
+plt.legend(loc='best')
+plt.show()
+```
+
+![ml23](./img/ml23.png)
+
+- 0.4x쯤에 바뀐다.
