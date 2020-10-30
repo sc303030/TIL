@@ -226,3 +226,134 @@ plt.show()
 ![ml21](./img/ml21.png)
 
 - 그래서 그래프를 그려보면 임계치마다 확률들이 있는데 여기서 최적의 임곗값을 찾을 수 있다.
+
+####  ROC곡선과 AUC
+
+- ROC곡선과 이에 기반한 AUC 스코어는 이진 분류의 예측 성능 측정에서 중요하게 사용되는 지표입니다. 일반적으로 의학 분야에서 많이 사용되지만, 머신러닝의 이진 분류 모델의 예측 성능을 판단하는 중요한 평가지표
+- 곡선이 위로 올라갈수록 positive에 가까워진다.
+
+- ROC 곡선은 FPR이 변할 때 TPR이 어떻게 변하는 지 나타내는 곡선
+- FPR을 X축으로, TPR을 Y축으로 잡으면 FPR의 변화에 따른 TPR의 변화가 곡선 형태로 나타난다.
+- 분류의 성능 지표로 사용되는 것은 ROC 곡선 면적에 기반한 AUC값으로 결정한다.
+- AUC값은 ROC 곡선 밑의 면적을 구한 값으로 일반적으로 1에 가까울수록 좋다.
+
+- 재현율과 위양성율은 양의 상관관계
+  - 재현율이 높아지면 위 양성율도 높아짐
+  - 임계값을 낮추면 positive로 보는 확률을 높이는 것
+    - negitive인데 positive로 판단 할 수 있음
+
+- FPR 
+  - 0에서 부터 변화가 이루어지는데 TPR에 대한 변화
+  - 임계값 낮출수록 FPR은 증가함
+    - positive로 보는 확률이 높아지니깐.
+- ROC
+  - roc_curve()
+- AOC
+  - roc_auc_score()
+
+#### 타이타닉을 이용한 생존자 예측 FPR, TPR, 임계값
+
+- roc_curve(실제값,예측확률 값) : FPR, TPR, 임계값
+
+```python
+from sklearn.metrics import roc_curve
+pred_positive_label = lr_model.predict_proba(X_test)[:,1]
+fprs, tprs, thresholds = roc_curve(y_test, pred_positive_label)
+print(fprs.shape[0])
+print(tprs.shape[0])
+print(thresholds.shape[0])
+>
+56
+56
+56
+```
+
+```python
+print('샘플추출')
+print()
+thr_idx = np.arange(1,thresholds.shape[0],6)
+print(thr_idx)
+>
+샘플추출
+
+[ 1  7 13 19 25 31 37 43 49 55]
+```
+
+- 인덱스에 해당하는 곳에 임계치 비율이 들어있을 거임
+
+```python
+print('샘플추출')
+print()
+thr_idx = np.arange(1,thresholds.shape[0],6)
+print('thr_idx',thr_idx)
+print('thr threshold value : ',thresholds[thr_idx])
+>
+샘플추출
+
+thr_idx [ 1  7 13 19 25 31 37 43 49 55]
+thr threshold value :  [0.97700543 0.72698861 0.65646883 0.51186991 0.33029724 0.29699824
+ 0.18758847 0.1250837  0.1100613  0.02695786]
+```
+
+```python
+print('샘플추출')
+print()
+thr_idx = np.arange(1,thresholds.shape[0],6)
+print('thr_idx',thr_idx)
+print('thr threshold value : ',thresholds[thr_idx])
+print()
+print('thr fprs value : ',fprs[thr_idx])
+print()
+print('thr tprs value : ',tprs[thr_idx])
+>
+샘플추출
+
+thr_idx [ 1  7 13 19 25 31 37 43 49 55]
+thr threshold value :  [0.97700543 0.72698861 0.65646883 0.51186991 0.33029724 0.29699824
+ 0.18758847 0.1250837  0.1100613  0.02695786]
+
+thr fprs value :  [0.         0.02564103 0.06837607 0.13675214 0.20512821 0.23931624
+ 0.37606838 0.62393162 0.72649573 1.        ]
+
+thr tprs value :  [0.01612903 0.5        0.64516129 0.75806452 0.80645161 0.85483871
+ 0.88709677 0.93548387 0.93548387 1.        ]
+```
+
+- 임곗값이 작아지고 있다. 0에 가까워진다.
+- fprs 증가
+- tprs 증가
+  - 곡선을 그리며 증가함
+
+```python
+pred_positive_label = lr_model.predict_proba(X_test)[:,1]
+fprs, tprs, thresholds = roc_curve(y_test, pred_positive_label)
+
+plt.figure(figsize = (20,10))
+# 대각선
+plt.plot([0,1], [0,1],label='STRIKE')
+# ROC
+plt.plot(fprs, tprs, label='ROC')
+
+plt.xlabel('fpr')
+plt.ylabel('tpr')
+plt.legend(loc='best')
+plt.grid()
+plt.show()
+```
+
+![ml22](./img/ml22.png)
+
+- ROC곡선과 FPR을 알 수 있다.
+
+```python
+from sklearn.metrics import roc_auc_score
+lr_model = LogisticRegression()
+lr_model.fit(x_train, y_train)
+prediction = lr_model.predict(X_test)
+print('roc auc value {}'.format(roc_auc_score(y_test,prediction )))
+>
+roc auc value 0.8106561896884479
+```
+
+- 타이타닉의 값을 구해보았다.
+- 위의 그림 밑에 면적이 높을수록 좋다. 지금은 81정도이다.
