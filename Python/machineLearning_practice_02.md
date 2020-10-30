@@ -250,3 +250,132 @@ plt.show()
 ![ml23](./img/ml23.png)
 
 - 0.4x쯤에 바뀐다.
+
+##### 당수치(Glucose), 혈압(BloodPressure), 피하지방(SkinThickness), 인슐린(Insulin), 체질량지수(BMI)의 분포를 히스토그램으로 확인
+
+```python
+diabetes_df_col = diabetes_df.columns[1:6]
+for i in diabetes_df_col:
+    plt.figure()
+    plt.hist(x=diabetes_df[i])
+    plt.show()
+```
+
+![ml24](./img/ml24.png)
+
+![ml25](./img/ml25.png)
+
+![ml26](./img/ml26.png)
+
+![ml27](./img/ml27.png)
+
+![ml28](./img/ml28.png)
+
+```python
+fig = plt.figure()
+
+area01 = fig.add_subplot(2,3,1)
+area02 = fig.add_subplot(2,3,2)
+area03 = fig.add_subplot(2,3,3)
+area04 = fig.add_subplot(2,3,4)
+area05 = fig.add_subplot(2,3,5)
+
+area01.hist(diabetes_df['Glucose'])
+area01.title.set_text('Glucose')
+area02.hist(diabetes_df['BloodPressure'])
+area02.title.set_text('BloodPressure')
+area03.hist(diabetes_df['SkinThickness'])
+area03.title.set_text('SkinThickness')
+area04.hist(diabetes_df['Insulin'])
+area04.title.set_text('Insulin')
+area05.hist(diabetes_df['BMI'])
+area05.title.set_text('BMI')
+
+
+plt.show()
+```
+
+![ml29](./img/ml29.png)
+
+- 이렇게 하면 한 화면에서 볼 수 있다.
+
+##### 정규화
+
+```python
+std_scaler = StandardScaler()
+diabetes_std = std_scaler.fit(diabetes_df.iloc[:,:-1]).transform(diabetes_df.iloc[:,:-1])
+```
+
+- StandardScaler() 객체를 만들어서 fit과 trasnfrom을 적용한다.
+
+```python
+diabetes_std_df = pd.DataFrame(data=diabetes_std, columns=(diabetes_df.iloc[:,:-1]).columns)
+diabetes_std_df.head()
+>
+	Pregnancies	Glucose	BloodPressure	SkinThickness	Insulin	BMI	DiabetesPedigreeFunction	Age
+0	0.639947	0.848324	0.149641	0.907270	-0.692891	0.204013	0.468492	1.425995
+1	-0.844885	-1.123396	-0.160546	0.530902	-0.692891	-0.684422	-0.365061	-0.190672
+2	1.233880	1.943724	-0.263941	-1.288212	-0.692891	-1.103255	0.604397	-0.105584
+3	-0.844885	-0.998208	-0.160546	0.154533	0.123302	-0.494043	-0.920763	-1.041549
+4	-1.141852	0.504055	-1.504687	0.907270	0.765836	1.409746	5.484909	-0.020496
+```
+
+```python
+X_train, X_test, y_train, y_test = train_test_split(diabetes_std_df, diabetes_label,test_size = 0.3, random_state=100)
+```
+
+```python
+lr_reg = LogisticRegression(random_state=100)
+lr_reg.fit(X_train, y_train)
+lr_pred = lr_reg.predict(X_test)
+evaluation(y_test,lr_pred)
+>
+정확도 :  0.7532467532467533
+정밀도 :  0.6714285714285714
+재현율 :  0.5802469135802469
+```
+
+```python
+rf_cv = RandomForestClassifier(random_state=100)
+rf_cv.fit(X_train, y_train)
+rf_pred = rf_cv.predict(X_test)
+evaluation(y_test,rf_pred)
+>
+정확도 :  0.7316017316017316
+정밀도 :  0.6338028169014085
+재현율 :  0.5555555555555556
+```
+
+```python
+fold = KFold(n_splits = 10,
+            random_state=100,
+            shuffle=True)
+scoring = {
+    'accuracy' : make_scorer(accuracy_score),
+    'precision' : make_scorer(precision_score),
+    'recall'   : make_scorer(recall_score),
+    'f1_score' : make_scorer(f1_score)
+}
+corss_validate_re_pr = cross_validate(rf_cv, diabetes_std_df, diabetes_label, cv=fold,scoring=scoring)
+print('accuracy : ',corss_validate_re_pr['test_accuracy'].mean())
+print('precision : ',corss_validate_re_pr['test_precision'].mean())
+print('recall : ',corss_validate_re_pr['test_recall'].mean())
+print('fi_sf1_scorecore : ',corss_validate_re_pr['test_f1_score'].mean())
+>
+accuracy :  0.7577751196172249
+precision :  0.6837523081011293
+recall :  0.5713754189213637
+fi_sf1_scorecore :  0.6168307431118047
+```
+
+- 거의 값이 안 바뀌었다.
+
+##### 표준화
+
+```python
+minmax_scaler  = MinMaxScaler()
+diabetes_minmax = minmax_scaler.fit(diabetes_df.iloc[:,:-1]).transform(diabetes_df.iloc[:,:-1])
+```
+
+- MinMaxScaler() 객체를 만들어서 fit과 trasnfrom을 적용한다.
+
