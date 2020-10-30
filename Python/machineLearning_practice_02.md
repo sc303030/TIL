@@ -379,3 +379,126 @@ diabetes_minmax = minmax_scaler.fit(diabetes_df.iloc[:,:-1]).transform(diabetes_
 
 - MinMaxScaler() 객체를 만들어서 fit과 trasnfrom을 적용한다.
 
+```python
+diabetes_minmax_df = pd.DataFrame(data=diabetes_minmax, columns=(diabetes_df.iloc[:,:-1]).columns)
+diabetes_minmax_df.head()
+```
+
+```python
+lr_reg = LogisticRegression(random_state=100)
+lr_reg.fit(X_train, y_train)
+lr_pred = lr_reg.predict(X_test)
+evaluation(y_test,lr_pred)
+>
+정확도 :  0.7532467532467533
+정밀도 :  0.6935483870967742
+재현율 :  0.5308641975308642
+```
+
+```python
+rf_cv = RandomForestClassifier(random_state=100)
+rf_cv.fit(X_train, y_train)
+rf_pred = rf_cv.predict(X_test)
+evaluation(y_test,rf_pred)
+>
+정확도 :  0.7272727272727273
+정밀도 :  0.6285714285714286
+재현율 :  0.5432098765432098
+```
+
+```python
+fold = KFold(n_splits = 10,
+            random_state=100,
+            shuffle=True)
+scoring = {
+    'accuracy' : make_scorer(accuracy_score),
+    'precision' : make_scorer(precision_score),
+    'recall'   : make_scorer(recall_score),
+    'f1_score' : make_scorer(f1_score)
+}
+corss_validate_re_pr = cross_validate(rf_cv, diabetes_minmax_df, diabetes_label, cv=fold,scoring=scoring)
+print('accuracy : ',corss_validate_re_pr['test_accuracy'].mean())
+print('precision : ',corss_validate_re_pr['test_precision'].mean())
+print('recall : ',corss_validate_re_pr['test_recall'].mean())
+print('fi_sf1_scorecore : ',corss_validate_re_pr['test_f1_score'].mean())
+>
+accuracy :  0.7590396445659604
+precision :  0.6847871706983439
+recall :  0.5747087522546971
+fi_sf1_scorecore :  0.6196501589988777
+```
+
+- 딱히 나아진 모습은 아니다.
+
+##### 표준화 한 값으로 ROC만들기
+
+```python
+pred_positive_label = lr_reg.predict_proba(X_test)[:,1]
+fprs, tprs, thresholds= roc_curve(y_test, pred_positive_label)
+```
+
+```python
+plt.figure()
+plt.plot([0,1],[0,1],label='STRIKE')
+plt.plot(fprs, tprs, label='ROC')
+plt.grid()
+plt.legend(loc='best')
+plt.show()
+```
+
+![ml30](./img/ml30.png)
+
+- 생각보다 곡선이 높지 않다.
+
+##### roc auc 계산
+
+```python
+lr_model = LogisticRegression()
+lr_model.fit(X_train, y_train)
+prediction = lr_model.predict(X_test)
+print('roc auc value {}'.format(roc_auc_score(y_test,prediction)))
+>
+roc auc value 0.7020987654320988
+```
+
+- 1에 가까울수록 좋은데 그냥 그렇다.
+
+##### 0을 평균으로 바꿔서 해보기
+
+```python
+def zero(x):
+    num =0
+    if int(x) == 0:
+        num = 0.001302
+    else:
+        num = x
+    return num
+diabetes_minmax_df.describe().loc[['mean']]
+>
+	Pregnancies	Glucose	BloodPressure	SkinThickness	Insulin	BMI	DiabetesPedigreeFunction	Age
+mean	0.227188	0.60751	0.566438	0.207439	0.001302	0.47679	0.168179	0.204015
+```
+
+```python
+diabetes_minmax_df['Insulin'] = diabetes_minmax_df['Insulin'].apply(lambda x : zero(x))
+```
+
+```python
+X_train, X_test, y_train, y_test = train_test_split(diabetes_minmax_df, diabetes_label,test_size = 0.3, random_state=100)
+```
+
+```python
+lr_reg = LogisticRegression(random_state=100)
+lr_reg.fit(X_train, y_train)
+lr_pred = lr_reg.predict(X_test)
+evaluation(y_test,lr_pred)
+>
+정확도 :  0.7532467532467533
+정밀도 :  0.7
+재현율 :  0.5185185185185185
+```
+
+- 0으로 비꿔도 딱히 뭐가 없다.
+- 재현율을 볼지 재현율과 정밀도를 같이 볼지는 우리가 정하는 것이다.
+
+- 임계값이 0.4일때 재현율이 높았다. 이 근처에서 임계값을 조정해주면 최적의 임계값을 찾을 수 있다.
