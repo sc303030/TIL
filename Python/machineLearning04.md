@@ -77,7 +77,7 @@ array([[2, 0, 0],
 - FN : 불량품을 양품으로 잘못 예측
 
 ```
-  불량예측         정상예측
+  			불량예측         정상예측
 
 불량품         TP               FN
 
@@ -431,8 +431,8 @@ n_iter = 0
 for train_idx, test_idx in kfold.split(cancer_feature):
     label_train = cancer_label.iloc[train_idx]
     label_test = cancer_label.iloc[test_idx]
-    features_train =  cancer_feature.iloc[train_idx,:-1]
-    features_test =  cancer_feature.iloc[test_idx,:-1]
+    features_train =  cancer_feature.iloc[train_idx]
+    features_test =  cancer_feature.iloc[test_idx]
     ranfore.fit(features_train, label_train)
     can_pred = ranfore.predict(features_test)
     
@@ -453,17 +453,17 @@ print(cv_confusion)
 print('\n\n')
 print('\n 평균 검증 정확도 : {}, 평균 재현율  : {} , 평균 정밀도 : {}'.format(np.mean(cv_accuracy),np.mean(cv_precision),np.mean(cv_recall)))
 >
-[array([[59,  9],
-       [ 1, 45]], dtype=int64), array([[46,  3],
-       [ 4, 61]], dtype=int64), array([[37,  3],
+[array([[58, 10],
+       [ 1, 45]], dtype=int64), array([[45,  4],
+       [ 4, 61]], dtype=int64), array([[38,  2],
        [ 0, 74]], dtype=int64), array([[28,  1],
-       [ 3, 82]], dtype=int64), array([[26,  0],
-       [ 2, 85]], dtype=int64)]
+       [ 2, 83]], dtype=int64), array([[26,  0],
+       [ 1, 86]], dtype=int64)]
 
 
 
 
- 평균 검증 정확도 : 0.9543549138332557, 평균 재현율  : 0.947089820320242 , 평균 정밀도 : 0.9716879569265142
+ 평균 검증 정확도 : 0.9561248253376805, 평균 재현율  : 0.9436845610529823 , 평균 정밀도 : 0.9763397486776973
 ```
 
 - 루프 구문에 위에서 만들었던 재현율과 정밀도를 추가하며 평균을 구한다.
@@ -574,6 +574,7 @@ def display_eval(y_test, y_pred):
 ```
 
 - KFold 말고 GridSearchCV로 학습하였다.
+  - scoring는 회귀인지 분류인지따라서 달라진다.
 
 ```python
 display_eval(y_test, y_pred)
