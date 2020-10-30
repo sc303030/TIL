@@ -151,6 +151,8 @@ array([[0.0936629 ],
 
 ```python
 from sklearn.preprocessing import Binarizer
+user_threshold = 0.4
+positive_pred_proba = pred_pro_reault[:,1].reshape(-1,1)
 user_predict = Binarizer(threshold= user_threshold).fit(positive_pred_proba).transform(positive_pred_proba)
 ```
 
