@@ -221,4 +221,196 @@ FROM	EMPLOYEE;
 Error ORA-00923 : FROM 키워드가 필요한 위치에 없습니다.
 ```
 
-15p
+### 2.2.5 SELECT 사용 - 리터럴 Literal
+
+- 임의로 지정한 문자열
+- SELECT 절에 사용하면 테이블에 존재하는 데이터처럼 사용가능
+
+```sql
+SELECT	EMP_ID,
+		EMP_NAME,
+		'재직' AS 근무여부
+FROM	EMPLOYEE;
+```
+
+- 문자(또는 날짜) 리터럴은 ' ' 기호를 사용해서 표현
+- 리터럴은 Result Set의 모든 행에 반복적으로 표시됨
+
+### 2.2.6 SELECT 사용 - DISTINCT
+
+- 컬럼에 포함된 중복 값을 한번씩만 표시하고자 할 때 사용
+
+```sql
+SELECT	* | { [DISTINCT] {{column_name | expr } {[AS] [alias]}, ... }}
+FROM	table_name
+WHERE	search_condition [ {AND | OR }, search_condition...];
+```
+
+**[구문 설명]**
+
+- SELECT 절에 1회만 기술
+- 컬럼 별로 적용 불가능
+- 여러  개 컬럼을 조회하는 경우에는 조회 대상 컬럼들의 조합 결과를 기준으로 중복 여부 판단
+
+### 2.2.6 SELECT 사용 예 6 - DISTINCT
+
+```sql
+SELECT	DISTINCT DEPT_ID
+FROM	EMPLOYEE;
+```
+
+```sql
+SELECT	JOB_ID, DEPT_ID
+FROM	EMPLOYEE;
+```
+
+### 2.2.7 SELECT 사용 예 - WHERE
+
+**DEPT_ID 값이 '90'인 행만 조회**
+
+```sql
+SELECT	EMP_NAME AS 이름,
+		DEPT_ID AS 부서
+FROM	EMPLOYEE
+WHERE	DEPT_ID = '90';
+```
+
+**급여가 4000000 보다 많은 직원 이름과 급여 조회**
+
+```sql
+SELECT	EMP_NAME AS 이름,
+		SALARY AS 급여
+FROM	EMPLOYEE
+WHERE	SALARY > 4000000;
+```
+
+**부서 코드가 '90'이고 급여를 2000000보다 많이 받는 부서원 이름과 부서 코드, 급여 조회**
+
+```sql
+SELECT	EMP_NAME AS 이름,
+		DEPT_ID AS 부서,
+		SALARY AS 급여
+FROM	EMPLOYEE
+WHERE	DEPT_ID = '90'
+AND		SALARY > 2000000;
+```
+
+**'90' 부서나 '20' 부서에 소속된 부서원 이름, 부서 코드, 급여 조회**
+
+```sql
+SELECT	EMP_NAME AS 이름,
+		DEPT_ID AS 부서,
+		SALARY AS 급여
+FROM	EMPLOYEE
+WHERE	DEPT_ID = '90'
+OR		DEPT_ID = '20'
+```
+
+### 2.3.1 연결 연산자(ConcatenationOperator)
+
+- 연결 연산자 '||'를 사용하여 여러 컬럼을 하나의 컬럼인 것처럼 연결하거나, 컬럼과 리터럴을 연결할 수 있음
+
+**컬럼과 컬럼을 연결한 경우**
+
+```sql
+SELECT	EMP_ID||EMP_NAME||SALARY
+FROM	EMPLOYEE;
+```
+
+**컬럼과 리터럴을 연결한 경우**
+
+```sql
+SELECT	EMP_NAME||'의 월급은'||SALARY||'원 입니다.'
+FROM	EMPLOYEE;
+```
+
+### 2.2.2 논리 연산자(LogicalOperator)
+
+- 여러 개의 제한 조건 결과를 하나의 논리 결과(TRUE, FALSE, NULL)로 만든다.
+
+| Operator |                           의미                           |
+| :------: | :------------------------------------------------------: |
+|   AND    |     여러 조건이 동시에 TRUE일 경우에만 TRUE 값 반환      |
+|    OR    | 여러 조건들 중에 어느 하나의 조건만TRUE이면 TRUE 값 반환 |
+|   NOT    |         조건에 대한 반대 값으로 반환 (NULL 예외)         |
+
+**[AND 연산 결과]**
+
+|       | TRUE | FALSE | NULL |
+| :---: | :--: | :---: | :--: |
+| TRUE  |  T   |   F   |  N   |
+| FALSE |  F   |   F   |  F   |
+| NULL  |  N   |   F   |  N   |
+
+**[OR 연산 결과]**
+
+|       | TRUE | FALSE | NULL |
+| :---: | :--: | :---: | :--: |
+| TRUE  |  T   |   T   |  T   |
+| FALSE |  T   |   F   |  N   |
+| NULL  |  T   |   N   |  N   |
+
+### 2.3.3 비교 연산자 (ComparisonOperator)
+
+- 표현식 사이의 관계를 비교하기 위해 사용
+- 비교 결과는 논리 결과 중의 하나(TRUE, FALSE, NULL)가 됨
+- 비교하는 두 컬럼 값/ 표현식은 서로 동일한 데이터 타입이어야 함
+
+**[주요 비교 연산자]**
+
+|       Operator        |                의미                 |
+| :-------------------: | :---------------------------------: |
+|           =           |                같다                 |
+|        \> , \<        |             크다, 작다              |
+|       \>= , <=        |      크거나 같다/ 작거나 같다       |
+|      <>, !=, ^=       |              같지 않다              |
+|      BETWEEN AND      |     특정 범위에 포함되는지 비교     |
+|    LIKE/ NOT LIKE     |          문자 패턴을 비교           |
+| IS NULL / IS NOT NULL |           NULL 여부 비교            |
+|          IN           | 비교 값 목록에 포함되는지 여부 비교 |
+
+#### BETWEEN AND
+
+-  비교하려는 값이 지정한 (상한 값과 하한 값의 경계 포함)에 포함되면 TRUE를 반환하는 연산자
+
+**[급여를 3,500,000원 보다 많이 받고 5,500,000원 보다 적게 받는 직원 이름과 급여 조회]**
+
+```sql
+SELECT	EMP_NAME,
+		SALAEY
+FROM	EMPLOYEE
+WHERE	SALARY BETWEEN 3500000 AND 5500000;
+또는
+SELECT	EMP_NAME,
+		SALAEY
+FROM	EMPLOYEE
+WHERE	SALARY >= 3500000
+AND		SALARY <= 5500000;
+```
+
+#### LIKE
+
+- 비교하려는 값이 지정한 특정 패턴을 만족시키면 TRUE를 반환하는 연산자
+- 패턴 지정을 위해 와일트 카드 사용
+  - % : % 부분에는 임의 문자열(0개 이상의 임의의 문자)이 있다는 의미
+  - _  : _부분에는 문자 1개만 있다는 의미
+
+**['김'씨 성을 가진 직원 이름과 급여 조회]**
+
+```sql
+SELECT	EMP_NAME,
+		SALARY
+FROM	EMPLOTEE
+WHERE	EMP_NAME LIKE '김%'
+```
+
+**[9000번 대 4자리 국번의 전화번호를 사용하는 직원 전화번호 조회]**
+
+```sql
+SELECT	EMP_NAME,
+		PHONE
+FROM	EMPLOYEE
+WHERE	PHONE LIKE '___9________';
+```
+
+- '_' 사이에는 공백이 없음
