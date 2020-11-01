@@ -414,3 +414,132 @@ WHERE	PHONE LIKE '___9________';
 ```
 
 - '_' 사이에는 공백이 없음
+
+**[EMAILID중'_'앞자리가3자리인직원조회]**
+
+```sql
+SELECT	EMP_NAME,
+		EMAIL
+FROM EMPLOYEE
+WHERE EMAIL LIKE'_ _ _ _%';
+```
+
+- '_' 사이에는공백없음
+
+- 전체 데이터가 모두 조회됨
+  - 와일트 카드 자체를 처리하는 방법 필요
+
+##### EscapeOption : 와일드카드('%','_')자체를 데이터로 처리해야하는 경우에 사용
+
+**[email id 중'_' 앞자리가 3자리인 직원 조회]**
+
+```sql
+SELECT	EMP_NAME,
+		EMAIL
+FROM EMPLOYEE
+WHERE EMAIL LIKE'_ _ _\_%' ESCAPE '\';
+```
+
+- '_' 사이에는 공백없음
+
+**[ESCAPEOPTION에 사용하는 문자는 임의 지정 가능]**
+
+```sql
+SELECT EMP_NAME, EMAIL
+FROM EMPLOYEE
+WHERE EMAIL LIKE'_ _ _#_%' ESCAPE '#';
+```
+
+- '_' 사이에는 공백없음
+
+#### NOT LIKE
+
+**['김'씨 성이 아닌 직원이름과 급여 조회]**
+
+```sql
+SELECT EMP_NAME,
+	   SALARY
+FROM EMPLOYEE
+WHERE EMP_NAME NOTLIKE '김%';
+또는
+SELECT  EMP_NAME,
+		SALARY
+FROM EMPLOYEE
+WHERE NOTEMP_NAME LIKE '김%';
+```
+
+#### IS NULL / IS NOT NULL
+
+- NULL여부를비교하는연산자
+
+**[관리자도 없고 부서 배치도 받지 않은 직원 이름 조회]**
+
+```sql
+SELECT	EMP_NAME, MGR_ID, DEPT_ID
+FROM EMPLOYEE
+WHERE MGR_IDIS NULL AND DEPT_IDIS NULL;
+```
+
+**[부서 배치를 받지 않았음에도 보너스를 지급받는 직원 이름 조회]**
+
+```sql
+SELECT EMP_NAME, DEPT_ID, BONUS_PCT
+FROM EMPLOYEE
+WHERE DEPT_IDIS NULL
+AND BONUS_PCTIS NOT NULL;
+```
+
+#### IN
+
+- 비교하려는 값 목록에 일치하는 값이 있으면 TRUE를 반환하는 연산자
+
+**[60번 부서나 90번 부서원들의 이름, 부서 코드, 급여 조회]**
+
+```sql
+SELECT EMP_NAME, DEPT_ID, SALARY
+FROM EMPLOYEE
+WHERE DEPT_IDIN ( '60', '90' );
+또는
+SELECT EMP_NAME, DEPT_ID, SALARY
+FROM EMPLOYEE
+WHERE DEPT_ID= '60'OR DEPT_ID= '90';
+```
+
+### 2.3.4 연산자 우선 순위
+
+- 여러 연산자를 함께 사용할 때 우선순위를 고려해야함
+
+- `()` 를 사용하면 연산자 우선 순위를 조절할 수 있음
+
+| 순위 |            연산자             |
+| :--: | :---------------------------: |
+|  1   |          산술연산자           |
+|  2   |          연결 연산자          |
+|  3   |          비교 연산자          |
+|  4   | IS (NOT) NULL, LIKE, (NOT) IN |
+|  5   |       (NOT) BETWEEN-AND       |
+|  6   |        논리연산자-NOT         |
+|  7   |        논리연산자-AND         |
+|  8   |         논리연산자-OR         |
+
+#### 연산자 우선 순위 예
+
+**[20번 또는 90번부서원 중 급여를 3000000원보다 많이 받는 직원 이름, 급여, 부서코드 조회]**
+
+```sql
+SELECT EMP_NAME, SALARY, DEPT_ID
+FROM EMPLOYEE
+WHERE DEPT_ID = '20'ORDEPT_ID = '90'ANDSALARY > 3000000;
+```
+
+- 논리연산자 AND가 먼저 처리되어 "급여를3000000원보다 많이 받는 90번부서원 또는 20번부서원"을 조회하는 의미의 구문이 됨
+
+**[20번 또는 90번부서원 중 급여를 3000000원보다 많이 받는 직원 이름, 급여, 부서코드 조회]**
+
+```sql
+SELECT EMP_NAME, SALARY, DEPT_ID
+FROM EMPLOYEE
+WHERE ( DEPT_ID = '20'ORDEPT_ID = '90' )
+AND		SALARY > 3000000;
+```
+
