@@ -397,13 +397,13 @@ plt.show()
   - XGBoost
   - LightGBM
 
-- 단일 모델의 약적음 다수의 모델들을 결합하여 보완
+- 단일 모델의 약점을 다수의 모델들을 결합하여 보완
 - 뛰어난 성능을 가진 모델들로만 구성하는 것보다 성능이 떨어지더라도 서로 다른 유형의 모델을 섞는 것이 오히려 전체 성능에 도움이 됨
 
 #### 보팅과 배깅
 
 - 공통점
-  - 여러 개의 분류기가 투표를 통해 최종 예측 결과 경정
+  - 여러 개의 분류기가 투표를 통해 최종 예측 결과 결정
 - 차이점
   - 보팅의 경우 일반적으로 서로 다른 알고리즘을 가진 분류기를 결합
   - 배깅은 각각의 분류기가 모두 같은 유형의 알고리즘 기반이지만, 데이터 샘플링을 서로 다르게 가져가면서 학습을 수행해 보팅을 수행
@@ -425,4 +425,122 @@ plt.show()
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.ensemble  import VotingClassifier
 ```
+
+##### 앙상블을 구현하는 보팅 분류기 - sklearn에서 제공하는 VotingClassifier
+
+```python
+dtc = DecisionTreeClassifier()
+lr = LogisticRegression()
+knn = KNeighborsClassifier()
+```
+
+- 각각의 예측 객체를 만든다.
+
+##### 앙상블 모델을 구현하기 위해서는 구현을 위한 분류기
+
+```python
+voting_model = VotingClassifier([('dtc',dtc),('lr',lr),('knn',knn)],voting ='soft')
+```
+
+- 위에서 만든 학습기들을 다 넣는다.
+
+##### 데이터 세트 를 분리
+
+```python
+X_train, X_test,y_train, y_test = train_test_split(cancer.data, cancer.target, test_size=0.2, random_state=156)
+```
+
+#### 보팅
+
+##### 보팅분류기를 이용해서 학습. 예측. 평가
+
+````python
+voting_model.fit(X_train,y_train)
+y_pred = voting_model.predict(X_test)
+print('Voting accuracy', accuracy_score(y_test, y_pred))
+>
+Voting accuracy 0.9385964912280702
+````
+
+##### 개별 학습기에 대한 학습/예측/평가
+
+```python
+classifier = [dtc, lr, knn]
+for c in classifier:
+    c.fit(X_train, y_train)
+    pred = c.predict(X_test)
+    print(c.__class__.__name__, accuracy_score(y_test, pred))
+>
+DecisionTreeClassifier 0.9473684210526315
+LogisticRegression 0.9385964912280702
+KNeighborsClassifier 0.9035087719298246
+```
+
+- 루프를 돌려서 각각의 학습기의 평가지표를 살펴본다.
+
+- 보팅을 쓰유 중 하나는 분류기로 돌린게 정확도가 낮게 나왔다.
+  - 낮은 분류기를 평균내서 집단지성으로 활용한다.
+  - 우리가 넣을 분류 알고리즘은 하나씩 테스트 해봐야 한다.
+
+##### 하드 보팅
+
+```python
+# 하드 보팅
+dtc = DecisionTreeClassifier()
+lr = LogisticRegression()
+knn = KNeighborsClassifier()
+
+voting_model = VotingClassifier([('dtc',dtc),('lr',lr),('knn',knn)],voting ='hard')
+
+X_train, X_test,y_train, y_test = train_test_split(cancer.data, cancer.target, test_size=0.2, random_state=156)
+
+voting_model.fit(X_train,y_train)
+y_pred = voting_model.predict(X_test)
+print('Voting accuracy', accuracy_score(y_test, y_pred))
+
+classifier = [dtc, lr, knn]
+for c in classifier:
+    c.fit(X_train, y_train)
+    pred = c.predict(X_test)
+    print(c.__class__.__name__, accuracy_score(y_test, pred))
+>
+Voting accuracy 0.9298245614035088
+DecisionTreeClassifier 0.9473684210526315
+LogisticRegression 0.9385964912280702
+KNeighborsClassifier 0.9035087719298246    
+```
+
+- 소프트보다는 점수들이 낮다.
+
+#### 배깅방식
+
+```python
+# RandomForestClassifier
+rfc = RandomForestClassifier()
+
+# 만든 랜덤포레스트를 교차검증 해준다.
+grid_params = {
+    'max_depth' : [2,4,6,8,10],
+    'min_samples_split' : [3,6,9,12],
+    'min_samples_leaf' : [2,4,6,8]
+
+}
+gsRFC = GridSearchCV(rfc, grid_params, cv=5, scoring='accuracy')
+
+gsRFC.fit(X_train, y_train)
+RFC_best = gsRFC.best_estimator_
+print(RFC_best)
+>
+RandomForestClassifier(max_depth=4, min_samples_leaf=2, min_samples_split=12)
+```
+
+```python
+gsRFC.best_score_
+>
+0.9604395604395604
+```
+
+- 보팅으로 했을때는 93%의 정확도였지만 랜덤포레스트로 하이퍼 파라미터를 하니 96%의 정확도가 나왔다.
+
+- 앙상블을 구현하는 거랑 동일하다. 랜덤포레스트안에 보팅에서 사용한것처럼 다양한 분류 학습기들이 들어가있다.
 
