@@ -194,11 +194,96 @@ X_features,y_labels = make_classification(n_features=2,
                          n_clusters_per_class=1,
                          n_classes=3,
                          random_state=100)
-plt.scatter(X,y, marker='o',c=y,edgecolor='k',linewidth=2)
+print(len(X_features))
+print(len(y_labels))
+plt.scatter(X_features[ : , 0], X_features[ : , 1 ], marker='o',c=y_labels,edgecolor='b',cmap='rainbow')
 plt.xlabel('X')
 plt.ylabel('Y')
 plt.grid()
 plt.show()
 ```
 
-![tree04](./img/tree04.jpg)
+![tree04](./img/tree04.png)
+
+- 2 개의 feature로 된 3개의 결정 클래스를 가지도록 make_classification()함수를 지용하여 임의 데이터를 생성한 후 트리 생성 제약이 없는 경우와 min_sample_leaf=n으로 제약을 주었을때 변화는?
+  - 트리 생성 제약 없는 경우
+    - 중간에 다른 값이 있으면 그거 분류하기 위해 다시 분류기준 생성됨
+  - min_sample_leaf=n 주면?
+    - 다른 값 있어도 분류를 분류기준 다시 생성 안하고 분류  n개까지 하고 끝내버린다.
+    - 그래서 과적합을 줄일 수 있다
+
+##### 튜닝을 통한 과적합 해결
+
+```python
+sample_dtc_model = DecisionTreeClassifier().fit(X_features, y_labels)
+visualize_boundary(sample_dtc_model, X_features, y_labels)
+```
+
+- 새로운 구분 기준이 중간에 생긴다
+
+![tree05](./img/tree05.png)
+
+```python
+sample_dtc_model = DecisionTreeClassifier(min_samples_leaf=6).fit(X_features, y_labels)
+visualize_boundary(sample_dtc_model, X_features, y_labels)
+```
+
+- max_depth 줄여서 트리의 깊이를 제한
+- min_samples_split 높여서 데이터가 분할하는데 필요한 샘플 데이터의 수를 높이기
+- min_samples_leat  높여서 말단 노드가 되는데 필요한 샘플 데이터의 수를 높이기
+- max_features 높여서 분할은 하는데 고려하는 피처의 수 제한
+
+- 우선 leaf의 개수에 제한을 주었다.
+
+![tree06](./img/tree06.png)
+
+- 새롭게 중간에 추가된 규칙 조건이 사라졌다.
+
+### UCI HAR 결정트리 [실습]
+
+```python
+# 데이터셋을 구성하는 함수 설정
+def har_dataset():
+    
+    # 각 데이터 파일들은 공백으로 분리되어 있으므로 read_csv에서 공백문자를 sep으로 할당
+    feature_name_df = pd.read_csv('./data/features.txt', sep='\s+',
+                                                     header=None, names=['column_index', 'column_name'])
+    # 데이터프레임에 피처명을 컬럼으로 뷰여하기 위해 리스트 객체로 다시 반환
+    feature_name = feature_name_df.iloc[:, 1].values.tolist()
+    
+    # 학습 피처 데이터세트와 테스트 피처 데이터를 데이터프레임으로 로딩
+    # 컬럼명은 feature_name 적용
+    X_train = pd.read_csv('./data/Train/X_train.txt', sep='\s+', names=feature_name)
+    X_test = pd.read_csv('./data/Test/X_test.txt', sep='\s+', names=feature_name)
+    
+    # 학습 레이블과 테스트 레이블 데이터를 데이터 프레임으로 로딩, 컬럼명은 action으로 부여
+    y_train = pd.read_csv('./data/Train/y_train.txt', sep='\s+', names=['action'])
+    y_test = pd.read_csv('./data/Test/y_test.txt', sep='\s+', names=['action'])
+    
+    # 로드된 학습/테스트용 데이터프레임을 모두 반환
+    return X_train, X_test, y_train, y_test
+```
+
+```python
+X_train, X_test, y_train, y_test = har_dataset()
+```
+
+##### 그럼 우리는 여기서 무엇을 알아야 할까?
+
+```python
+y_train['action'].value_counts()
+>
+5     1423
+6     1413
+4     1293
+1     1226
+2     1073
+3      987
+11      90
+9       75
+10      60
+12      57
+7       47
+8       23
+```
+
