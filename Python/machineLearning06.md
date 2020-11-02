@@ -81,3 +81,124 @@
 
 #### 분류기 생성
 
+```python
+dtc_iris = DecisionTreeClassifier(random_state=100)
+```
+
+####  데이터 로드 및 전처리
+
+```python
+iris_data = load_iris()
+
+X_train, X_test,y_train, y_test = train_test_split(iris_data.data, iris_data.target, test_size=0.2, random_state=100)
+```
+
+#### 학습
+
+```python
+dtc_iris.fit(X_train, y_train)
+```
+
+#### 트리  이미지
+
+```python
+from sklearn.tree import export_graphviz
+
+export_graphviz(dtc_iris, out_file="./data/tree.dot", class_names = iris_data.target_names, 
+                           feature_names = iris_data.feature_names, impurity=True, filled=True)
+```
+
+```python
+import os
+os.environ['PATH']+=os.pathsep+'C:/Program Files (x86)/Graphviz2.38/bin'
+```
+
+```python
+import graphviz
+
+with open('./data/tree.dot') as f:
+    dot_graph = f.read()
+    
+graphviz.Source(dot_graph)
+```
+
+![tree](./img/tree01.jpg)
+
+1. 의사결정 기준을 petal lenght 로 잡음. 이것이 가장 중요하다는 의미
+2. 지니계수보면 불평등
+   1. 그래서 다시 나눈다.
+
+##### 피처 중요도 확인
+
+```python
+print(' feature importance : ', dtc_iris.feature_importances_)
+>
+feature importance :  [0.         0.01880092 0.58591345 0.39528563]
+```
+
+- 이렇게 되면 어떤 컬럼인지 알 수가 없다.
+
+```python
+sns.barplot(x=dtc_iris.feature_importances_,y=iris_data.feature_names)
+plt.show()
+```
+
+![tree02](./img/tree02.jpg)
+
+- 이렇게 시각화를 통해 어떠한 피처가 중요한 지 알았다.
+
+```python
+for name,value in zip(dtc_iris.feature_importances_, iris_data.feature_names):
+    print(name, value)
+>
+0.0 sepal length (cm)
+0.01880091915604763 sepal width (cm)
+0.5859134473686348 petal length (cm)
+0.39528563347531753 petal width (cm)
+```
+
+- 이렇게 루프 돌려서 확인 가능
+
+#### 의사 결정 트리의 단점
+
+- 과적합 
+  - 학습 데이터에서 완벽한 성능을 보이지만 테스트 데이터에서 성능이 좋지 않은 경우
+  -  모의고사에 빗어대 말하면  문제의 유형을 모의고사에 최적화 되게 만들어 버린다. 그러나 수능에서 문제 유형이 달라지면? 
+    - 실력발휘 못함
+- 과적합을 위해서 분류용 가상의 데이터를 생성 make_classification()
+
+```python
+X,y = make_classification(n_features=1,
+                         n_informative=(독립변수간의 관계),
+                          n_redundant=0,
+                         n_clusters_per_class=1(결정값당 클래스 개수를 1개씩 가져간다.),
+                         random_state=100)
+plt.scatter(X,y, marker='o',c=y,edgecolor='k',linewidth=2)
+plt.xlabel('X')
+plt.ylabel('Y')
+plt.grid()
+plt.show()
+```
+
+![tree03](./img/tree03.jpg)
+
+- 0과 1을 가진 데이터를 분리
+
+```python
+from sklearn.datasets import make_classification
+plt.title('2개의 변수를 가진 가상 데이터 3 class')
+
+X_features,y_labels = make_classification(n_features=2,
+                         n_informative=2,
+                         n_redundant=0,
+                         n_clusters_per_class=1,
+                         n_classes=3,
+                         random_state=100)
+plt.scatter(X,y, marker='o',c=y,edgecolor='k',linewidth=2)
+plt.xlabel('X')
+plt.ylabel('Y')
+plt.grid()
+plt.show()
+```
+
+![tree04](./img/tree04.jpg)
