@@ -273,17 +273,88 @@ X_train, X_test, y_train, y_test = har_dataset()
 ```python
 y_train['action'].value_counts()
 >
-5     1423
-6     1413
-4     1293
-1     1226
-2     1073
-3      987
-11      90
-9       75
-10      60
-12      57
-7       47
-8       23
+6    1407
+5    1374
+4    1286
+1    1226
+2    1073
+3     986
+Name: action, dtype: int64
+```
+
+#### 튜닝없이 예측 즉, 디폴트로 예측한 결과
+
+```python
+har_dtc = DecisionTreeClassifier(random_state = 120)
+print('parameter: ', har_dtc.get_params())
+>
+parameter:  {'ccp_alpha': 0.0, 'class_weight': None, 'criterion': 'gini', 'max_depth': None, 'max_features': None, 'max_leaf_nodes': None, 'min_impurity_decrease': 0.0, 'min_impurity_split': None, 'min_samples_leaf': 1, 'min_samples_split': 2, 'min_weight_fraction_leaf': 0.0, 'presort': 'deprecated', 'random_state': 120, 'splitter': 'best'}
+```
+
+```python
+har_dtc.fit(X_train, y_train)
+y_pred = har_dtc.predict(X_test)
+```
+
+```python
+print('정확도 : ',accuracy_score(y_test,y_pred))
+>
+정확도 :  0.8598574821852731
+```
+
+##### max_depth가 정확도에 주는 영향
+
+```python
+params = {
+    'max_depth' : [6,8,10,12,16,20,24]
+  
+}
+grid_cv = GridSearchCV(har_dtc,param_grid=params,scoring='accuracy', cv=5)
+grid_cv.fit(X_train, y_train)
+print('최고 평균 정확도 수치 : ' ,grid_cv.best_score_)
+print('최적 하이퍼 파라미터 : ',grid_cv.best_params_)
+>
+최고 평균 정확도 수치 :  0.846573990575156
+최적 하이퍼 파라미터 :  {'max_depth': 6}
+```
+
+- max_depth 이게 실제로 영향을 미치는 지 안 미치는지
+  - 6이상 이면 정확도는 높아지지만 과적합이 된다.
+
+```python
+max_depths = [6,10,12, 16, 20, 24, 28]
+for depth in max_depths:
+    har_dtc = DecisionTreeClassifier(max_depth = depth,random_state = 120)
+    har_dtc.fit(X_train, y_train)
+    y_pred = har_dtc.predict(X_test)
+    accuracy = accuracy_score(y_test,y_pred)
+    print('max_depths {}, 예측값 : {}'.format(depth,accuracy))
+>
+max_depths 6, 예측값 : 0.8557855446216491
+max_depths 10, 예측값 : 0.8680013573125213
+max_depths 12, 예측값 : 0.8635900916185952
+max_depths 16, 예측값 : 0.8652867322701052
+max_depths 20, 예측값 : 0.8598574821852731
+max_depths 24, 예측값 : 0.8598574821852731
+max_depths 28, 예측값 : 0.8598574821852731
+```
+
+- 어느정도 되면 감소한다. 
+  - 이 값을 멈춰주는 걸 해줘야 한다.
+  - 정확도 변동이 없으면 거기서 끊고 최고의 파라미터를 찾아라.
+  - 부스팅 알고리즘
+
+##### min_samples_split 옵션 추가
+
+```python
+params = {
+    'max_depth' : [6,8,10,12,16,20,24],
+    'min_samples_split' : [16,24],
+  
+}
+grid_cv = GridSearchCV(har_dtc,param_grid=params,scoring='accuracy', cv=5)
+grid_cv.fit(X_train, y_train)
+print('최고 평균 정확도 수치 : ' ,grid_cv.best_score_)
+print('최적 하이퍼 파라미터 : ',grid_cv.best_params_)
 ```
 
