@@ -55,7 +55,7 @@
   - 디폴트 None
 - max_features
   - 최적의 분할을 위해 고려할 최대 피처 개수
-  - 디폴트는 None으로 데이터 세으틔 모든 피처를 사용해 분할 수행
+  - 디폴트는 None으로 데이터 세트의 모든 피처를 사용해 분할 수행
 
 - min_sample_split
   - 노드를 분할하기 위한 최소한의 샘플 데이터 수로 과적합을 제어
@@ -180,6 +180,24 @@ plt.grid()
 plt.show()
 ```
 
+```python
+from sklearn.datasets import make_classification
+plt.title('1개의 독립변수를 가진 가상 데이터')
+
+X,y = make_classification(n_features=1,
+                         n_informative=1,
+                         n_redundant=0,
+                         n_clusters_per_class=1,
+                         random_state=100)
+plt.scatter(X,y, marker='o',c=y,edgecolor='k',linewidth=2)
+plt.xlabel('X')
+plt.ylabel('Y')
+plt.grid()
+plt.show()
+```
+
+
+
 ![tree03](./img/tree03.jpg)
 
 - 0과 1을 가진 데이터를 분리
@@ -248,7 +266,7 @@ def har_dataset():
     # 각 데이터 파일들은 공백으로 분리되어 있으므로 read_csv에서 공백문자를 sep으로 할당
     feature_name_df = pd.read_csv('./data/features.txt', sep='\s+',
                                                      header=None, names=['column_index', 'column_name'])
-    # 데이터프레임에 피처명을 컬럼으로 뷰여하기 위해 리스트 객체로 다시 반환
+    # 데이터프레임에 피처명을 컬럼으로 부여하기 위해 리스트 객체로 다시 반환
     feature_name = feature_name_df.iloc[:, 1].values.tolist()
     
     # 학습 피처 데이터세트와 테스트 피처 데이터를 데이터프레임으로 로딩
@@ -356,6 +374,9 @@ grid_cv = GridSearchCV(har_dtc,param_grid=params,scoring='accuracy', cv=5)
 grid_cv.fit(X_train, y_train)
 print('최고 평균 정확도 수치 : ' ,grid_cv.best_score_)
 print('최적 하이퍼 파라미터 : ',grid_cv.best_params_)
+>
+최고 평균 정확도 수치 :  0.8488942225428581
+최적 하이퍼 파라미터 :  {'max_depth': 20, 'min_samples_split': 24}
 ```
 
 #####  해당 파라미터를 적용해서 예측 수행
@@ -478,7 +499,7 @@ KNeighborsClassifier 0.9035087719298246
 
 - 루프를 돌려서 각각의 학습기의 평가지표를 살펴본다.
 
-- 보팅을 쓰유 중 하나는 분류기로 돌린게 정확도가 낮게 나왔다.
+- 보팅을 쓰는 이유중 하나는 만약에 분류기로 돌린게 정확도가 낮게 나왔다면
   - 낮은 분류기를 평균내서 집단지성으로 활용한다.
   - 우리가 넣을 분류 알고리즘은 하나씩 테스트 해봐야 한다.
 
