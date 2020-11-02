@@ -358,3 +358,71 @@ print('최고 평균 정확도 수치 : ' ,grid_cv.best_score_)
 print('최적 하이퍼 파라미터 : ',grid_cv.best_params_)
 ```
 
+#####  해당 파라미터를 적용해서 예측 수행
+
+```python
+best_params_dtc = grid_cv.best_estimator_
+print(best_params)
+best_pred = best_params_dtc.predict(X_test)
+accuracy = accuracy_score(y_test, best_pred)
+print('예측 정확도 : ', accuracy)
+>
+DecisionTreeClassifier(max_depth=20, min_samples_split=24, random_state=120)
+예측 정확도 :  0.8537495758398371
+```
+
+##### 피처 중요도를 시각화 top20
+
+```python
+feature_importance = pd.Series(best_params_dtc.feature_importances_,index=X_train.columns)
+feature_top20 = feature_importance.sort_values(ascending=False)[:20]
+plt.figure(figsize=(15,5))
+plt.title('feature importance')
+sns.barplot(x=feature_top20, y=feature_top20.index)
+plt.show()
+```
+
+![tree07](./img/tree07.png)
+
+- 이렇게 시각화해서 볼 수 있다.
+
+### 앙상블의 유형
+
+- 보팅, 배깅, 부스팅
+- 대표적인 배깅
+  - 랜덤 포래스트 알고리즘
+- 부스팅
+  - 에이다 부스팅
+  - 그래디언트 부스팅
+  - XGBoost
+  - LightGBM
+
+- 단일 모델의 약적음 다수의 모델들을 결합하여 보완
+- 뛰어난 성능을 가진 모델들로만 구성하는 것보다 성능이 떨어지더라도 서로 다른 유형의 모델을 섞는 것이 오히려 전체 성능에 도움이 됨
+
+#### 보팅과 배깅
+
+- 공통점
+  - 여러 개의 분류기가 투표를 통해 최종 예측 결과 경정
+- 차이점
+  - 보팅의 경우 일반적으로 서로 다른 알고리즘을 가진 분류기를 결합
+  - 배깅은 각각의 분류기가 모두 같은 유형의 알고리즘 기반이지만, 데이터 샘플링을 서로 다르게 가져가면서 학습을 수행해 보팅을 수행
+
+##### 보팅 유형
+
+- 하드보팅
+  - 다수결
+- 소프트 보팅
+  - 1 또는 2의 확률이 있음
+    - 각각의 확률을 더해서 평균을 낸다.
+    - 소프트 보팅이 예측 성능이 상대적으로 더 우수하다.
+
+### 앙상블 
+
+-  ensemble 위한 분류학습기 추가하기
+
+```python
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.ensemble  import VotingClassifier
+```
+
