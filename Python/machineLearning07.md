@@ -2,6 +2,10 @@
 
 ### 앙상블
 
+![ensemble-01](./img/ensemble-01.png)
+
+![ensemble-02](./img/ensemble-02.png)
+
 - 하나의 분류기보다 집단지성처럼 여러개의 분류기를 활용
 
 #### 부스팅
@@ -21,6 +25,12 @@
 - 결정트리의 단점인 과적합(오버 피팅)을 수십~ 수천개의 많은 분류기를 결합해 보완하고 장점인 직관적인 분류 기준은 강화됨
 
 ### 랜덤포레스트
+
+![rf-01](./img/rf-01.png)
+
+![rf-02](./img/rf-02.png)
+
+![rf-03](./img/rf-03.png)
 
 - 배깅의 대표적인 알고리즘
 - 여러개의 결정트리 활용
@@ -120,10 +130,10 @@ hyper_grid_cv_pred = hyper_cv_rf_model.predict(X_test)
 ```python
 print('튜닝을 통한 예측 정확도 : ', accuracy_score(y_test, hyper_grid_cv_pred))
 >
-튜닝을 통한 예측 정확도 :  0.9199185612487275
+튜닝을 통한 예측 정확도 :  0.9304377332880895
 ```
 
-- 정확도가 낮아졌다. 다시 파라미터를 찾아보자.
+- 정확도가 높아졌다.
 
 ##### 각 피처의 중요도를 시각화
 
@@ -137,3 +147,74 @@ plt.show()
 ```
 
 ![rf01](./img/rf_01.png)
+
+#### 부스팅 알고리즘
+
+- 여러개의 약한 학습기를 순자적으로 학습, 예측 하면서 잘못 예측한 데이터에 가중치를 부여해 오류를 개선해 나가면서 학습하는 방식
+- 대표적은 구현
+- 에이다부스트
+- 그래디언트 부스트
+  - 업데이트를 경사 하강법을 이용하는 것이 에이다부스트와 큰 차이
+  - 오류 값은 `실제 값 - 예측값`
+
+#### AdsBoost
+
+![adaboost-01](./img/adaboost-01.png)
+
+![adaboost-01](./img/adaboost-02.png)
+
+- 약한 학습기를 순차적으로 학습시켜, 개별 학습기에 가중치를 부여하여 결합한 모델을 생성
+
+```python
+X_train, X_test, y_train, y_test = human_activ()
+```
+
+- 학습, test 데이터를 가져온다.
+
+```python
+from sklearn.ensemble import AdaBoostClassifier
+```
+
+- 학습기를 import한다.
+
+```python
+ada_model = AdaBoostClassifier(random_state=0,
+                              n_estimators=70,
+                              learning_rate=0.5)
+ada_model.fit(X_train, y_train)
+ada_model_pred = ada_model.predict(X_test)
+print('예측 정확도 : ', accuracy_score(y_test,ada_model_pred))
+>
+예측 정확도 :  0.7638276213098066
+```
+
+- 학습해서 정확도를 출력해본다.
+
+- 76%밖에 안나온다.
+
+```python
+ada_model = AdaBoostClassifier(random_state=0,
+                              n_estimators=60,
+                              learning_rate=0.40)
+ada_model.fit(X_train, y_train)
+ada_model_pred = ada_model.predict(X_test)
+print('예측 정확도 : ', accuracy_score(y_test,ada_model_pred))
+>
+예측 정확도 :  0.8187987784187309
+```
+
+- 정확도가 높아졌다.
+
+- ada는 객체자체라 gridSearcgCV처럼 리스트에 여러 값을 줘서 튜닝하지 못한다.
+
+```python
+ada_model.get_params()
+>
+{'algorithm': 'SAMME.R',
+ 'base_estimator': None,
+ 'learning_rate': 1.0,
+ 'n_estimators': 50,
+ 'random_state': None}
+```
+
+- 그래서 하나씩 넣어봐야 한다.
