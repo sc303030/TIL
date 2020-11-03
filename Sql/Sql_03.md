@@ -201,4 +201,146 @@ FROM 	EMPLOYEE ;
 
 - 주어진 컬럼/문자열에 임의의 문자(열)을 왼쪽/오른쪽에 덧붙여 길이 N의 문자열을 반환하는 함수
 
-14p
+| 구문                     | 반환타입  |
+| ------------------------ | --------- |
+| LPAD( string, N, [str] ) | CHARACTER |
+| RPAD( string, N, [str] ) | CHARACTER |
+
+| 파라미터 | 설명                                                         |
+| -------- | ------------------------------------------------------------ |
+| string   | 문자 타입 컬럼 또는 문자열                                   |
+| N        | • 반환할 문자(열)의 길이(바이트)<br/>• 원래 STRING 길이보다 작다면 N만큼만 잘라서 표시 |
+| str      | • 덧붙이려는 문자(열) <br/>• 생략하면 공백 핚 문자           |
+
+##### 문자열 함수 LPAD 사용 예
+
+- EMAIL 컬럼 왼쪽에 '.' 을 덧붙여 길이를 20으로 맞추시오
+
+```sql
+SELECT	EMAIL AS 원본데이터,
+		LENGTH(EMAIL) AS 원본길이,
+		LPAD(EMAIL, 20, '.') AS 적용결과,
+		LENGTH(LPAD(EMAIL, 20, '.')) AS 결과길이
+FROM 	EMPLOYEE;
+```
+
+**[결과(일부)]**
+
+| 원본데이터      | 원본길이 | 적용결과             | 결과길이 |
+| --------------- | -------- | -------------------- | -------- |
+| aa_aaa@acc.com  | 14       | ......aa_aaa@acc.com | 20       |
+| bb_bbbb@acc.com | 15       | .....bb_bbbb@acc.com | 20       |
+
+- 오른쪽 정렬 효과를 나타냄
+
+##### 문자열 함수 RPAD 사용 예
+
+- EMAIL 컬럼 오른쪽에 '.' 을 덧붙여 길이를 20으로 맞추시오
+
+```sql
+SELECT	EMAIL AS 원본데이터,
+		LENGTH(EMAIL) AS 원본길이,
+		RPAD(EMAIL, 20, '.') AS 적용결과,
+		LENGTH(RPAD(EMAIL, 20, '.')) AS 결과길이
+FROM 	EMPLOYEE;
+```
+
+**[결과(일부)]**
+
+| 원본데이터      | 원본길이 | 적용결과             | 결과길이 |
+| --------------- | -------- | -------------------- | -------- |
+| aa_aaa@acc.com  | 14       | aa_aaa@acc.com...... | 20       |
+| bb_bbbb@acc.com | 15       | bb_bbbb@acc.com..... | 20       |
+
+- 왼쪽 정렬 효과를 나타냄
+
+#### 문자열 함수 LTRIM/RTRIM
+
+- 주어진 컬럼/문자열의 왼쪽/오른쪽에서 지정한 STR에 포함된 모든 문자를 제거한 나머지를 반환하는 함수
+
+- 패턴을 제거하는 의미가 아님
+
+| 구문                                          | 반환타입  |
+| --------------------------------------------- | --------- |
+| LTRIM( string, str )<br/>RTRIM( string, str ) | CHARACTER |
+
+| 파라미터 | 설명                                                         |
+| :------: | ------------------------------------------------------------ |
+|  string  | 문자 타입 컬럼 또는 문자열                                   |
+|   str    | • 제거하려는 문자(열)<br/>• 생략하면 왼쪽/오른쪽 공백을 모두 제거 |
+
+##### 문자열 함수 LTRIM 사용 예
+
+| 구문 (•은 공백)                                              | 결과    |
+| ------------------------------------------------------------ | ------- |
+| SELECT LTRIM('•••tech') FROM DUAL;                           | tech    |
+| SELECT LTRIM('•••tech', '•') FROM DUAL;                      | tech    |
+| SELECT LTRIM('000123', '0') FROM DUAL;                       | 123     |
+| SELECT LTRIM('123123Tech', '123') FROM DUAL;                 | Tech    |
+| SELECT LTRIM('123123Tech123', '123') FROM DUAL;              | Tech123 |
+| SELECT LTRIM('xyxzyyyTech', 'xyz') FROM DUAL;<br/>'xyz'는 xyz가 한묶음이 아니라 or 개념이다. | Tech    |
+| SELECT LTRIM('6372Tech', '0123456789') FROM DUAL;            | Tech    |
+
+##### 문자열 함수 RTRIM 사용 예
+
+| 구문 (•은 공백)                                              | 결과    |
+| ------------------------------------------------------------ | ------- |
+| SELECT RTRIM('tech•••') FROM DUAL;                           | tech    |
+| SELECT RTRIM('tech•••', '•') FROM DUAL;                      | tech    |
+| SELECT RTRIM('123000', '0') FROM DUAL;                       | 123     |
+| SELECT RTRIM('Tech123123', '123') FROM DUAL;                 | Tech    |
+| SELECT RTRIM('123Tech123', '123') FROM DUAL;                 | Tech123 |
+| SELECT RTRIM('Techxyxzyyy', 'xyz') FROM DUAL;<br/>'xyz'는 xyz가 한묶음이 아니라 or 개념이다. | Tech    |
+| SELECT RTRIM('Tech6372', '0123456789') FROM DUAL;<br/>'0123456789'도 or 개념 | Tech    |
+
+#### 문자열 함수 TRIM
+
+- 주어진 컬럼/문자열의 앞/뒤/양쪽에 있는 지정한 문자를 제거한 나머지를 반환하는 함수
+
+| 구문                                                         | 반환타입  |
+| ------------------------------------------------------------ | --------- |
+| TRIM( trim_source )                                          | CHARACTER |
+| TRIM( trim_char FROM trim_source )                           | CHARACTER |
+| TRIm( LEADING\|TRAILING\|BOTH [trim_char] FROM trim_source ) | CHARACTER |
+
+|           파라미터            |                             설명                             |
+| :---------------------------: | :----------------------------------------------------------: |
+|          trim_source          |                  문자 타입 컬럼 또는 문자열                  |
+|           trim_char           | • 제거하려는 하나의 문자<br/>• 생략하면 기본값으로 공백 한 문자 |
+| LEADING<br/>TRAILING<br/>BOTH | • trim_char 위치 지정<br/>• 앞/뒤/양쪽 지정 가능(기본값은 양쪽) |
+
+##### 문자열 함수 TRIM 사용 예
+
+| 구문(•은 공백)                                     | 결과   |
+| -------------------------------------------------- | ------ |
+| SELECT TRIM('••tech••') FROM DUAL;                 | tech   |
+| SELECT TRIM('a' FROM 'aatechaaa') FROM DUAL;       | tech   |
+| SELECT TRIM(LEADING '0' FROM '000123') FROM DUAL;  | 123    |
+| SELECT TRIM(TRAILING '1' FROM 'Tech1') FROM DUAL;  | Tech   |
+| SELECT TRIM(BOTH '1' FROM '123Tech111') FROM DUAL; | 23Tech |
+| SELECT TRIM(LEADING FROM '••Tech••') FROM DUAL;    | Tech•• |
+
+#### 문자열 함수 SUBSTR
+
+|                  구문                  | 반환 타입 |
+| :------------------------------------: | :-------: |
+| SUBSTR( string, position, [ length ] ) | CHARACTER |
+
+| 파라미터 |                             설명                             |
+| :------: | :----------------------------------------------------------: |
+|  string  |                  문자 타입 컬럼 또는 문자열                  |
+| position | • 잘라내는 시작 위치<br/>• position = 0 or 1 : 시작 위치(1번째)<br/>• position > 0 : 끝 방향으로 지정한 수만큼 위치<br/>• position < 0 : 시작 방향으로 지정한 수만큼 위치 |
+|  length  | • 반환할 문자 개수<br/>• 잘라내는 방향은 항상 끝 방향<br/>• 생략하면 position부터 문자열 끝까지를 의미<br/>• length < 0 : NULL 반환 |
+
+##### 문자열 함수 SUBSTR 사용 예
+
+| 구문(•은 공백)                                      | 결과      |
+| --------------------------------------------------- | --------- |
+| SELECT SUBSTR('This•is•a•test', 6, 2) FROM DUAL;    | is        |
+| SELECT SUBSTR('This•is•a•test', 6) FROM DUAL;       | is•a•test |
+| SELECT SUBSTR('이것은•연습입니다', 3, 4) FROM DUAL; | 은•연습   |
+| SELECT SUBSTR('TechOnTheNet', 1, 4) FROM DUAL;      | Tech      |
+| SELECT SUBSTR('TechOnTheNet', -3, 3) FROM DUAL;     | Net       |
+| SELECT SUBSTR('TechOnTheNet', -8, 2) FROM DUAL;     | On        |
+
+24p
