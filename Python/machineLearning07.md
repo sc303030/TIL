@@ -255,14 +255,50 @@ print('정확도 : ', accuracy_score(y_test,gbm_model_pred))
 ![GBM-hyper](./img/GBM-hyper.png)
 
 ```python
-params = {
-    'loss' : ['deviance'],
+from sklearn.model_selection import GridSearchCV
+start_time = time.time()
+gbm_model = GradientBoostingClassifier(random_state=0)
+params={
     'n_estimators'    : [100],
-    'learning_rate' : [0.1,0.5],
-    'subsample' : [0.1,0.35,0.75,1],    
+    'learning_rate' : [0.1],
 }
-hyper_gbm_model = GradientBoostingClassifier(random_state=0)
-hyper_gbm_grid_cv = GridSearchCV(hyper_gbm_model, param_grid=params, cv=5)
-hyper_gbm_grid_cv.fit(X_train, y_train)
+
+gdv_gscv_model = GridSearchCV(gbm_model, param_grid=params, cv=2)
+
+gdv_gscv_model.fit(X_train, y_train)
+print('최적의 파라미터 : ',gdv_gscv_model.best_params_)
+print('예측 정확도 : ',gdv_gscv_model.best_score_)
+print('수행시간 : ',time.time()- start_time)
+```
+
+##### 혼동행렬, 정확도, 정밀도, 재현율, F1, AUC
+
+```python
+def classifier_eval(y_test,y_pred):
+    print('오차행렬 : ',confusion_matrix(y_test, y_pred))
+    print('정확도 : ' , accuracy_score(y_test, y_pred))
+    print('정밀도 : ', precision_score(y_test, y_pred))
+    print('재현율 : ', recall_score(y_test, y_pred))
+    print('F1 : ', f1_score(y_test, y_pred))
+    print('AUC : ', roc_auc_score(y_test, y_pred))
+```
+
+```python
+gscv_pred = gdv_gscv_model.best_estimator_.predict(X_test)
+classifier_eval(y_test, gscv_pred)
+```
+
+- 하이퍼 파라미터를 하고 각각의 평가지표를 확인한다.
+  - 그리드서치는 `best_estimator_ ` 이걸로 예측해야 한다.
+
+##### feature importanes 시각화
+
+```python
+feature_important = pd.Series(data=gdv_gscv_model.feature_importances_, index=X_train.columns)
+feature_important_20 = feature_important.sore_vlaues(ascending=False)[:20]
+plt.figure(figsize=(15,20))
+plt.title('Feature Importances Top 20')
+sns.barplot(x=feature_important_20, y=feature_important_20.index)
+plt.show()
 ```
 
