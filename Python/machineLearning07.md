@@ -218,3 +218,51 @@ ada_model.get_params()
 ```
 
 - 그래서 하나씩 넣어봐야 한다.
+
+#### GBM
+
+- 주요 하이퍼 파라미터
+  - loss : 경사 하강법에서 사용할 비용 함수를 지정
+- learning_rate 
+
+```python
+from sklearn.ensemble import GradientBoostingClassifier
+```
+
+- GBM을 import한다.
+
+```python
+import time
+start_time = time.time()
+gbm_model = GradientBoostingClassifier(random_state=0)
+gbm_model.fit(X_train, y_train)
+gbm_model_pred = gbm_model.predict(X_test)
+print('수행시간 : ',time.time()- start_time)
+>
+수행시간 :  1052.8894832134247
+```
+
+```python
+print('정확도 : ', accuracy_score(y_test,gbm_model_pred))
+>
+정확도 :  0.9389209365456397
+```
+
+- 수행시간이 오래 걸리지만  정확도는 ada보다 높았다.
+
+#### 하이퍼 파라미터 튜닝
+
+![GBM-hyper](./img/GBM-hyper.png)
+
+```python
+params = {
+    'loss' : ['deviance'],
+    'n_estimators'    : [100],
+    'learning_rate' : [0.1,0.5],
+    'subsample' : [0.1,0.35,0.75,1],    
+}
+hyper_gbm_model = GradientBoostingClassifier(random_state=0)
+hyper_gbm_grid_cv = GridSearchCV(hyper_gbm_model, param_grid=params, cv=5)
+hyper_gbm_grid_cv.fit(X_train, y_train)
+```
+
