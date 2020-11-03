@@ -58,7 +58,82 @@ X_train, X_test, y_train, y_test
 rf_model = RandomForestClassifier(random_state=0)
 rf_model.fit(X_train, y_train)
 y_pred = rf_model.predict(X_test)
-print('answer',y_test)
 ```
 
 - 학습, 예측을 하였음
+
+```python
+print('answer',y_test)
+print('guess', y_pred)
+accuracy = accuracy_score(y_test, y_pred)
+print('랜덤포레스트 정확도 : ', accuracy)
+>
+answer       action
+0          5
+1          5
+[2947 rows x 1 columns]
+guess [5 5 5 ... 2 2 2]
+랜덤포레스트 정확도 :  0.9253478113335596
+```
+
+- 하이퍼 파라미터 튜닝이 필요하다.
+- n-estimator : 결정 트리의 개수
+- min_samples_split 
+- min_samples_leaf
+- max_feature
+- max_depth
+- max_leaf_nodes
+
+#### GridSearchCV 교차검증 및 하이퍼 파라미터 튜닝
+
+- 튜닝을 파라미터 필요
+
+```python
+params = {
+    'n_estimators' : [100],
+    'max_depth'    : [6,8,10,12],
+    'min_samples_leaf' : [8,12,18],
+    'min_samples_split' : [8,16,20],    
+}
+cv_rf_model = RandomForestClassifier(random_state=0, n_jobs=-1)
+grid_cv = GridSearchCV(cv_rf_model, param_grid=params, cv=5, n_jobs=-1)
+grid_cv.fit(X_train, y_train)
+```
+
+-  n_jobs= : GPU사용하지 않고 있으면 전체를 CPU로 쓰겠다.
+
+- 하이퍼 파라미터를 통해서 besr_score와 params등을 찾아서 다시 예측 할 수 있다.
+
+```python
+print('최적의 파라미터 : ',grid_cv.best_params_)
+print('예측 정확도 : ',grid_cv.best_score_)
+```
+
+- 위에서 나온 하이퍼 파라미터를 이용하여 랜텀 포레스트를 다시 학습시켜보자
+
+```python
+hyper_cv_rf_model =     RandomForestClassifier(n_estimators= 100, max_depth =12, min_samples_leaf=12, min_samples_split=8)
+hyper_cv_rf_model.fit(X_train, y_train)
+hyper_grid_cv_pred = hyper_cv_rf_model.predict(X_test)
+```
+
+```python
+print('튜닝을 통한 예측 정확도 : ', accuracy_score(y_test, hyper_grid_cv_pred))
+>
+튜닝을 통한 예측 정확도 :  0.9199185612487275
+```
+
+- 정확도가 낮아졌다. 다시 파라미터를 찾아보자.
+
+##### 각 피처의 중요도를 시각화
+
+```python
+feature_importance = pd.Series(hyper_cv_rf_model.feature_importances_,index=X_train.columns)
+feature_top20 = feature_importance.sort_values(ascending=False)[:20]
+plt.figure(figsize=(15,5))
+plt.title('feature importance')
+sns.barplot(x=feature_top20, y=feature_top20.index)
+plt.show()
+```
+
+![rf01](./img/rf_01.png)
