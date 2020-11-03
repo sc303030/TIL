@@ -164,4 +164,41 @@ INSTR(string, substring, [ position, [ occurrence ] ] )    NUMBER
 |  position  | • 어디부터 찾을지를 결정하는 시작 위치(기본값 1)<br/>• POSITION > 0 : STRING의 시작부터 끝 방향으로 찾는 의미<br/> • POSITION < 0 : STRING의 끝부터 시작 방향으로 찾는 의미 |
 | occurrence | • SUBSTRING이 반복될 때의 지정하는 빈도(기본값 1)<br/>• 음수 값은 사용할 수 없음 |
 
-13p
+##### 문자열 함수 INSTR 사용 예
+
+- EMAIL 컬럼 값의 '@vcc.com' 문자열 중 "." 바로 앞의 문자 'c' 위치를 구하시오
+
+**[구문 1]**
+
+```sql
+SELECT 	EMAIL,
+		INSTR( EMAIL,'c',-1,2 ) 위치
+FROM 	EMPLOYEE ;
+```
+
+- 'POSITION'은 음수(-1)이므로 끝부터 시작 방향으로 찾음
+- 'OCCURRENCE'는 2 이므로 두 번째 나타나는 문자 위치를 의미
+
+**[결과(일부)]**
+
+| EMAIL           | 위치 |
+| --------------- | ---- |
+| aa_aaa@acc.com  | 10   |
+| bb_bbbb@acc.com | 11   |
+
+**[구문 2]**
+
+```sql
+SELECT 	EMAIL,
+		INSTR( EMAIL, 'c', INSTR( EMAIL,'.' )-1 ) 위치
+FROM 	EMPLOYEE ;
+```
+
+- 'POSITION'은 INSTR(EMAIL, '.')-1 결과(≒ 마침표 핚 자리 앞 의미)
+- 'OCCURRENCE'는 생략되었으므로 기본 값 1 적용(첫 번째 나타나는 문자 의미)
+
+#### 문자열 함수 LPAD/RPAD
+
+- 주어진 컬럼/문자열에 임의의 문자(열)을 왼쪽/오른쪽에 덧붙여 길이 N의 문자열을 반환하는 함수
+
+14p
