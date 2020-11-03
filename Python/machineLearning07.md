@@ -269,27 +269,38 @@ gdv_gscv_model.fit(X_train, y_train)
 print('최적의 파라미터 : ',gdv_gscv_model.best_params_)
 print('예측 정확도 : ',gdv_gscv_model.best_score_)
 print('수행시간 : ',time.time()- start_time)
+>
+최적의 파라미터 :  {'learning_rate': 0.1, 'n_estimators': 200}
+예측 정확도 :  0.8994831338411317
+수행시간 :  5390.912911653519
 ```
 
-##### 혼동행렬, 정확도, 정밀도, 재현율, F1, AUC
+- 50분 걸렸다.ㅠㅠ
+
+##### 혼동행렬, 정확도
 
 ```python
 def classifier_eval(y_test,y_pred):
     print('오차행렬 : ',confusion_matrix(y_test, y_pred))
     print('정확도 : ' , accuracy_score(y_test, y_pred))
-    print('정밀도 : ', precision_score(y_test, y_pred))
-    print('재현율 : ', recall_score(y_test, y_pred))
-    print('F1 : ', f1_score(y_test, y_pred))
-    print('AUC : ', roc_auc_score(y_test, y_pred))
 ```
 
 ```python
 gscv_pred = gdv_gscv_model.best_estimator_.predict(X_test)
 classifier_eval(y_test, gscv_pred)
+>
+오차행렬 :  [[485   9   2   0   0   0]
+ [ 18 447   5   0   1   0]
+ [  8  25 386   0   1   0]
+ [  0   2   0 419  70   0]
+ [  0   0   0  35 497   0]
+ [  0   0   0   0   0 537]]
+정확도 :  0.9402782490668476
 ```
 
 - 하이퍼 파라미터를 하고 각각의 평가지표를 확인한다.
   - 그리드서치는 `best_estimator_ ` 이걸로 예측해야 한다.
+- 94% 정확도를 보여준다.
 
 ##### feature importanes 시각화
 
