@@ -2,6 +2,14 @@
 
 ### XGBoost (eXtra Gradient Boost)
 
+![XGBoost-01](./img/XGBoost-01.png)
+
+![XGBoost-02](./img/XGBoost-02.png)
+
+![XGBoost-03.png](./img/XGBoost-03.png)
+
+![XGBoost-04.png](./img/XGBoost-04.png)
+
 - 뛰어난 예측 성능
 - GBM 대비 빠른 수행 시간
   - CPU 병렬 처리, GPU 지원
@@ -163,6 +171,12 @@ plot_importance(sklearn_xgboost_model)
 - 어떤 feature가 중요한지 알 수 있다.
 
 #### Basic Stacking Model - Diagram
+
+![ensemble-stacking-01](./img/ensemble-stacking-01.png)
+
+![ensemble-stacking-02](./img/ensemble-stacking-02.png)
+
+![ensemble-stacking-03](./img/ensemble-stacking-03.png)
 
 - 앙상블 기반
 
