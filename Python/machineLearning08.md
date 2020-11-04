@@ -179,3 +179,114 @@ plot_importance(sklearn_xgboost_model)
 테스트  결과값 1,2,3끼리  최종 테스트 데이터 생성
 
 이 2개로 최종 메타 모델이 학습진행
+
+```python
+from sklearn.ensemble import AdaBoostClassifier
+```
+
+```python
+# 개별 분류기 생성
+knn_clf = KNeighborsClassifier(n_neighbors=4)
+rf_clf = RandomForestClassifier(n_estimators=100, random_state=100)
+dt_clf = DecisionTreeClassifier()
+ada_clf = AdaBoostClassifier(n_estimators=100)
+```
+
+```python
+# 개별 모델에 대한 학습
+knn_clf.fit(X_train, y_train)
+rf_clf.fit(X_train, y_train)
+dt_clf.fit(X_train, y_train)
+ada_clf.fit(X_train, y_train)
+```
+
+```python
+# 개별 모델에 대한 예측을 수행
+knn_clf_pred = knn_clf.predict(X_test)
+rf_clf_pred = rf_clf.predict(X_test)
+dt_clf_pred = dt_clf.predict(X_test)
+ada_clf_pred = ada_clf.predict(X_test)
+```
+
+```python
+classifier_eval(y_test,knn_clf_pred)
+classifier_eval(y_test,rf_clf_pred)
+classifier_eval(y_test,dt_clf_pred)
+classifier_eval(y_test,ada_clf_pred)
+>
+오차행렬 :  [[48  1]
+ [ 5 60]]
+정확도   :  0.9473684210526315
+정밀도   :  0.9836065573770492
+재현율   :  0.9230769230769231
+F1       :  0.9523809523809524
+AUC      :  0.9513343799058084
+오차행렬 :  [[45  4]
+ [ 1 64]]
+정확도   :  0.956140350877193
+정밀도   :  0.9411764705882353
+재현율   :  0.9846153846153847
+F1       :  0.962406015037594
+AUC      :  0.95149136577708
+오차행렬 :  [[45  4]
+ [ 1 64]]
+정확도   :  0.956140350877193
+정밀도   :  0.9411764705882353
+재현율   :  0.9846153846153847
+F1       :  0.962406015037594
+AUC      :  0.95149136577708
+오차행렬 :  [[46  3]
+ [ 1 64]]
+정확도   :  0.9649122807017544
+정밀도   :  0.9552238805970149
+재현율   :  0.9846153846153847
+F1       :  0.9696969696969696
+AUC      :  0.9616954474097332
+```
+
+- 각각의 학습기로 예측 데이터와 학습 데이터들을 만들었다.
+
+```python
+# 학습을 마친 모델의 예측 결과를 합쳐서 최종 예측
+merge_pred = np.array([knn_clf_pred, rf_clf_pred,dt_clf_pred,ada_clf_pred])
+```
+
+- np.array를 이용해서 2차원의 배열을 만들었다.
+- 4개의 행과 길이에 해당되는 컬럼값으로 이루어져있다.
+
+```python
+merge_pred = np.transpose(merge_pred)
+```
+
+- 이렇게 해야 각각의 학습기를 컬럼으로 가지는 배열로 만들어야 학습을 할 수 있다.
+
+```python
+# 최종 분류기 선택 MetaModel
+lr_clf = LogisticRegression()
+lr_clf.fit(merge_pred, y_test)
+final_pred = lr_clf.predict(merge_pred)
+classifier_eval(y_test, final_pred)
+>
+오차행렬 :  [[48  1]
+ [ 0 65]]
+정확도   :  0.9912280701754386
+정밀도   :  0.9848484848484849
+재현율   :  1.0
+F1       :  0.9923664122137404
+AUC      :  0.9897959183673469
+```
+
+- 과적합 위험성 발생
+  - 왜? 학습한 데이터로 예측을 했기 때문에
+
+#### 과적합을 보완하기위해서 교차검증을 추가해야 한다
+
+- CV를 기반으로 코드 변경
+- 회귀모델의 평가 지표로 활용되는 -> MAE(Mean of Absolute Errors)
+- 실제값과 예측 값의 차이를 절대값으로 변환된 평균
+
+```python
+from sklearn.model_selection import KFold
+from sklearn.metrics import mean_absolute_error
+```
+
