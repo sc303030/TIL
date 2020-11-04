@@ -576,4 +576,224 @@ WHERE 	EMP_ID = TO_CHAR(100);
 | MI              | 분(0~59)                          |
 | SS              | 초(0~59)                          |
 
-39p
+##### 데이터 타입 변환 함수 TO_CHAR 사용 예
+
+| 구문                                                     | 결과             |
+| -------------------------------------------------------- | ---------------- |
+| SELECT TO_CHAR( SYSDATE, 'PM HH24:MI:SS' ) FROM DUAL;    | 오후 20:57:11    |
+| SELECT TO_CHAR( SYSDATE, 'AM HH:MI:SS' ) FROM DUAL;      | 오후 08:57:11    |
+| SELECT TO_CHAR( SYSDATE, 'MON DY, YYYY' ) FROM DUAL;     | 1월 월, 2020     |
+| SELECT TO_CHAR( SYSDATE, 'YYYY-fmMM-DD DAY' ) FROM DUAL; | 2020-1-2 월요일  |
+| SELECT TO_CHAR( SYSDATE, 'YYYY-MM-fmDD DAY' ) FROM DUAL; | 2020-01-2 월요일 |
+| SELECT TO_CHAR( SYSDATE, 'Year, Q' ) FROM DUAL;          | Twenty Twenty, 1 |
+
+- 'fm' 모델을 사용하면 '01' 형식이 '1' 형식으로 표현됨
+
+```sql
+SELECT	EMP_NAME AS 이름,
+		TO_CHAR(HIRE_DATE, 'YYYY-MM-DD') AS 입사일
+FROM 	EMPLOYEE
+WHERE 	JOB_ID = 'J7';
+```
+
+| 이름 | 입사일     |
+| ---- | ---------- |
+| 펭하 | 2004-07-15 |
+
+```sql
+SELECT 	EMP_NAME AS 이름,
+		TO_CHAR(HIRE_DATE, 'YYYY"년" MM"월" DD"일"') AS 입사일
+FROM 	EMPLOYEE
+WHERE 	JOB_ID = 'J7';
+```
+
+| 이름 | 입사일           |
+| ---- | ---------------- |
+| 펭하 | 2004년 07월 15일 |
+
+```sql
+SELECT 	EMP_NAME AS 이름,
+		SUBSTR(HIRE_DATE,1,2)||'년 '||
+		SUBSTR(HIRE_DATE,4,2)||'월 '||
+		SUBSTR(HIRE_DATE,7,2)||'일' AS 입사일
+FROM 	EMPLOYEE
+WHERE 	JOB_ID = 'J7';
+```
+
+| 이름 | 입사일         |
+| ---- | -------------- |
+| 펭하 | 04년 07월 15일 |
+
+- DATE 타입과 CHARACTER 타입 비교
+
+```sql
+SELECT 	EMP_NAME AS 이름,
+		HIRE_DATE AS 기본입사일,
+		TO_CHAR(HIRE_DATE,
+		'YYYY/MM/DD HH24:MI:SS') AS 상세입사일
+FROM 	EMPLOYEE
+WHERE 	JOB_ID IN ('J1','J2');
+```
+
+| 이름 | 기본입사일 | 상세입사일           |
+| ---- | ---------- | -------------------- |
+| 펭하 | 04/07/15   | 2004/07/15  00:00:00 |
+
+- DATE 타입에 시간정보없이 날짜만 입력하면 자동으로 시간은 해당 날짜의 '00시 00분 00초'로 저장
+
+```sql
+SELECT 	EMP_NAME
+FROM 	EMPLOYEE
+WHERE 	HIRE_DATE = '04/04/30';
+```
+
+| EMP_NAME |      |
+| -------- | ---- |
+| 펭하     |      |
+
+- 시간 정보가 없는 경우에는 기본날짜 형식으로 비교 가능
+
+```sql
+SELECT	EMP_NAME
+FROM 	EMPLOYEE
+WHERE 	HIRE_DATE = '90/04/01';
+```
+
+| EMP_NAME |      |
+| -------- | ---- |
+|          |      |
+
+- 시간 정보가 있는 경우에는 기본 날짜 형식으로는 비교 불가능
+
+#### 데이터 타입 변환 함수 TO_DATE
+
+- CHARACTER 타입을 DATE 타입으로 변환하는 함수
+
+| 입력 타입 | 구문                                  | 반환 타입 |
+| --------- | ------------------------------------- | --------- |
+| CHARACTER | **TO_DATE** ( input_type [,format ] ) | DATE      |
+
+**[함수 설명]**
+
+- 기본 날짜 형식이 아닌 문자열을 DATE 타입으로 인식시켜야 하는 경우
+  - 2010-01-04 : 기본 날짜 형식이 아니므로 문자열로 인식
+- DATE 타입과 비교하는 경우
+  - HIRE_DATE = '90/04/01 13:30:30'
+- 제공되는 날짜 표현 형식을 이용
+
+##### 데이터 타입 변환 함수 TO_DATE 사용 예
+
+| 구문                                                         | 결과                     |
+| ------------------------------------------------------------ | ------------------------ |
+| SELECT TO_DATE( '20100101', 'YYYYMMDD') FROM DUAL;           | 10/01/01                 |
+| SELECT TO_CHAR( '20100101', 'YYYY, MON') FROM DUAL;          | N/A(오류)                |
+| SELECT TO_CHAR( TO_DATE( '20100101', 'YYYYMMDD'),<br/>                                  'YYYY, MON') FROM DUAL; | 2010, 1월                |
+| SELECT TO_DATE( '041030 143000', 'YYMMDD HH24MISS' ) FROM DUAL; | 04/10/30                 |
+| SELECT TO_CHAR( TO_DATE( '041030 143000', 'YYMMDD HH24MISS' ),<br/>                                 'DD-MON-YY HH:MI:SS PM' ) FROM DUAL; | 30-10월-04 02:30:00 오후 |
+| SELECT TO_DATE( '980630', 'YYMMDD' ) FROM DUAL;              | 98/06/30                 |
+| SELECT TO_CHAR( TO_DATE( '980630', 'YYMMDD' ),<br/>'YYYY.MM.DD') FROM DUAL; | 2098.06.30               |
+
+- 98년을 2000년대로 인식해서 1998년으로하려면 다른 과정을 거쳐야 한다.
+
+```sql
+SELECT 	EMP_NAME,
+		HIRE_DATE
+FROM 	EMPLOYEE
+WHERE 	HIRE_DATE =
+		TO_DATE('900401 133030','YYMMDD HH24MISS');
+```
+
+```sql
+SELECT 	EMP_NAME,
+		HIRE_DATE
+FROM 	EMPLOYEE
+WHERE 	TO_CHAR(HIRE_DATE, 'YYMMDD') = '900401';
+```
+
+| EMP_NAME | HIRE_DATE |
+| -------- | --------- |
+| 펭하     | 90/04/01  |
+
+#### 데이터 타입 변환 함수 TO_DATE
+
+- RR 날짜 형식
+  - YY 날짜 형식과 유사
+  - '지정한 년도'와 '현재 년도'에 따라 반환하는 '세기' 값이 달라짐
+    - 여러 세기 지정 가능
+
+|           |         | 지정한 년도(두자리) | 지정한 년도(두자리) |
+| :-------: | :-----: | :-----------------: | :-----------------: |
+|           |         |       0 - 49        |       50 - 99       |
+| 현재 년도 | 0 - 49  |   현재 세기 반환    | **이전 세기** 반환  |
+| (두자리)  | 50 - 99 | **다음 세기** 반환  |   현재 세기 반환    |
+
+```sql
+SELECT 	EMP_NAME,
+		HIRE_DATE,
+		TO_CHAR(HIRE_DATE, 'YYYY/MM/DD')
+FROM 	EMPLOYEE
+WHERE 	EMP_NAME = '한선기';
+```
+
+| EMP_NAME | HIRE_DATE | TO_CHAR(HIRE_DATE, 'YYYY/MM/DD') |
+| -------- | --------- | -------------------------------- |
+| 펭하     | 90/04/01  | 2090/04/01                       |
+
+- 해당 데이터는 두 자리 년도를  YY 형식으로 사용
+  - TO_DATE('90/04/01 13:30:30','YY/MM/DD HH24:MI:SS')
+- YY 형식은 항상 현재 세기를 의미
+  - 원래 의미 '1990' 대신 현재 세기인 '2090'으로 인식
+
+##### 데이터 타입 변환 함수 TO_DATE 사용 예
+
+| 현재 년도 | 지정 날짜 | RR 형식 | YY 형식 |
+| :-------: | :-------: | :-----: | :-----: |
+|   1995    | 95/10/27  |  1995   |  1995   |
+|   1995    | 17/10/27  |  2017   |  1917   |
+|   2009    | 17/10/27  |  2017   |  2017   |
+|   2009    | 95/10/27  |  1995   |  2095   |
+
+```sql
+SELECT 	'2009/10/14' AS 현재,
+		'95/10/27' AS 입력,
+		TO_CHAR(TO_DATE('95/10/27','YY/MM/DD'),'YYYY/MM/DD') AS YY형식1,
+		TO_CHAR(TO_DATE('95/10/27','YY/MM/DD'),'RRRR/MM/DD') AS YY형식2,
+		TO_CHAR(TO_DATE('95/10/27','RR/MM/DD'),'YYYY/MM/DD') AS RR형식1,
+		TO_CHAR(TO_DATE('95/10/27','RR/MM/DD'),'RRRR/MM/DD') AS RR형식2
+FROM 	DUAL;
+```
+
+| 현재       | 입력     | YY형식1    | YY형식2    | RR형식1    | RR형식2    |
+| ---------- | -------- | ---------- | ---------- | ---------- | ---------- |
+| 2009/10/14 | 95/10/27 | 2095/10/27 | 2095/10/27 | 1995/10/27 | 1995/10/27 |
+
+#### 데이터 타입 변환 함수 TO_NUMBER
+
+- CHARACTER 타입을 NUMBER 타입으로 변환하는 함수
+
+| 입력 타입 | 구문                                    | 반환 타입 |
+| --------- | --------------------------------------- | --------- |
+| CHARACTER | **TO_NUMBER** ( input_type [,format ] ) | NUMBER    |
+
+**[함수 설명]**
+
+- 숫자로 변환될 때 의미 있는 형태의 문자열인 경우
+  - '100' -> 100 : 문자열 '100'을 숫자 100으로 변환
+
+##### 데이터 타입 변환 함수 TO_NUMBER 사용 예
+
+```sql
+SELECT 	EMP_NAME, EMP_NO,
+		SUBSTR(EMP_NO,1,6)AS 앞부분,
+		SUBSTR(EMP_NO,8) AS 뒷부분,
+		TO_NUMBER( SUBSTR(EMP_NO,1,6) ) + TO_NUMBER( SUBSTR(EMP_NO,8) ) AS 결과
+FROM 	EMPLOYEE
+WHERE 	EMP_ID = '101';
+```
+
+| EMP_NAME | EMP_NO         | 앞부분 | 뒷부분  | 결과    |
+| -------- | -------------- | ------ | ------- | ------- |
+| 펭하     | 621136-1006405 | 621136 | 1006405 | 1627541 |
+
+- 결과 : 1006405 + 621136 = 1627541
+
