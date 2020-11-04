@@ -293,3 +293,77 @@ title(main="성적그래프", col.main="red", font.main=4)
 | S    | 계단형식의 다른 모양 그래프                       |
 | n    | 그래프를 그리지 않음                              |
 
+```R
+국어 <- c(4,7,6,8,5,5,9,10,4,10)
+par(mar=c(1,1,1,1), mfrow=c(4,2))
+plot(국어, type="p", col="blue", main="type = p", xaxt="n", yaxt="n")
+plot(국어, type="l", col="blue", main="type = l", xaxt="n", yaxt="n")
+plot(국어, type="b", col="blue", main="type = b", xaxt="n", yaxt="n")
+plot(국어, type="c", col="blue", main="type = c", xaxt="n", yaxt="n")
+plot(국어, type="o", col="blue", main="type = o", xaxt="n", yaxt="n")
+plot(국어, type="h", col="blue", main="type = h", xaxt="n", yaxt="n")
+plot(국어, type="s", col="blue", main="type = s", xaxt="n", yaxt="n")
+plot(국어, type="S", col="blue", main="type = S", xaxt="n", yaxt="n")
+```
+
+![plot04](./img/plot04.png)
+
+![plot05](./img/plot05.png)
+
+- 축과 레이블이 없이 그래프 그리기
+
+```R
+국어 <- c(4,7,6,8,5,5,9,10,4,10); 수학 <- c(7,4,7,3,8,10,4,10,5,7)
+```
+
+```R
+plot(국어, type="o", col="blue", ylim=c(0,10), axes=FALSE, ann=FALSE) #축과 제목이 없이 그래프 생성
+```
+
+![plot06](./img/plot06.png)
+
+- x, y 축 추가하기
+
+```R
+axis(1, at=1:10, lab=c("01","02","03","04","05","06","07","08","09","10")) # x축 추가
+axis(2, at=c(0,2,4,6,8,10)) # y축 추가
+```
+
+![plot07](./img/plot07.png)
+
+- 그래프 추가하고, 그래프에 박스 그리기
+
+```R
+lines(수학, type="o", pch=16, lty=2, col="red")
+box() # 박스 그리기
+```
+
+![plot08](./img/plot08.png)
+
+- 그래프 제목, 축의 제목, 범례 나타내기
+
+```R
+title(main="성적그래프", col.main="red", font.main=4)
+title(xlab="학번", col.lab=rgb(0,1,0)) 
+title(ylab="점수", col.lab=rgb(1,0,0))
+legend(1, 10, c("국어","수학"), cex=0.8, col=c("blue","red"), pch=c(16,21), lty=c(1,2))
+```
+
+![plot09](./img/plot09.png)
+
+#### 막대그래프 그리기
+
+```R
+barplot(국어)
+```
+
+![plot10](./img/plot10.png)
+
+```R
+coldens <- seq(from=10, to=100, by=10) # 막대그래프의 색밀도 설정을 위한 벡터
+xname <- 성적$학번 # X 축 값 설정위한 벡터
+barplot(성적$국어, main="성적그래프", xlab="학번", ylab="점수", border="red", col="green", density=coldens, names.arg=xname)
+```
+
+
+
