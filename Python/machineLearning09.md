@@ -427,3 +427,75 @@ plt.ylabel('sepal width')
 
 - 센터포인트를 중심으로 원을 그려서 도트들이 들어온다.
 - 이 원들을 벗어나는것을 노이즈라 표현
+
+#### 2 차원 평면에 데이터 포인트별로 군집화된 결과를 시각화하기
+
+- 차원축소
+- 주성분 분석
+
+```python
+from sklearn.decomposition import PCA
+
+iris_pca = PCA(n_components=2)
+iris_pca_transform = iris_pca.fit_transform(iris.data)
+iris_df['pca_x'] = iris_pca_transform[:,0]
+iris_df['pca_y'] = iris_pca_transform[:,1]
+iris_df.head()
+>
+	sepal length (cm)	sepal width (cm)	petal length (cm)	petal width (cm)	clu_id	target	pca_x	pca_y
+0				5.1					3.5					1.4					0.2	1	0	-2.684126	0.319397
+1				4.9					3.0					1.4					0.2	1	0	-2.714142	-0.177001	
+2				4.7					3.2					1.3					0.2	1	0	-2.888991	-0.144949
+3				4.6					3.1					1.5					0.2	1	0	-2.745343	-0.318299
+4				5.0					3.6					1.4					0.2	1	0	-2.728717	0.326755
+```
+
+```python
+plt.scatter(x=iris_df['pca_x'], y=iris_df['pca_y'],c=iris_df['clu_id'])
+plt.show()
+```
+
+![cl07](./img/cl07.png)
+
+#### 표준화를 통한 차원축소
+
+```python
+std_scaler = StandardScaler()
+df_iris = std_scaler.fit_transform(iris_df.iloc[:,:4])
+pca_iris_scaler_df = pd.DataFrame(df_iris)
+```
+
+- 우선 표준화를 진행한다.
+
+```python
+iris_pca = PCA(n_components=2)
+iris_pca_transform = iris_pca.fit_transform(pca_iris_scaler_df)
+iris_df['sts_pca_x'] = iris_pca_transform[:,0]
+iris_df['sts_pca_y'] = iris_pca_transform[:,1]
+```
+
+- 표준화 값을 2차원으로 축소하여 x와 y로 담는다.
+
+```python
+iris_clu_mean = KMeans(n_clusters=3)
+iris_clu_mean.fit(iris_df.iloc[:,-2:])
+```
+
+- 군집화를 한다.
+
+```python
+plt.scatter(x=iris_df['sts_pca_x'], y=iris_df['sts_pca_y'],c=iris_df['clu_id'])
+plt.scatter(iris_clu_mean.cluster_centers_[:,0], iris_clu_mean.cluster_centers_[:,1],c=['r','k','b'],marker='^',s=100)
+plt.show()
+```
+
+- 군집화에서 만들어진 센터 포인트를 가져와서 같이 시각화 한다.
+
+![cl08](./img/cl08.png)
+
+- 센터 포인트에 가까운 점들을 자기 구역으로 지정하여 군집화 한다.
+
+- 수치값이 큰데 그냥 학습하면 별로다. 그래서 정규화와 표준화를 하는 방법이 있다.
+  - 데이터가 정규분포를 띄면 정규화
+  - 그렇지 않으면 표준화를 하면 된다.
+  - 분석의 80%는 데이터전처리
