@@ -321,3 +321,109 @@ iris_df.groupby(['target','clu_id'])[['sepal length (cm)']].count()
 
 #### PCA(차원축소)
 
+- PCA(차원축소) : Princial component Analysis
+- 데이터의 피쳐를 압축(테이블 매트릭스의 차원을 낮추는 작업)
+- 예) 온도 습도 강수량 미세먼지 풍속 태풍여부 ... 교통량 유동인구 
+- 습도와 강수량은 양의 상관관계로 이 둘은 밀접한 연관성이 있다고 볼 수 있다.
+- 이렇게 연관성이 있는 피쳐들을 하나로 합쳐주는 작업이 주성분 분석(PCA)
+
+```python
+pca_iris_df = pd.DataFrame(data=iris.data, columns=iris.feature_names)
+pca_iris_df['target'] = iris.target
+pca_iris_df.head()
+>
+
+sepal length (cm)	sepal width (cm)	petal length (cm)	petal width (cm)	target
+0			5.1					3.5					1.4					0.2			0
+1			4.9					3.0					1.4					0.2			0
+2			4.7					3.2					1.3					0.2			0
+3			4.6					3.1					1.5					0.2			0
+4			5.0					3.6					1.4					0.2			0
+```
+
+```python
+markers = ['^','o','s']
+for i,marker in enumerate(markers):
+#     print(i, marker)
+    x_data_point = pca_iris_df[pca_iris_df['target']==i]['sepal length (cm)']
+    y_data_point = pca_iris_df[pca_iris_df['target']==i]['sepal width (cm)']
+    plt.scatter(x_data_point,y_data_point,marker=marker,label=iris.target_names[i])
+plt.legend()
+plt.xlabel('sepal length')
+plt.ylabel('sepal width')
+```
+
+- 우선 x와 y가 있어야 하니 루프를 돌린다.
+- 타입별 데이터를 뽑아와서 분류해보고 시각화 한다.
+
+![cl05](./img/cl05.png)
+
+- 그래서 표준화랑 정규화가 중요하다.
+
+#### 컬럼에 대한 데이터 표준화
+
+```python
+from sklearn.preprocessing import StandardScaler, MinMaxScaler
+# target을 제외한 피쳐만 추출하여 표준화 작업 진행
+
+std_scaler = StandardScaler()
+df_std = std_scaler.fit(pca_iris_df.iloc[:,0:4]).transform(pca_iris_df.iloc[:,0:4])
+pca_iris_scaler_df = pd.DataFrame(df_std)
+pca_iris_scaler_df.head()
+>
+			0			1			2			3
+0	-0.900681	1.019004	-1.340227	-1.315444
+1	-1.143017	-0.131979	-1.340227	-1.315444
+2	-1.385353	0.328414	-1.397064	-1.315444
+3	-1.506521	0.098217	-1.283389	-1.315444
+4	-1.021849	1.249201	-1.340227	-1.315444
+```
+
+#### 주성분분석
+
+```python
+from sklearn.decomposition import PCA
+
+pca = PCA(n_components = 2)
+```
+
+- PCA(n_components = 2) 피처를 2개로 줄이겠다.
+
+```python
+pac.fit(df_std).transform(df_std)
+```
+
+- 학습 : 유사한 값끼리 차원축소
+- 학습을 했으면 변환값을 다시 받아야 하니 transform 을해준다.
+
+```python
+ris_pca_df = pd.DataFrame(iris_pca, columns=['pca01','pca02'])
+iris_pca_df['target'] = iris.target
+iris_pca_df.head()
+>
+		pca01	pca02	target
+0	-2.264703	0.480027	0
+1	-2.080961	-0.674134	0
+2	-2.364229	-0.341908	0
+3	-2.299384	-0.597395	0
+4	-2.389842	0.646835	0
+```
+
+```python
+markers = ['^','o','s']
+for i,marker in enumerate(markers):
+#     print(i, marker)
+    x_data_point = iris_pca_df[iris_pca_df['target']==i]['pca01']
+    y_data_point = iris_pca_df[iris_pca_df['target']==i]['pca02']
+    plt.scatter(x_data_point,y_data_point,marker=marker,label=iris.target_names[i])
+plt.legend()
+plt.xlabel('sepal length')
+plt.ylabel('sepal width')
+```
+
+- 이상치를 노이즈라고 표현함
+
+![cl06](./img/cl06.png)
+
+- 센터포인트를 중심으로 원을 그려서 도트들이 들어온다.
+- 이 원들을 벗어나는것을 노이즈라 표현
