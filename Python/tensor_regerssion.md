@@ -153,3 +153,56 @@ korea	314.0	0.592357	1.196135	0.0	0.0	0.0	0.00	3.0
 ```
 
 - 이 정보를 보고 정규화가 필요한 지 살펴봐야 한다.
+
+#### 테스트,트레인 데이터 나누기
+
+```python
+y_train = train_set.pop('mpg')
+y_test  = test_set.pop('mpg')
+```
+
+#### 데이터 정규화
+
+```python
+def norm(x):
+    return (x -train_state['mean'] )/train_state['std']
+norm_train_set = norm(train_set)
+norm_test_set = norm(test_set)
+```
+
+#### 모델만들기
+
+```python
+model = keras.Sequential([
+    layers.Dense(50, activation='relu', input_shape=[len(train_set.keys())]),
+    layers.Dense(50, activation='relu'),
+    layers.Dense(1)   
+])
+```
+
+```python
+optimizer = tf.keras.optimizers.RMSprop()
+model.compile(loss='mse',optimizer = optimizer,metrics=['mae','mse'])
+```
+
+- optimizer : 학습을 통해 최적화된 결정계수를 찾아준다
+
+```python
+model.summary()
+>
+Model: "sequential_1"
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+dense (Dense)                (None, 50)                500       
+_________________________________________________________________
+dense_1 (Dense)              (None, 50)                2550      
+_________________________________________________________________
+dense_2 (Dense)              (None, 1)                 51        
+=================================================================
+Total params: 3,101
+Trainable params: 3,101
+Non-trainable params: 0
+_________________________________________________________________
+```
+
