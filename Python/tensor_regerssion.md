@@ -102,7 +102,9 @@ dtype: int64
 ```
 
 ```python
-dataset = dataset.dropna()
+dataset['horsepower'].replace('?',np.nan,inplace=True)
+dataset = dataset.dropna(subset=['horsepower'],axis=0)
+dataset['horsepower'] = dataset['horsepower'].astype(float)
 ```
 
 #### origin은 수치형이 아니고 범주형이므로 원-핫-인코딩을 통한 변환이 필요하다.
@@ -206,3 +208,81 @@ Non-trainable params: 0
 _________________________________________________________________
 ```
 
+```python
+sample_result
+>
+array([[-0.02574456],
+       [-0.04394148],
+       [ 0.3024744 ],
+       [-0.12835589],
+       [-0.19559836],
+       [ 0.03364658],
+       [-0.2264496 ],
+       [ 0.0435816 ],
+       [ 0.05071799],
+       [-0.12676515]], dtype=float32)
+```
+
+- 정상적으로 모델이 만들어지고 출력된다.
+
+```python
+# 모델 학습
+class PrintDot(keras.callbacks.Callback):
+      def on_epoch_end(self, epoch, logs):
+        if epoch % 100 == 0: print('')
+        print('.', end='')
+
+# 훈련정확도와 검증 정확도 : history
+history = model.fit(norm_train_set , y_train, epochs=1000, validation_split=.2,verbose=0,callbacks=[PrintDot()])
+```
+
+```python
+# 예측
+loss, mae, mse = model.evaluate(norm_test_set, y_test,verbose=1)
+print('평균 절대 오차 : ',mae)
+>
+78/78 [==============================] - 0s 127us/sample - loss: 7.4386 - mae: 2.1129 - mse: 7.4385
+평균 절대 오차 :  2.1129177
+```
+
+- verbose=1 : 디버깅 출력하기 <-> 0은 출력  X
+
+#### 시각화 하기
+
+```python
+import matplotlib.pyplot as plt
+# 시각화
+y_pred = model.predict(norm_test_set).flatten()
+plt.scatter(y_test, y_pred)
+plt.xlim([0,plt.xlim()[1]])
+plt.ylim([0,plt.ylim()[1]])
+plt.scatter(y_test, y_pred)
+_ = plt.plot([-100,100],[-100,100])
+plt.show()
+```
+
+- flatten() : 1차원으로 바뀐다.
+- 점들을 살펴보며 점들이 평균에 얼마나 잘 붙어있는지 확인한다.
+- 지금은 잘 붙어있다.잘예측했다고 볼 수 있다.
+
+![ten02](./img/ten02.png)
+
+```python
+hist = pd.DataFrame(history.history)
+hist
+>
+		loss		mae			mse			val_loss	val_mae	val_mse
+0	569.319620	22.512943	569.319580	561.981839	22.297806	561.981812
+1	523.055447	21.480591	523.055481	515.491197	21.243435	515.491211
+2	479.201116	20.462254	479.201111	466.473647	20.097586	466.473663
+3	431.579682	19.329754	431.579651	411.844434	18.778084	411.844421
+4	379.350310	18.035198	379.350281	353.461252	17.271782	353.461243
+...	...	...	...	...	...	...
+995	3.282805	1.128578	3.282805	10.645117	2.501283	10.645117
+996	3.196739	1.121250	3.196739	10.828256	2.489370	10.828257
+997	3.063228	1.112146	3.063229	10.797193	2.496689	10.797193
+998	2.935681	1.071100	2.935681	11.136614	2.568803	11.136614
+999	3.443610	1.176183	3.443610	10.656014	2.494929	10.656013
+```
+
+- mae가 점점 낟아지는 걸보니 잘 예측했다.
