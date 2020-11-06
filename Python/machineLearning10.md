@@ -247,8 +247,160 @@ plt.show()
 - 이렇게 펼쳐서 어떤게 선형관계를 띄는지 살펴보고 독립변수를 선택한다.
 
 ```python
-X = cor_df[['weight','horsepower']]
+X = cor_df[['weight']]
 y = cor_df['mpg']
 ```
 
 - X는 독립변수, y는 종속변수
+
+#### 데이터 세트를 구분
+
+```python
+from sklearn.model_selection import train_test_split
+X_train, X_test, y_train, y_test = train_test_split(X,y,test_size=0.2, random_state=10)
+```
+
+```python
+print(len(X_train))
+print(len(X_test))
+>
+313
+79
+```
+
+```python
+from sklearn.linear_model import LinearRegression
+auto_lr_model = LinearRegression()
+```
+
+```python
+auto_lr_model.fit(X_train, y_train)
+```
+
+- 학습한다.
+
+```python
+r_square = auto_lr_model.score(X_test, y_test)
+print('결정계수 : ',r_square)
+>결정계수 :  0.6959884788265607
+```
+
+- 얼마나 설명해주는지 결정계수를 구한다.
+- 1에 가까울수록 설명력이 높아서 좋은거다.
+
+#### 회귀의 기울기, 회귀의 절편
+
+```python
+print('기울기 : ', auto_lr_model.coef_)
+print('졀편 : ', auto_lr_model.intercept_)
+>
+기울기 :  [-0.00758599]
+졀편 :  46.10489189618811
+```
+
+####  모델의 전체 X 데이터를 입력하여 예측값, 실제 y
+
+```python
+y_pred = auto_lr_model.predict(X)
+```
+
+- 위에서 만들었던 X를 넣고 예측해보자.
+
+#### df 로 비교해보기
+
+```python
+data_pre = pd.DataFrame({
+        '예측값' : y_pred,
+        '실제값' : y
+})
+data_pre.head()
+>
+		예측값	  실제값
+0	19.523567	18.0
+1	18.089814	15.0
+2	20.039415	18.0
+3	20.062173	16.0
+4	19.940797	17.0
+```
+
+- c차이가 난다.
+
+```python
+sns.distplot(y, hist=False, label='answer')
+sns.distplot(y_pred, hist=False, label='guess')
+plt.show()
+```
+
+![reg06](./img/reg06.png)
+
+- 회귀분석은 정답데이터가 정규분포를 따른다고 가정하고 분석함.
+  - 그래서 정규분포를 따르지 않으면 정규화 진행 후 분석한다.
+
+- 오차를 줄여야 할 필요성이 있다.
+
+```python
+X = cor_df[['cylinders','horsepower','weight']]
+y = cor_df['mpg']
+```
+
+- 독립변수 추가 후 그래프변화
+
+![reg07](./img/reg07.png)
+
+- 크게 달라진 점은 없다.
+
+#### 가상환경 추가
+
+- 아나콘다 관리자 모드에서 설치
+- 가상환경추가
+
+```
+conda create -n 가상환경이름 python=3.6
+```
+
+- 가상환경 목록
+
+```
+conda info --envs
+```
+
+- 가상환경 활성화
+
+```
+conda activate 가상환경이름
+```
+
+- 가상환경 비활성화
+
+```
+conda deactivate
+```
+
+- 가상환경 제거
+
+```
+conda env remove -n 가상환경이름
+```
+
+- 주피터 커널과 연결
+
+> 시작에 가면 가상환경주피터 생김
+
+```
+conda install jupyter notebook
+```
+
+- tensorflow 설치
+
+```
+conda install tensorflow
+```
+
+- 의존성관계 패키지 설치
+
+```
+conda install pandas
+conda install numpy
+conda install seaborn
+```
+
