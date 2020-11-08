@@ -192,4 +192,90 @@ GROUP BY EMP_NAME, DEPT_ID;
 | 펭하     | 60      | 1        |
 | 펭수     | 50      | 1        |
 
-9p
+- 컬럼 별칭이나 컬럼 기술 순서는 사용할 수 없음
+
+```sql
+SELECT 	DEPT_ID AS 부서,
+		SUM(SALARY)
+FROM 	EMPLOYEE
+GROUP BY 부서;
+```
+
+- `ERROR` ORA-00904 : '부서': 부적합한 식별자
+
+```sql
+SELECT 	DEPT_ID AS 부서,
+		SUM(SALARY)
+FROM 	EMPLOYEE
+GROUP BY 1;
+```
+
+- `ERROR` ORA-00979 : GROUP BY 표현식이 아닙니다.
+
+```sql
+SELECT 	MAX(SUM(SALARY))
+FROM 	EMPLOYEE
+GROUP BY DEPT_ID;
+```
+
+| MAX(SUM(SALARY)) |      |
+| ---------------- | ---- |
+| 18100000         |      |
+
+| DEPT_ID | SUM(SALARY) |
+| ------- | ----------- |
+|         | 3800000     |
+| 50      | 13800000    |
+| 90      | 18100000    |
+
+- 그룹 함수는 2번까지 중첩 사용 가능
+
+```sql
+SELECT 	DEPT_ID,
+		MAX(SUM(SALARY))
+FROM 	EMPLOYEE
+GROUP BY DEPT_ID;
+```
+
+- `ERROR` ORA-00937 : 단일 그룹의 그룹 함수가 아닙니다.
+
+### 3.2.3 HAVING
+
+- GROUP BY에 의해 그룹화 된 데이터에 대한 그룹 함수 실행 결과를 제한하기 위해 사용
+  (WHERE는 테이블에 포함된 원본 데이터를 제한하기 위해 사용)
+
+```sql
+SELECT 	...
+FROM 	...
+WHERE 	...
+GROUP BY column_name | expr
+HAVING condition
+ORDER BY 기준1 [ ASC | DESC] [, 기준2 [ASC | DESC], … ];
+```
+
+```sql
+SELECT 	DEPT_ID, SUM(SALARY)
+FROM 	EMPLOYEE
+GROUP BY DEPT_ID
+HAVING SUM(SALARY) > 9000000;
+```
+
+| DEPT_ID | SUM(SALARY) |
+| ------- | ----------- |
+| 50      | 13800000    |
+| 90      | 18100000    |
+| 60      | 9900000     |
+
+- 부서 별 급여 총합을 계산한 결과 중 9000000 이상인 경우만 선택
+
+```sql
+SELECT 	DEPT_ID, SUM(SALARY)
+FROM 	EMPLOYEE
+WHERE 	SUM(SALARY) > 9000000
+GROUP BY DEPT_ID;
+```
+
+- `ERROR` ORA-00934 : 그룹 함수는 허가되지 않습니다.
+
+- WHERE 절에는 그룹 함수를 사용할 수 없음
+  - WHERE 절이 수행되어야 그룹 함수가 실행 될 대상 그룹이 결정
