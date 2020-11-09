@@ -135,5 +135,124 @@ unique_string
 ['hi', 'pengso', 'hi', 'pengpeng', 'hi', 'pengha', 'hi', 'pemgbba']
 ```
 
+- filter() : 조건으로 필터링하는 연산자
 
+```python
+num = spark.parallelize(list(range(1,30,3)))
+num
+>
+ParallelCollectionRDD[11] at parallelize at PythonRDD.scala:195
+```
 
+```python
+result = num.filter(lambda x : x % 2 == 0).collect()
+result
+>
+[4, 10, 16, 22, 28]
+```
+
+- 액션을 취하면 값을 얻을 수 있다.
+
+#### PairRDD
+
+- pair rdd란 key-vlaue 쌍으로 이루어진 RDD
+- python tuple을 의미
+
+```python
+pairRDD = spark.parallelize([(1,3),(1,5),(2,4),(3,3)])
+pairRDD
+>
+ParallelCollectionRDD[13] at parallelize at PythonRDD.scala:195
+```
+
+- reduceByKey()
+
+```python
+{
+    i:j
+    for i,j in pairRDD.reduceByKey(lambda x,y : x*y).collect()
+    
+}
+>
+{1: 15, 2: 4, 3: 3}
+```
+
+- 동일 키에 대한 값들을 곱해버렸다.
+
+```python
+{
+    i:j
+    for i,j in pairRDD.mapValues(lambda x : x**2).collect()
+    
+}
+>
+{1: 25, 2: 16, 3: 9}
+```
+
+- map의 키는 중복되면 안 되기 때문에 중복되면 처음 값을 무시하고 그 다음거로 연산을 수행한다.
+
+```python
+pairRDD.groupByKey().collect()
+>
+[(1, <pyspark.resultiterable.ResultIterable at 0x24c4167c048>),
+ (2, <pyspark.resultiterable.ResultIterable at 0x24c4167c0b8>),
+ (3, <pyspark.resultiterable.ResultIterable at 0x24c4167c128>)]
+```
+
+```python
+pairRDD.values().collect()
+>
+[3, 5, 4, 3]
+```
+
+```python
+pairRDD.sortByKey().collect()
+>
+[(1, 3), (1, 5), (2, 4), (3, 3)]
+```
+
+#### 외부 데이터를 로드해서 RDD 생성하는 방법
+
+```python
+customerRDD = spark.textFile('./data/spark-rdd-name-customers.csv')
+customerRDD
+>
+./data/spark-rdd-name-customers.csv MapPartitionsRDD[28] at textFile at NativeMethodAccessorImpl.java:0
+```
+
+```python
+customerRDD.first()
+>
+'Alfreds Futterkiste,Germany'
+```
+
+- first() :문서의 첫 번째 값을 리턴해주는 값
+- ,(콤마)앞이 키 뒤가 벨류
+
+#### map연산자를 이용해서 콤마로 split하고 튜플로 리턴하는 구문을 작성해보자
+
+```python
+cusPairs = customerRDD.map(lambda x : (x.split(',')[0],x.split(',')[1]))
+cusPairs
+>
+PythonRDD[30] at RDD at PythonRDD.scala:53
+```
+
+- 트랜스포메이션 하기
+
+```python
+cusPairs.collect()
+>
+('Alfreds Futterkiste', 'Germany'),
+ ('Ana Trujillo Emparedados y helados', 'Mexico'),
+```
+
+- 액션 하기
+- 데이터를 살펴보니 뒤에 있는 문자가 나라임->이거를 키로 쓰자
+
+```python
+cusPairs = customerRDD.map(lambda x : (x.split(',')[1],x.split(',')[0]))
+cusPairs
+```
+
+- 다시 키와 벨류를 바꾸었다.
