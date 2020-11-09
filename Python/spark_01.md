@@ -256,3 +256,86 @@ cusPairs
 ```
 
 - 다시 키와 벨류를 바꾸었다.
+
+#### groupByKey() : 키값을 리스트 형태로 리턴 함수
+
+```python
+cusPairs.groupByKey().collect()
+>
+('Alfreds Futterkiste',
+  <pyspark.resultiterable.ResultIterable at 0x24c41680630>),
+ ('Ana Trujillo Emparedados y helados',
+  <pyspark.resultiterable.ResultIterable at 0x24c416806d8>),
+```
+
+- 유일한 키값들을 리턴시켜준다.
+
+#### UK에 사는 고객 이름만 출력한다면? (dict형식으로 만들어서 )
+
+```python
+groupKey = cusPairs.groupByKey().collect()
+groupKey
+```
+
+- value가 아니라 주소로 반환한다. 이것을 딕셔너리 형식으로 만들어서 value를 꺼내보자.
+
+```python
+customerDict = {
+    country : [name for name in names] for country, names in groupKey    
+}
+customerDict['UK']
+>
+['Around the Horn',
+ "B's Beverages",
+ 'Consolidated Holdings',
+ 'Eastern Connection',
+ 'Island Trading',
+ 'North/South',
+ 'Seven Seas Imports']
+```
+
+- 리스트컴프리헨션으로 for구문 돌린 값을 다시 받아서 만들었다.
+
+#### sortByKey : Key를 오름차순으로 정렬해보고 상위 10개만 뽑는다면?
+
+```python
+cusPairs.sortByKey().keys().collect()[:10]
+>
+['Argentina',
+ 'Argentina',
+ 'Argentina',
+ 'Austria',
+ 'Austria',
+ 'Belgium',
+ 'Belgium',
+ 'Brazil',
+ 'Brazil',
+ 'Brazil']
+```
+
+- 키를 오름차순으로 정렬하고 키값만 10개 뽑았다.
+
+#### 나라별 고객이 몇명인지를 카운트 해 본다면?
+
+```python
+mapR = cusPairs.mapValues(lambda x: 1 ).reduceByKey(lambda x,y : x+y)
+{
+    i:j
+    for i,j in mapR.collect()   
+}
+>
+PythonRDD[103] at RDD at PythonRDD.scala:53
+>
+{'Germany': 11,
+ 'Mexico': 5,
+ 'UK': 7,
+ 'Sweden': 2,
+ 'France': 11,
+```
+
+- 스파크는  `{}` 안에서 해줘야 다중 값을 리턴받는다.
+
+- 딕셔너리 형식으로 리턴받을 수 있다.
+
+- mapValues(lambda x: 1 ).reduceByKey(lambda x,y : x+y)
+  - x는 키, 그래서 reduce를 하면서 키를 제거하고 그 키가 가지고 있던 값을 더해주면서 키의 중복을 제거해간다.
