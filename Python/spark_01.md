@@ -339,3 +339,211 @@ PythonRDD[103] at RDD at PythonRDD.scala:53
 
 - mapValues(lambda x: 1 ).reduceByKey(lambda x,y : x+y)
   - x는 키, 그래서 reduce를 하면서 키를 제거하고 그 키가 가지고 있던 값을 더해주면서 키의 중복을 제거해간다.
+
+#### Spark DataFrame
+
+- spark dataframe 은 RDD의 확장된 구조이다.
+- 행, 열로 이루어진 내장 RDD
+
+```python
+from pyspark import SparkConf, SparkContext
+from pyspark.sql import SQLContext
+import json
+```
+
+```python
+sqlCtx = SQLContext(spark)
+sqlCtx
+>
+<pyspark.sql.context.SQLContext at 0x24c41690be0>
+```
+
+####  json 파일
+- json -> RDD ->DataFrame
+
+```python
+sample_json = spark.textFile('./data/cars.json')
+cars_df = sqlCtx.createDataFrame(sample_json.map(lambda x : json.loads(x)))
+>
+DataFrame[brand: string, models: map<string,string>]
+```
+
+- 이렇게 해야 데이터프레임으로 만들 수 있다.
+
+```python
+cars_df.collect()
+>
+[Row(brand='Ford', models={'name': 'Fiesta', 'price': '14260'}),
+ Row(brand='Ford', models={'name': 'Focus', 'price': '18825'}),
+ Row(brand='Ford', models={'name': 'Mustang', 'price': '26670'}),
+ Row(brand='BMW', models={'name': '320', 'price': '40250'}),
+ Row(brand='BMW', models={'name': 'X3', 'price': '41000'}),
+ Row(brand='BMW', models={'name': 'X5', 'price': '60700'}),
+ Row(brand='Fiat', models={'name': '500', 'price': '16495'})]
+```
+
+- 액션을 취해야 데이터를 불러올 수 있다.
+
+```python
+cars_df.printSchema()
+>
+root
+ |-- brand: string (nullable = true)
+ |-- models: map (nullable = true)
+ |    |-- key: string
+ |    |-- value: string (valueContainsNull = true)
+```
+
+- 데이터의 구조를 파악할 때 쓴다.
+
+```python
+cars_df.show()
+>
++-----+--------------------+
+|brand|              models|
++-----+--------------------+
+| Ford|[name -> Fiesta, ...|
+| Ford|[name -> Focus, p...|
+| Ford|[name -> Mustang,...|
+|  BMW|[name -> 320, pri...|
+|  BMW|[name -> X3, pric...|
+|  BMW|[name -> X5, pric...|
+| Fiat|[name -> 500, pri...|
++-----+--------------------+
+```
+
+- 이렇게 해야 우리가 알고있는2차원의 형식으로 나온다.
+
+```python
+cars_df.first()
+>
+Row(brand='Ford', models={'name': 'Fiesta', 'price': '14260'})
+```
+
+- 로우가 RDD를 내장하고 있기 때문에 액션을 취해야 데이터를 볼 수 있다.
+
+#### 데이터 프레임의 연산
+
+- select()
+
+```python
+cars_df.select('brand').show()
+>
++-----+
+|brand|
++-----+
+| Ford|
+| Ford|
+| Ford|
+|  BMW|
+|  BMW|
+|  BMW|
+| Fiat|
++-----+
+```
+
+```python
+cars_df.select('models.price').show()
+>
++-----+
+|price|
++-----+
+|14260|
+|18825|
+|26670|
+|40250|
+|41000|
+|60700|
+|16495|
++-----+
+```
+
+#### 컬럼의 타입 변환
+
+```python
+from pyspark.sql.types import IntegerType
+```
+
+```python
+car_price_type = cars_df.select('brand','models.name','models.price')
+car_price_type 
+>
+DataFrame[brand: string, name: string, price: string]
+```
+
+```python
+car_price_type = car_price_type.withColumn('price', car_price_type['price'].cast(IntegerType()))
+car_price_type.show()
+>
++-----+-------+-----+
+|brand|   name|price|
++-----+-------+-----+
+| Ford| Fiesta|14260|
+| Ford|  Focus|18825|
+| Ford|Mustang|26670|
+|  BMW|    320|40250|
+|  BMW|     X3|41000|
+|  BMW|     X5|60700|
+| Fiat|    500|16495|
++-----+-------+-----+
+```
+
+- 형변환을 해주었다.
+
+```python
+car_price_type.printSchema()
+>
+root
+ |-- brand: string (nullable = true)
+ |-- name: string (nullable = true)
+ |-- price: integer (nullable = true)
+```
+
+- 다시한번 확인해보면 숫자로 바뀌었다.
+
+```python
+car_price_type.collect()
+>
+[Row(brand='Ford', name='Fiesta', price=14260),
+ Row(brand='Ford', name='Focus', price=18825),
+ Row(brand='Ford', name='Mustang', price=26670),
+ Row(brand='BMW', name='320', price=40250),
+ Row(brand='BMW', name='X3', price=41000),
+ Row(brand='BMW', name='X5', price=60700),
+ Row(brand='Fiat', name='500', price=16495)]
+```
+
+- RDD이기 때문에 트랜스모페이션 이후 액션이 필요하다.
+
+```python
+car_price_type.filter(car_price_type['price']>20000).show()
+>
++-----+-------+-----+
+|brand|   name|price|
++-----+-------+-----+
+| Ford|Mustang|26670|
+|  BMW|    320|40250|
+|  BMW|     X3|41000|
+|  BMW|     X5|60700|
++-----+-------+-----+
+```
+
+- filter로 트랜스포메이션을 하고 show()를 해서 액션을 취했다.
+- where와 같은 조건절이다.
+
+#### 그룹핑
+
+```python
+car_price_type.groupBy('brand').count().show()
+>
++-----+-----+
+|brand|count|
++-----+-----+
+|  BMW|    3|
+| Fiat|    1|
+| Ford|    3|
++-----+-----+
+```
+
+- 판다스의 그룹짓는 거랑 비슷하게 사용가능하다.
+- sql이랑 비슷한 점이 많아서 import할 때도 이름에 SQL이 들어간다.
