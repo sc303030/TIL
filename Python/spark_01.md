@@ -41,5 +41,99 @@
 conda install -c conda-forge pyspark
 ```
 
+#### import 하기
+
+```python
+from pyspark import SparkConf, SparkContext
+from pyspark.sql import SQLContext
+```
+
+```python
+conf = SparkConf().setMaster('local').setAppName('sparkApp')
+spark = SparkContext(conf=conf)
+spark
+>
+SparkContext
+
+Spark UI
+
+Version
+v2.4.6
+Master
+local
+AppName
+sparkApp
+```
+
+```python
+rdd = spark.textFile('./data/test.txt')
+rdd
+>
+./data/test.txt MapPartitionsRDD[1] at textFile at NativeMethodAccessorImpl.java:0
+```
+
+- 파일이 없지만 오류가 나지 않는다. 파티션이 만들어 진것 
+  - 트랜스포메이션
+
+```python
+lines = rdd.filter(lambda x :'spark' in x)
+lines
+>
+PythonRDD[2] at RDD at PythonRDD.scala:53
+```
+
+- filter 이게 액션을 한 것.
+
+- RDD 생성
+- 데이터를 직접 만드는 방법(parallelize()), 외부 데이터를 로드 방법으로
+
+```python
+sample_rdd = spark.parallelize(['test','this is a test rdd'])
+sample_rdd
+>
+ParallelCollectionRDD[3] at parallelize at PythonRDD.scala:195
+```
+
+- 롬에 rdd가 저장되었다.
+
+```python
+sample_rdd.collect()
+>
+['test', 'this is a test rdd']
+```
+
+- 롬에 rdd가 저장되어야 불러올 수 있다.
+
+- RDD 자주 쓰는 연산 함수
+- collect() : RDD에 트랜스포메이션된 결과를 리턴하는 함수
+- map() : 연산을 수행하고 싶을 때 사용하는 함수
+
+```python
+numbers = spark.parallelize(list(range(5)))
+numbers
+>
+ParallelCollectionRDD[4] at parallelize at PythonRDD.scala:195
+```
+
+```python
+s = numbers.map(lambda x: x * x).collect()
+s
+>
+[0, 1, 4, 9, 16]
+```
+
+- map을 사용하여 액션을 취함. map은 연산만 해주고 리턴은 못해줌
+- 그래서 collect()를 붙여줘야 리턴한다.
+
+- flatmap() : 리스트들의 원소를 하나의 리스트로 flatten해서 리턴하는 함수
+
+```python
+strings = spark.parallelize(['hi pengso','hi pengpeng','hi pengha','hi pemgbba'])
+unique_string = strings.flatMap(lambda x :x.split(' ')).collect()
+unique_string
+>
+['hi', 'pengso', 'hi', 'pengpeng', 'hi', 'pengha', 'hi', 'pemgbba']
+```
+
 
 
