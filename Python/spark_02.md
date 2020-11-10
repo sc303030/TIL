@@ -171,3 +171,164 @@ orders.groupBy('EmployeeID').count().show()
 +----------+-----+
 ```
 
+---
+
+```python
+orders = sqlCtx.read.csv('./data/cospi.csv',header=True,inferSchema=True)
+orders.printSchema()
+```
+
+- 새로운 파일을 불러온다.
+
+#### filter(조건식)
+
+##### 날짜가 2월인 데이터만 필터링한다면?
+
+```python
+orders.filter(orders['Date'] >= '2016-02-01').show()
+>
++-------------------+-------+-------+-------+-------+------+
+|               Date|   Open|   High|    Low|  Close|Volume|
++-------------------+-------+-------+-------+-------+------+
+|2016-02-26 00:00:00|1180000|1187000|1172000|1172000|176906|
+|2016-02-25 00:00:00|1172000|1187000|1172000|1179000|128321|
+```
+
+- 필터안에 조건식을 줄 수 있다.
+
+##### 종가가 1,200,000이상인 데이터만 필터링 한다면?
+
+```python
+orders.filter(orders['Close'] > 1200000).show()
+>
++-------------------+-------+-------+-------+-------+------+
+|               Date|   Open|   High|    Low|  Close|Volume|
++-------------------+-------+-------+-------+-------+------+
+|2016-01-05 00:00:00|1202000|1218000|1186000|1208000|207947|
+```
+
+```python
+orders.filter(orders['Close'] > 1200000).select(['Date','Open','Close']).show()
+>
++-------------------+-------+-------+
+|               Date|   Open|  Close|
++-------------------+-------+-------+
+|2016-01-05 00:00:00|1202000|1208000|
+```
+
+- select로 조건을 줄 수 있다.
+
+```python
+orders.filter((orders['Open'] > 1200000) & (orders['Open'] < 1250000)).show()
+>
++-------------------+-------+-------+-------+-------+------+
+|               Date|   Open|   High|    Low|  Close|Volume|
++-------------------+-------+-------+-------+-------+------+
+|2016-02-18 00:00:00|1203000|1203000|1178000|1187000|211795|
+|2016-01-06 00:00:00|1208000|1208000|1168000|1175000|359895|
+```
+
+- 여러개 조건도 가능하다.
+
+```python
+orders.filter((orders['Open'] > 1200000) | (orders['Open'] < 1250000)).show()
+>
++-------------------+-------+-------+-------+-------+------+
+|               Date|   Open|   High|    Low|  Close|Volume|
++-------------------+-------+-------+-------+-------+------+
+|2016-02-26 00:00:00|1180000|1187000|1172000|1172000|176906|
+```
+
+- 물론 or도 가능하다.
+
+##### Volumn이 300,000이하인것들만 가져온다면?
+
+```python
+orders.filter(orders['Volume'] <= 300000).show()
+>
++-------------------+-------+-------+-------+-------+------+
+|               Date|   Open|   High|    Low|  Close|Volume|
++-------------------+-------+-------+-------+-------+------+
+|2016-02-26 00:00:00|1180000|1187000|1172000|1172000|176906|
+```
+
+##### 날짜가 2월 26일 것만 가져온다면?
+
+```python
+orders.filter(orders['Date']=='2016-02-26').show()
+>
++-------------------+-------+-------+-------+-------+------+
+|               Date|   Open|   High|    Low|  Close|Volume|
++-------------------+-------+-------+-------+-------+------+
+|2016-02-26 00:00:00|1180000|1187000|1172000|1172000|176906|
++-------------------+-------+-------+-------+-------+------+
+```
+
+### titanic_train [실습]
+
+```python
+titanic = sqlCtx.read.csv('./data/titanic_train.csv',header=True,inferSchema=True)
+titanic.printSchema()
+>
+root
+ |-- PassengerId: integer (nullable = true)
+ |-- Survived: integer (nullable = true)
+ |-- Pclass: integer (nullable = true)
+ |-- Name: string (nullable = true)
+ |-- Sex: string (nullable = true)
+ |-- Age: double (nullable = true)
+ |-- SibSp: integer (nullable = true)
+ |-- Parch: integer (nullable = true)
+ |-- Ticket: string (nullable = true)
+ |-- Fare: double (nullable = true)
+ |-- Cabin: string (nullable = true)
+ |-- Embarked: string (nullable = true)
+```
+
+- 타이타닉 데이터를 불러온다.
+
+##### count()
+
+```python
+titanic.count()
+>
+891
+```
+
+- 행의 개수를 확인
+
+##### select 변수 선택 : Passengerid, Name
+
+```python
+titanic.select(['PassengerId','Name']).show()
+>
++-----------+--------------------+
+|PassengerId|                Name|
++-----------+--------------------+
+|          1|Braund, Mr. Owen ...|
+```
+
+##### 성별에서 여성인 PassengerId, Name, Sex, Survived 출력
+
+```python
+titanic.filter(titanic['Sex']=='female').select(['PassengerId','Name','Sex','Survived']).show()
+>
++-----------+--------------------+------+--------+
+|PassengerId|                Name|   Sex|Survived|
++-----------+--------------------+------+--------+
+|          2|Cumings, Mrs. Joh...|female|       1|
+```
+
+##### 성별에서 여성이면서 살아있는 사람의 PassengerId, Name, Sex, Survived 출력
+
+```python
+titanic.filter((titanic['Sex']=='female') & (titanic['Survived']==1)).select(['PassengerId','Name','Sex','Survived']).show()
+>
++-----------+--------------------+------+--------+
+|PassengerId|                Name|   Sex|Survived|
++-----------+--------------------+------+--------+
+|          2|Cumings, Mrs. Joh...|female|       1|
+```
+
+- 이렇게 조건을 여러개 줄 수 있다.
+- filter(lambda)에서 filter는 조건식을 담을 수 있기에 lambda는 함수이므로 적용이 안 된다.
