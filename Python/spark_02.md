@@ -514,3 +514,19 @@ sqlCtx.sql('''select sex,count(Survived)  as cnt
 +------+---+
 ```
 
+##### PannengerId를 기준으로 합쳐서 성별과 선실을 기준으로 Fare의 평균
+
+```python
+sqlCtx.sql('''select one.sex, two.Pclass, avg(two.Fare)
+              from titanic01 one, titanic02 two
+              where one.PassengerId == two.PassengerId
+              group by one.sex, two.Pclass''').show()
+>
++------+------+---------+
+|   sex|Pclass|avg(Fare)|
++------+------+---------+
+|female|     1|     62.2|
+|  male|     3|     7.65|
+|female|     3|      7.9|
++------+------+---------+
+```
