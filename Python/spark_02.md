@@ -422,3 +422,95 @@ sqlCtx.sql('select * from titanccView where sex = "female"').show()
 ```
 
 - 위에서 만들었던 titanic파일로 뷰를 만들어서 sql구문을 사용하였다.
+
+#### Spark SQL
+
+```python
+import pandas as pd
+```
+
+```python
+data1 = {'PassengerId':{0:1, 1:2, 2:3, 3:4, 4:5},
+         'Name' : {0:'Owen', 1:'Florence', 2:'Laina', 3:'Lily', 4:"William"},
+         'sex' : {0: 'male', 1: 'female', 2:'female', 3:'female', 4:'male'},
+         'Survived': {0:0, 1:1, 2:1, 3:1, 4:0}
+        }
+
+data2 = {'PassengerId':{0:1, 1:2, 2:3, 3:4, 4:5},
+         'Age' : {0: 22, 1: 38, 2: 33, 3: 35, 4: 35},
+         'Fare' : {0: 7.3, 1: 71.3, 2:7.9, 3:53.1, 4:8.0},
+         'Pclass': {0:3, 1:1, 2:3, 3:1, 4:3}
+        }
+```
+
+#### pandas df -> spark df
+
+```python
+sample_df01 = pd.DataFrame(data1, columns=data1.keys())
+sample_df02 = pd.DataFrame(data2, columns=data2.keys())
+```
+
+- 컬럼명을 가져와 합칠 기준을 만든다.
+
+```python
+spark_df01 = sqlCtx.createDataFrame(sample_df01)
+spark_df02 = sqlCtx.createDataFrame(sample_df02)
+>
+root
+ |-- PassengerId: long (nullable = true)
+ |-- Name: string (nullable = true)
+ |-- sex: string (nullable = true)
+ |-- Survived: long (nullable = true)
+```
+
+- 데이터프레임으로 만들어서 합친다.
+
+#### mirroring - view와 비슷한 기능
+
+```python
+spark_df01.createOrReplaceTempView('titanic01')
+spark_df02.createOrReplaceTempView('titanic02')
+```
+
+#### Spark SQL SELECT
+
+```python
+sqlCtx.sql('select * from titanic01').show()
+>
++-----------+--------+------+--------+
+|PassengerId|    Name|   sex|Survived|
++-----------+--------+------+--------+
+|          1|    Owen|  male|       0|
+|          2|Florence|female|       1|
+|          3|   Laina|female|       1|
+|          4|    Lily|female|       1|
+|          5| William|  male|       0|
++-----------+--------+------+--------+
+```
+
+```python
+sqlCtx.sql('select * from titanic01 where sex =="male"').show()
+>
++-----------+-------+----+--------+
+|PassengerId|   Name| sex|Survived|
++-----------+-------+----+--------+
+|          1|   Owen|male|       0|
+|          5|William|male|       0|
++-----------+-------+----+--------+
+```
+
+##### 성별에 따른 생존자 수를 구해본다면?
+
+```python
+sqlCtx.sql('''select sex,count(Survived)  as cnt
+              from titanic01  
+              where Survived = 1
+              group by sex''').show()
+>
++------+---+
+|   sex|cnt|
++------+---+
+|female|  3|
++------+---+
+```
+
