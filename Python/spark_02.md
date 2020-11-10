@@ -332,3 +332,93 @@ titanic.filter((titanic['Sex']=='female') & (titanic['Survived']==1)).select(['P
 
 - 이렇게 조건을 여러개 줄 수 있다.
 - filter(lambda)에서 filter는 조건식을 담을 수 있기에 lambda는 함수이므로 적용이 안 된다.
+
+##### 선실등급 별 요금 평균
+
+```python
+titanic.groupBy(['Pclass']).avg('Fare').show()
+>
++------+------------------+
+|Pclass|         avg(Fare)|
++------+------------------+
+|     1| 84.15468749999992|
+|     3|13.675550101832997|
+|     2| 20.66218315217391|
++------+------------------+
+```
+
+- 그룹을 묶어서 평균을 구한다.
+
+- 타입이 그룹데이터여서 sort는 못한다.
+
+```python
+titanic.groupBy(['Pclass']).avg('Fare').sort('avg(Fare)',ascending=False).show()
+>
++------+------------------+
+|Pclass|         avg(Fare)|
++------+------------------+
+|     1| 84.15468749999992|
+|     2| 20.66218315217391|
+|     3|13.675550101832997|
++------+------------------+
+```
+
+- 이렇게 체인으로 연결하면 가능하다.
+
+### Spark DB연동
+
+- 벤더사에서 제공하는 플러그인 모듈을 세팅해야한다.
+
+```python
+conf  = SparkConf().setMaster('local').setAppName('sparkApp').set("spark.driver.extraClassPath", "../data/ojdbc6.jar")
+spark = SparkContext(conf=conf)
+```
+
+```python
+from pyspark.sql import SQLContext
+sqlCtx = SQLContext(spark)
+spark = sqlCtx.sparkSession
+spark
+```
+
+```python
+sql_url = "localhost"
+user = "hr"
+password = "hr"
+database = "xe"
+table = "SPARK_TITANIC"
+```
+
+```python
+jdbc = spark.read.format("jdbc")\
+                .option("driver", "oracle.jdbc.driver.OracleDriver")\
+                .option("url", "jdbc:oracle:thin:@{}:1521:{}".format(sql_url, database))\
+                .option("user", user)\
+                .option("password", password)\
+                .option("dbtable", table)\
+                .load()
+jdbc.show()
+```
+
+```python
+jdbc.createOrReplaceTempView('titancc') #sql의 뷰처럼 만들어서 이름을 titanic로 부여
+sqlCtx.sql('select * from titanic where sex = "female"').show()
+```
+
+- 이렇게 연동하면 sql구문을 바로 사용할 수 있다.
+
+---
+
+#### CSV파일로도 가능하다.
+
+```python
+titanic.createOrReplaceTempView('titanccView') #sql의 뷰처럼 만들어서 이름을 titanic로 부여
+sqlCtx.sql('select * from titanccView where sex = "female"').show()
+>
++-----------+--------+------+--------------------+------+----+-----+-----+----------------+--------+-----+--------+
+|PassengerId|Survived|Pclass|                Name|   Sex| Age|SibSp|Parch|          Ticket|    Fare|Cabin|Embarked|
++-----------+--------+------+--------------------+------+----+-----+-----+----------------+--------+-----+--------+
+|          2|       1|     1|Cumings, Mrs. Joh...|female|38.0|    1|    0|        PC 17599| 71.2833|  C85|       C|
+```
+
+- 위에서 만들었던 titanic파일로 뷰를 만들어서 sql구문을 사용하였다.
