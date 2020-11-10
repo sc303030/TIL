@@ -259,5 +259,337 @@ ORDER BY 3;
 | 펭하     | 2500000 | B      |
 | 펭빠     | 260000  | B      |
 
-13p
+#### SELF JOIN
+
+- 한 테이블을 두 번 조인하는 유형
+- 테이블 별칭을 사용해야 함
+
+```sql
+SELECT 	E.EMP_NAME AS 직원,
+		M.EMP_NAME AS 관리자
+FROM 	EMPLOYEE E
+JOIN 	EMPLOYEE M ON (E.MGR_ID = M.EMP_ID)
+ORDER BY 1;
+```
+
+| 직원 | 관리자 |
+| ---- | ------ |
+| 펭펭 | 펭수   |
+| 펭빠 | 펭수   |
+
+#### N개 테이블 JOIN
+
+- N개의 테이블을 조인하려면 최소 N-1개의 조인 조건(또는 N-1개의 JOIN 키워드)이 필요
+
+| EMP_NAME | JOB_TITLE | DEPT_NAME   |
+| -------- | --------- | ----------- |
+| 펭수     | 대표이사  | 남극영업3팀 |
+
+[JOB]
+
+| JOB_ID | JOB_TITLE |
+| ------ | --------- |
+| J1     | 대표이사  |
+
+[EMPLOYEE]
+
+| EMP_NAME | JOB_ID | DEPT_ID |
+| -------- | ------ | ------- |
+| 펭수     | J1     | 90      |
+
+[DEPARTMENT]]
+
+| DEPT_ID | DEPT_NAME   |
+| ------- | ----------- |
+| 90      | 남극영업3팀 |
+
+- 3개 테이블을 조인하려면 2개의 조건이 필요하다
+
+```sql
+SELECT 	EMP_NAME,
+		LOC_DESCRIBE,
+		DEPT_NAME
+FROM 	EMPLOYEE
+JOIN 	LOCATION ON (LOCATION_ID = LOC_ID)
+JOIN 	DEPARTMENT USING (DEPT_ID);
+```
+
+- 구문 순서대로 EMPLOYEE와 LOCATION이 먼저 조인 되어야 함
+- 두 테이블은 직접적인 연관 관계가 없으므로 오류 발생
+- `ERROR` : ORA-00904 : 'LOC_ID' : 부적합한 식별자
+
+```sql
+SELECT EMP_NAME,
+LOC_DESCRIBE,
+DEPT_NAME
+FROM EMPLOYEE
+JOIN DEPARTMENT USING (DEPT_ID)
+JOIN LOCATION ON (LOCATION_ID = LOC_ID);
+```
+
+- DEPARTMENT 테이블이 EMPLOYEE와 LOCATION을 연결시킬 수 있도록 구문을 수정해야 함
+
+**결과(일부)**
+
+| EMP_NAME | LOC_DESCRIBE | DEPT_NAME   |
+| -------- | ------------ | ----------- |
+| 펭펭     | 아시아지역   | 남극영업3팀 |
+
+```sql
+SELECT 	EMP_NAME,
+		DEPT_NAME
+FROM 	EMPLOYEE
+JOIN 	JOB USING (JOB_ID)
+JOIN 	DEPARTMENT USING (DEPT_ID)
+JOIN 	LOCATION ON (LOC_ID = LOCATION_ID)
+WHERE 	JOB_TITLE='대리'
+AND 	LOC_DESCRIBE LIKE '아시아%';
+```
+
+- 컬럼 조회 목적이 아닌 WHERE 조건을 위해 조인에 포함되어야 하는 테이블이 필요
+
+- JOB 테이블은 직급 조건을 위해, LOCATION 테이블은 지역 조건을 위해 조인되었음
+
+| EMP_NAME | DEPT_NAME   |
+| -------- | ----------- |
+| 펭빠     | 해외영업2팀 |
+
+### 4.2.5 SET Operator - 개념
+
+- 두 개 이상의 쿼리 결과를 하나로 결합시키는 연산자
+- SELECT 절에 기술하는 컬럼 개수와 데이터 타입은 모든 쿼리에서 동일해야 함
+
+|   유형    |                             설명                             |
+| :-------: | :----------------------------------------------------------: |
+|   UNION   |   양쪽 쿼리 결과를 모두 포함<br/>(중복 결과는 1번만 표현)    |
+| UNION ALL |    양쪽 쿼리 결과를 모두포함<br/>(중복 결과도 모두 표현)     |
+| INTERSECT |         양쪽 쿼리 결과에 모두<br/>포함되는 행만 표현         |
+|   MINUS   | 쿼리1 결과에만 포함되고 쿼리2<br/>결과에는 포함되지 않는 행만<br/>표현 |
+
+#### 활용
+
+- SET Operator와 JOIN 관계
+
+```sql
+SELECT 	EMP_ID,
+		ROLE_NAME
+FROM 	EMPLOYEE_ROLE
+JOIN 	ROLE_HISTORY USING (EMP_ID, ROLE_NAME);
+```
+
+```sql
+SELECT 	EMP_ID,
+		ROLE_NAME
+FROM 	EMPLOYEE_ROLE
+INTERSECT
+SELECT 	EMP_ID,
+		ROLE_NAME
+FROM 	ROLE_HISTORY;
+```
+
+| EMP_ID | ROLE_NAME |
+| ------ | --------- |
+| 104    | SE        |
+
+```sql
+SELECT 	EMP_NAME,
+		JOB_TITLE 직급
+FROM 	EMPLOYEE
+JOIN 	JOB USING (JOB_ID)
+WHERE 	JOB_TITLE IN ('대리', '사원')
+ORDER BY 2,1;
+```
+
+```sql
+SELECT 	EMP_NAME, '사원' 직급
+FROM 	EMPLOYEE
+JOIN 	JOB USING (JOB_ID)
+WHERE 	JOB_TITLE = '사원'
+UNION
+SELECT 	EMP_NAME, '대리'
+FROM 	EMPLOYEE
+JOIN 	JOB USING (JOB_ID)
+WHERE 	JOB_TITLE = '대리'
+ORDER BY 2,1;
+```
+
+| EMP_NAME | 직급 |
+| -------- | ---- |
+| 펭하     | 대리 |
+| 펭펭     | 사원 |
+
+### 4.2.6 Subquery - 개념
+
+- 하나의 쿼리가 다른 쿼리에 포함되는 구조
+- 다른 쿼리에 포함된 내부 쿼리(서브 쿼리)는 외부 쿼리(메인 쿼리)에 사용될 값을 반환하는 역할
+
+```
+요구사항 : '나승원' 직원과 같은 부서원들을 조회하라
+요구사항을 해결하기 위해서는
+	1. '나승원' 직원이 속한 부서가 어떤 부서인지(부서 번호 또는 부서 이름) 찾고
+	2. 부서 정보(부서 번호 또는 부서 이름)를 이용하여 해당 부서에 속한 직원들을 찾아야 함
+```
+
+[메인쿼리]
+
+```sql
+SELECT 	EMP_NAME 서브쿼리
+FROM 	EMPLOYEE
+WHERE 	DEPT_ID = '나승원의 소속부서 ID' ;
+```
+
+[서브쿼리]
+
+```sql
+SELECT 	DEPT_ID
+FROM 	EMPLOYEE
+WHERE 	EMP_NAME = '나승원';
+```
+
+#### 구문
+
+```sql
+SELECT 	...
+FROM 	...
+WHERE 	expr operator ( SELECT ...
+FROM 	...
+WHERE 	... ) ;
+```
+
+**[구문 설명]**
+
+- 서브쿼리는 일반적인 SQL 구문과 동일(별도 형식이 존재하는 것이 아님)
+- SELECT, FROM, WHERE, HAVING 절 등에서 사용 가능
+- 서브쿼리는 ( )로 묶어서 표현
+- 서브쿼리에는 ; 를 사용하지 않음
+- 유형에 따라 연산자를 구분해서 사용
+
+#### 유형
+
+- 단일 행 서브쿼리
+  - 단일 행 반환
+  - 단일 행 비교 연산자(=, >, >=, <, <=, <> 등) 사용
+- 다중 행 서브쿼리
+  - 여러 행 반환
+  - 다중 행 비교 연산자(IN, ANY, ALL 등) 사용
+
+#### 단일 행 서브쿼리
+
+```sql
+SELECT 	EMP_NAME,
+		JOB_ID,
+		SALARY
+FROM 	EMPLOYEE
+WHERE 	JOB_ID = (SELECT 	JOB_ID
+				   FROM  	EMPLOYEE
+				   WHERE 	EMP_NAME = '나승원')
+AND 	SALARY > (SELECT 	SALARY
+				  FROM 		EMPLOYEE
+				  WHERE 	EMP_NAME = '나승원') ;
+```
+
+```sql
+SELECT 	EMP_NAME,
+		JOB_ID,
+		SALARY
+FROM 	EMPLOYEE
+WHERE 	JOB_ID = 'J5'
+AND 	SALARY > 2300000;
+```
+
+| EMP_NAME | JOB_ID | SALARY  |
+| -------- | ------ | ------- |
+| 펭펭     | J5     | 2600000 |
+
+```sql
+SELECT 	EMP_NAME,
+		JOB_ID,
+		SALARY
+FROM 	EMPLOYEE
+WHERE 	SALARY = (SELECT MIN(SALARY)
+				  FROM 	 EMPLOYEE) ;
+```
+
+```sql
+SELECT 	EMP_NAME,
+		JOB_ID,
+		SALARY
+FROM 	EMPLOYEE
+WHERE 	SALARY = 1500000;
+```
+
+| EMP_NAME | JOB_ID | SALARY  |
+| -------- | ------ | ------- |
+| 펭펭     | J7     | 1500000 |
+| 물범     | J7     | 1500000 |
+
+```sql
+SELECT 		DEPT_NAME,
+			SUM(SALARY)
+FROM 		EMPLOYEE
+LEFT JOIN 	DEPARTMENT USING (DEPT_ID)
+GROUP BY 	DEPT_ID, DEPT_NAME
+HAVING 		SUM(SALARY) = (SELECT 	 MAX(SUM(SALARY))
+					  		FROM 	 EMPLOYEE
+					  		GROUP BY DEPT_ID);
+```
+
+```sql
+SELECT 		DEPT_NAME,
+			SUM(SALARY)
+FROM 		EMPLOYEE
+LEFT JOIN 	DEPARTMENT USING (DEPT_ID)
+GROUP BY  	DEPT_ID, DEPT_NAME
+HAVING 	  	SUM(SALARY) = 18100000;
+```
+
+| DEPT_NAME   | SUM(SALARY) |
+| ----------- | ----------- |
+| 해외영업3팀 | 18100000    |
+
+```sql
+SELECT 	EMP_ID,
+		EMP_NAME
+FROM 	EMPLOYEE
+WHERE 	SALARY = (SELECT MIN(SALARY)
+				  FROM 	 EMPLOYEE
+				  GROUP BY DEPT_ID);
+```
+
+- `ERROR` : ORA-01427 : 단일 행 하위 질의에 2개 이상의 행이 리턴되었습니다.
+
+| MIN(SALARY) |      |
+| ----------- | ---- |
+| 15000000    |      |
+| 20000000    |      |
+| 25000000    |      |
+
+#### 다중 행 서브쿼리 1) IN, NOT IN 연산자
+
+```sql
+SELECT 	EMP_ID,
+		EMP_NAME,
+		'관리자' AS 구분
+FROM 	EMPLOYEE
+WHERE 	EMP_ID IN (SELECT MGR_ID FROM EMPLOYEE)
+UNION
+SELECT 	EMP_ID,
+		EMP_NAME,
+		'직원'
+FROM 	EMPLOYEE
+WHERE 	EMP_ID NOT IN (SELECT MGR_ID FROM EMPLOYEE
+					   WHERE 	MGR_ID IS NOT NULL)
+ORDER BY 3, 1;
+```
+
+- NOT IN 연산자와 다중 행 서브쿼리를 함께 사용하는 경우, 서브쿼리 결과에 NULL이 포함되면 전체 결과가 NULL이 됨
+  - 서브쿼리 결과에서 NULL인 경우를 제외시켜야 함
+
+| EMP_ID | EMP_NAME | 구분   |
+| ------ | -------- | ------ |
+| 100    | 펭펭     | 관리자 |
+| 104    | 펭하     | 관리자 |
+| 201    | 범이     | 직원   |
+
+
 
