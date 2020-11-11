@@ -591,5 +591,106 @@ ORDER BY 3, 1;
 | 104    | 펭하     | 관리자 |
 | 201    | 범이     | 직원   |
 
+#### 2)ANY 연산자
+
+- < ANY : 비교 대상 중 최대 값 보다 작음
+- \> ANY : 비교 대상 중 최소 값 보다 큼
+- = ANY : IN 연산자와 동일
+
+- 과장 직급보다 급여가 많은 대리 직급 직원 조회
+
+[과장 급여 현황]
+
+| EMP_NAME | SALARY  |
+| -------- | ------- |
+| 범범     | 210000  |
+| 범이     | 230000  |
+| 물범     | 2600000 |
+
+[대리 급여 현황]
+
+| EMP_NAME | SALARY  |
+| -------- | ------- |
+| 펭수     | 2090000 |
+| 펭펭     | 2420000 |
+| 펭하     | 3410000 |
+| 펭빠     | 2640000 |
+
+```sql
+SELECT 	EMP_NAME,
+		SALARY
+FROM 	EMPLOYEE
+JOIN 	JOB USING (JOB_ID)
+WHERE 	JOB_TITLE = '대리'
+AND 	SALARY > ANY
+				(SELECT SALARY
+				 FROM EMPLOYEE
+				 JOIN JOB USING (JOB_ID)
+				 WHERE JOB_TITLE = '과장');
+```
+
+| EMP_NAME | SALARY  |
+| -------- | ------- |
+| 펭펭     | 2420000 |
+| 펭하     | 3410000 |
+| 펭빠     | 2640000 |
+
+#### 다중 행 서브쿼리
+
+- 자기 직급의 평균 급여를 받는 직원을 조회하시오
+
+```sql
+SELECT 	EMP_NAME,
+		JOB_TITLE,
+		SALARY
+FROM 	EMPLOYEE
+LEFT JOIN JOB USING (JOB_ID)
+WHERE SALARY IN
+		(SELECT TRUNC(AVG(SALARY), -5)
+		 FROM EMPLOYEE
+		 GROUP BY JOB_ID)
+ORDER BY JOB_ID;
+```
+
+[직급 별 평균 급여 현황]
+
+| JOB_TITLE | AVG     |
+| --------- | ------- |
+| 과장      | 2300000 |
+| 사원      | 1600000 |
+| 차장      | 2500000 |
+| 대리      | 2600000 |
+
+| EMP_NAME | JOB_TITLE | SALARY  |
+| -------- | --------- | ------- |
+| 펭펭     | 차장      | 2600000 |
+| 펭빠     | 과장      | 2500000 |
+
+- 단순히 급여만 비교했기 때문에 다른 직급의 평균 급여와 동일한 경우까지 결과에 포함되었음
+  - 직급과 급여를 동시에 비교해야 함
+
+#### 다중 행/다중 열 서브쿼리
+
+```sql
+SELECT 	EMP_NAME,
+		JOB_TITLE,
+		SALARY
+FROM 	EMPLOYEE
+LEFT JOIN JOB USING (JOB_ID)
+WHERE (NVL(JOB_ID,' '), SALARY) IN
+		(SELECT NVL(JOB_ID, ' '),
+		 TRUNC(AVG(SALARY), -5)
+		 FROM EMPLOYEE
+		 GROUP BY JOB_ID)
+ORDER BY JOB_ID;
+```
+
+| EMP_NAME | JOB_TITLE | SALARY  |
+| -------- | --------- | ------- |
+| 펭수     | 과장      | 2300000 |
+| 펭펭     | 차장      | 2500000 |
+| 펭하     | 사원      | 1600000 |
+| 펭러뷰   | 대리      | 2600000 |
+
 
 
