@@ -404,6 +404,7 @@ orders.select('Alone').show()
 ```python
 orders = orders.withColumn('Alone',when(orders['Family_Size'] == 0, 1).otherwise(orders['Alone']))
 orders.select('Alone').show()
+orders = orders.na.fill({'Age':20})
 >
 +-----+
 |Alone|
@@ -456,3 +457,102 @@ root
  |-- initial_index: double (nullable = false)
 ```
 
+```python
+from pyspark.ml.feature import VectorAssembler
+```
+
+```python
+feature = VectorAssembler(inputCols = titanic.columns[1:], outputCol = 'features')
+feature_vector = feature.transform(titanic)
+```
+
+- feature는 레이블을 제외한 여러개의 피처들을 결합해 만든다.
+
+```python
+feature_vector.printSchema()
+>
+root
+ |-- Survived: integer (nullable = true)
+ |-- Pclass: integer (nullable = true)
+ |-- Age: double (nullable = true)
+ |-- SibSp: integer (nullable = true)
+ |-- Parch: integer (nullable = true)
+ |-- Fare: double (nullable = true)
+ |-- Family_Size: integer (nullable = true)
+ |-- Alone: integer (nullable = false)
+ |-- Sex_index: double (nullable = false)
+ |-- Embarked_index: double (nullable = false)
+ |-- initial_index: double (nullable = false)
+ |-- features: vector (nullable = true)
+```
+
+- 트레인, 테스트 데이터 나누기
+
+```python
+trainData, testData = feature_vector.randomSplit([.8,.2],seed=100)
+```
+
+- 모델링
+- Spark ML(DTC, LR, RFC, GDTC, NB, SVM)
+
+### LogisticRegression
+
+#### 데이터의 범주가 0,1 사이의 값으로 예측하는 분류 알고리즘
+
+```python
+from pyspark.ml.classification import LogisticRegression
+```
+
+```python
+lr = LogisticRegression(labelCol='Survived', featuresCol='features')
+lr_model = lr.fit(trainData)
+lr_pred = lr_model.transform(testData)
+
+```
+
+- 알고리즘 분류기 객체를 생성하고 학습하였다. 예측도 하자
+
+```python
+lr_pred.printSchema()
+>
+|-- probability: vector (nullable = true)
+ |-- prediction: double (nullable = false)
+```
+
+- 예측값 컬럼이 생성되었다.
+
+```python
+lr_pred.select('prediction','Survived','features').show()
+>
++----------+--------+--------------------+
+|prediction|Survived|            features|
++----------+--------+--------------------+
+|       0.0|       0|(10,[0,1,6],[1.0,...|
+|       0.0|       0|(10,[0,1,4,6],[1....|
+|       0.0|       0|(10,[0,1,4,6],[1....|
+```
+
+- 예측값과 실제값을 비교해보았다.
+
+#### 평가를 해보자
+
+```python
+from pyspark.ml.evaluation import MulticlassClassificationEvaluator
+```
+
+```python
+evaluator = MulticlassClassificationEvaluator(labelCol='Survived',
+                                             predictionCol = 'prediction',
+                                             metricName='accuracy')
+```
+
+```python
+acc = evaluator.evaluate(lr_pred)
+print('acc : ', acc)
+print('err : ',1.0 - acc)
+>
+acc :  0.8166666666666667
+err :  0.18333333333333335
+```
+
+- 예측 정확도를 구했다.
