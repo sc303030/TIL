@@ -186,3 +186,273 @@ str
 
 - 컬럼으로 만들어서 함수를 적용해야 한다.
 - 그래서 col()로 감싸준다.
+
+```python
+orders = orders.withColumn('initial',regexp_extract(col('Name'),'([A-Za-z]+)\.',1))
+```
+
+- 정규식을 이용하여 중간 mr, mrs들만 가져왔다.
+
+```python
+orders.select(['Pclass','initial']).show()
+>
++------+-------+
+|Pclass|initial|
++------+-------+
+|     3|     Mr|
+|     1|    Mrs|
+```
+
+- 중복제거해서 출력해보기
+
+```python
+orders.select('initial').distinct().show()
+>
++--------+
+| initial|
++--------+
+|     Don|
+|    Miss|
+|Countess|
+```
+
+- 제대로 동작되지 않았다.
+
+**replace(['바꾸고 싶은 값'],['새로운 값'])**
+
+```python
+orders = orders.replace(['Don'],['Other'])
+orders.select('initial').distinct().show()
+>
++--------+
+| initial|
++--------+
+|    Miss|
+|Countess|
+|     Col|
+|     Rev|
+|    Lady|
+|   Other|
+```
+
+- 정상적으로 바뀌었다.
+
+```python
+orders.groupby('initial').avg('age').show()
+>
++--------+------------------+
+| initial|          avg(age)|
++--------+------------------+
+|    Miss|21.773972602739725|
+|Countess|              33.0|
+|     Col|              58.0|
+|     Rev|43.166666666666664|
+```
+
+- initial 별로 평균가져올 수 있다.
+
+```python
+orders = orders.replace(['Mlle','Mme', 'Ms', 'Dr','Major','Lady','Countess','Jonkheer','Col','Rev','Capt','Sir','Don'],
+               ['Miss','Miss','Miss','Mr','Mr',  'Mrs',  'Mrs',  'Other',  'Other','Other','Mr','Mr','Mr'])
+orders.groupby('initial').avg('age').show()
+>
++-------+------------------+
+|initial|          avg(age)|
++-------+------------------+
+|   Miss|             21.86|
+|  Other|              45.3|
+| Master| 4.574166666666667|
+|     Mr| 32.72181372549019|
+|    Mrs|35.981818181818184|
++-------+------------------+
+```
+
+```python
+orders.groupby('initial').avg('age').collect()
+>
+[Row(initial='Miss', avg(age)=21.86),
+ Row(initial='Other', avg(age)=45.3),
+ Row(initial='Master', avg(age)=4.574166666666667),
+ Row(initial='Mr', avg(age)=32.72181372549019),
+ Row(initial='Mrs', avg(age)=35.981818181818184)]
+```
+
+```python
+orders.filter(orders['Age']==48).select('initial').show()
+>
++-------+
+|initial|
++-------+
+|     Mr|
+|     Mr|
+|    Mrs|
+|     Mr|
+|     Mr|
+|    Mrs|
+|    Mrs|
+|     Mr|
+|    Mrs|
++-------+
+```
+
+- 나이제한을 걸어 결과값 확인
+
+#### null 처리 방법
+
+```python
+orders.groupby('Embarked').count().show()
+>
++--------+-----+
+|Embarked|count|
++--------+-----+
+|       Q|   77|
+|    null|    2|
+|       C|  168|
+|       S|  644|
++--------+-----+
+```
+
+```python
+orders = orders.na.fill({'Embarked':'S'})
+```
+
+- `fill` 과 `na` 를 이용하여 na값을 'S'로 바꾸었다.
+
+```python
+orders.groupby('Embarked').count().show()
+>
++--------+-----+
+|Embarked|count|
++--------+-----+
+|       Q|   77|
+|       C|  168|
+|       S|  646|
++--------+-----+
+```
+
+- 불필요한 컬럼 삭제
+
+```python
+orders = orders.drop('Cabin')
+orders.columns
+>
+['PassengerId',
+ 'Survived',
+ 'Pclass',
+ 'Name',
+ 'Sex',
+ 'Age',
+ 'SibSp',
+ 'Parch',
+ 'Ticket',
+ 'Fare',
+ 'Embarked',
+ 'initial']
+```
+
+- 삭제되었다.
+- csv 파일을 불러올 때 inferSchema=True를 줘야 나중에 형변환 안 해도 된다.
+
+**파생 컬럼 만드는 방법**
+
+```python
+orders = orders.withColumn('Family_Size',col('SibSp') +col('Parch'))
+orders.show()
+>
++-----------+--------+------+--------------------+------+----+-----+-----+----------------+-------+--------+-------+-----------+
+|PassengerId|Survived|Pclass|                Name|   Sex| Age|SibSp|Parch|          Ticket|   Fare|Embarked|initial|Family_Size|
++-----------+--------+------+--------------------+------+----+-----+-----+----------------+-------+--------+-------+-----------+
+|          1|       0|     3|Braund, Mr. Owen ...|  male|22.0|    1|    0|       A/5 21171|   7.25|       S|     Mr|          1
+```
+
+```python
+orders.groupby('Family_Size').count().show()
+>
++-----------+-----+
+|Family_Size|count|
++-----------+-----+
+|          1|  161|
+|          6|   12|
+|          3|   29|
+|          5|   22|
+|          4|   15|
+|          7|    6|
+|         10|    7|
+|          2|  102|
+|          0|  537|
++-----------+-----+
+```
+
+- 사이즈가 0인 것들을 Alone에 0으로 표시해보자.
+
+```python
+orders = orders.withColumn('Alone',lit(0))
+```
+
+- 0을 컬럼으로 인식해버려서 lit()를 하여 숫자로 인식한다.
+
+```python
+orders.select('Alone').show()
+>
++-----+
+|Alone|
++-----+
+|    0|
+|    0|
+```
+
+```python
+orders = orders.withColumn('Alone',when(orders['Family_Size'] == 0, 1).otherwise(orders['Alone']))
+orders.select('Alone').show()
+>
++-----+
+|Alone|
++-----+
+|    0|
+|    0|
+|    1|
+|    0|
+```
+
+- 정상적으로 실행되었다.
+
+- `when(조건,조건만족 값).otherwise(아닐경우 or 아닐경우 값)` : if 조건이랑 비슷하다.
+
+```python
+from pyspark.ml.feature import StringIndexer
+from pyspark.ml import Pipeline
+```
+
+```python
+indexers = [StringIndexer(inputCol=column, outputCol=column+"_index").fit(orders) for column in ["Sex","Embarked","initial"]]
+pipeline = Pipeline(stages=indexers)
+titanic = pipeline.fit(orders).transform(orders)
+```
+
+```python
+titanic.printSchema()
+>
+|-- Embarked_index: double (nullable = false)
+ |-- initial_index: double (nullable = false)
+```
+
+- 인덱서가 추가됨 
+
+```python
+titanic = titanic.drop('PassengerId','Name','Sex','Embarked','Ticket','initial')
+titanic.printSchema()
+>
+root
+ |-- Survived: integer (nullable = true)
+ |-- Pclass: integer (nullable = true)
+ |-- Age: double (nullable = true)
+ |-- SibSp: integer (nullable = true)
+ |-- Parch: integer (nullable = true)
+ |-- Fare: double (nullable = true)
+ |-- Family_Size: integer (nullable = true)
+ |-- Alone: integer (nullable = false)
+ |-- Sex_index: double (nullable = false)
+ |-- Embarked_index: double (nullable = false)
+ |-- initial_index: double (nullable = false)
+```
+
