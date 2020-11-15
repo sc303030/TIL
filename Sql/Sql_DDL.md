@@ -388,4 +388,243 @@ VALUES (NULL,'ORACLE','01');
 
 - ORA-01400 : NULL을("VCC"."TABLE_PK2"."ID")안에 삽입할 수 없습니다.
 
-19p
+```sql
+CREATE TABLE TABLE_PK3
+(ID CHAR(3) PRIMARY KEY,
+SNAME VARCHAR2(20) PRIMARY KEY,
+SCODE CHAR(2));
+```
+
+- 'PRIMARY KEY' 키워드는 한번만 사용 가능
+
+- ORA-00260 : 테이블에는 기본 키를 1개만 포함시킬 수 있습니다.
+
+```sql
+CREATE TABLE TABLE_PK3
+(ID CHAR(3) CONSTRAINT PK1PRIMARY KEY,
+SNAME VARCHAR2(20) CONSTRAINT PK1PRIMARY KEY,
+SCODE CHAR(2));
+```
+
+- 동일한 제약조건 이름을 지정 -> 컬럼 조합 결과를 대상으로 하는 제약조건 생성 의미가 아님
+
+- ORA-02260 : 테이블에는 기본 키를 1개만 포함시킬 수 있습니다.
+
+#### FOREIGN KEY
+
+- 참조 테이블의 컬럼 값과 일치하거나 NULL 상태를 유지하도록 한다.
+
+[EMPLOYEE]
+
+| EMP_ID | EMP_NAME | DEPT_ID |
+| ------ | -------- | :------ |
+| 100    | 펭펭     | 90      |
+| 101    | 펭하     | 60      |
+| 102    | 펭빠     | 50      |
+| 179    | 펭쑤     |         |
+
+[DEPARTMENT]
+
+| DEPT_ID | DEPT_NAME   |
+| ------- | ----------- |
+| 90      | 해외영업3팀 |
+| 60      | 기술지원팀  |
+| 50      | 해외영업1팀 |
+
+- DEPT_ID 컬럼 -> FOREIGN KEY 컬럼
+- DEPARTMENT 테이블의 DEPT_ID 컬럼에 존재하지 않는 값이 포함되면 데이터 무결성에 문제가 있음
+
+#### FOREIGN KEY : 컬럼 레벨에서 생성
+
+```sql
+CREATE TABLE TABLE_FK
+(ID CHAR(3),
+SNAME VARCHAR2(20),
+LID CHAR(2) REFERENCES LOCATION ( LOCATION_ID ) );
+```
+
+- 참조 테이블만 기술하고 참조컬럼을 생략하면 해당 테이블의 PRIMARY KEY 컬럼을 참조하게 됨
+
+- LOCATION : 참조 테이블
+- LOCATION_ID : 참조 컬럼
+
+```sql
+INSERT INTO TABLE_FK
+VALUES ('200','ORACLE','C1');
+```
+
+- ORA-02291 : 무결성 제약조건 (VCC.SYS_C0011189)이 위배되었습니다-부모 키가 없습니다.
+
+[LOCATION 테이블]
+
+| LOCATION_ID | COUNTRY_ID | LOC_DESCRIBE |
+| ----------- | ---------- | ------------ |
+| A1          | KO         | 아시아지역1  |
+| U1          | US         | 미주지역     |
+| OT          | ID         | 기타지역     |
+
+- 참조 테이블 LOCATION에는 LOCATION_ID = 'C1' 인 값이 없음
+
+#### FOREIGN KEY : 테이블 레벨에서 생성
+
+- 테이블 레벨에서 생성하는 구문은 "FOREIGN KEY" 키워드가 추가됨
+
+```sql
+CREATE TABLE TABLE_FK2
+(ID CHAR(3),
+ SNAME VARCHAR2(20),
+ LID CHAR(2),
+ [CONSTRAINT FK1] FOREIGN KEY( LID ) REFERENCES LOCATION ( LOCATION_ID ) );
+```
+
+- FOREIGN KEY : 추가 키워드
+- LID : 설정 컬럼
+- LOCATION : 참조 테이블
+- LOCATION_ID : 참조 컬럼
+
+##### FOREIGNKEY : 생성예
+
+- 참조 테이블의 PRIMARY KEY / UNIQUE 제약 조건이 설정된 컬럼만 참조 가능
+
+```sql
+CREATE TABLE TABLE_NOPK
+(ID CHAR(3),
+SNAME VARCHAR2(20));
+```
+
+- TABLE_NOPK 테이블에는 PRIMARY KEY나 UNIQUE 제약조건이 없음
+
+```sql
+CREATE TABLE TABLE_FK3
+(ID CHAR(3) REFERENCES TABLE_NOPK,
+ SNAME VARCHAR2(20));
+```
+
+- ORA-00268 : 참조 테이블에 기본 키가 없습니다.
+- 참조 컬럼 이름을 생략했으므로 해당 테이블의 PRIMARY KEY 컬럼을 찾겠다는 의미
+  - PRIMARY KEY가 존재하지 않으므로 생성 불가
+
+```sql
+CREATE TABLE TABLE_FK3
+(ID CHAR(3) REFERENCES TABLE_NOPK(ID),
+SNAME VARCHAR2(20));
+```
+
+- 참조 컬럼 ID에는 PRIMARY KEY나 UNIQUE 제약조건이 없음
+
+- ORA-00270 : 이 열목록에 대해 일치하는 고유 또는 기본 키가 없습니다.
+
+#### FOREIGN KEY : DELETION OPTION
+
+- FOREIGN KEY 제약조건을 생성할 때, 참조 컬럼 값이 삭제되는 경우 FOREIGN KEY 컬럼 값을 어떻게 처리할 지 지정 가능
+
+[구문]
+
+```sql
+[ CONSTRAINT constraint_name] constraint_typeON DELETE SET NULL
+또는
+[ CONSTRAINT constraint_name] constraint_typeON DELETE CASCADE
+```
+
+[구문 설명]
+
+- **ON DELETE SET NULL**
+  - 참조 컬럼 값이 삭제될 때, FOREIGN KEY 컬럼 값을 NULL로 변경하는 OPTION
+- **ON DELETE CASCADE**
+  - 참조 컬럼 값이 삭제될 때, FOREIGN KEY 컬럼 값도 함께 삭제(행 삭제 의미)하는 OPTION
+
+#### FOREIGN KEY : 조합 컬럼 생성 예
+
+```sql
+CREATE TABLE TABLE_FK4
+(ID CHAR(3),
+SNAME VARCHAR2(20),
+SCODE CHAR(2),
+CONSTRAINT TF4_FKFOREIGN KEY ( ID, SNAME ) REFERENCES TABLE_PK2 );
+```
+
+- 조합 컬럼을 대상으로 FOREIGN KEY를 생성하려면 테이블 레벨에서 생성
+
+```sql
+INSERT INTO TABLE_FK4
+VALUES ('200','IBM','03');
+```
+
+- ORA-02291 :  무결성 제약조건(VCC.TF4_FK)이 위베되었습니다-부모 키가 없습니다.
+
+| ID   | SNAME  | SCODE |
+| ---- | ------ | ----- |
+| 100  | ORACLE | 01    |
+| 200  | ORACLE | 01    |
+
+- 참조 테이블에 ('200', 'IBM') 조합 값이 없으므로 입력 불가
+
+- TABLE_PK2 테이블
+  - PRIMARY KEY -> (ID, SNAME)
+
+##### FOREIGN KEY : 생성 예
+
+```sql
+CREATE TABLE TABLE_FK5
+(ID CHAR(3) REFERENCESTABLE_PK2,
+SNAME VARCHAR2(20) REFERENCESTABLE_PK2,
+SCODE CHAR(2));
+```
+
+- TABLE_PK2 테이블의 PRIMARY KEY은 (ID, SNAME) 컬럼조합이므로 단일 컬럼은 FOREIGN KEY 제약조건을생성할 수 없음
+
+- ORA-00256 : 참조하고 있는 열의 숫자는 참조된 열의 수와 일치해야 합니다.
+
+### 제약조건-CHECK
+
+- 각 컬럼 값이 만족해야 하는 조건을 지정
+
+```sql
+CREATE TABLE TABLE_CHECK
+(EMP_ID CHAR(3) PRIMARY KEY,
+SALARY NUMBER CHECK ( SALARY > 0 ),
+MARRIAGE CHAR(1),
+CONSTRAINT CHK_MRGCHECK ( MARRIAGE IN ( 'Y','N' ) ) );
+```
+
+- SALARY 컬럼에는 0보다 큰 값만 포함될 수 있음
+- MARRIAGE 컬럼에는'Y'/'N'만 포함될 수 있음
+
+```sql
+INSERT INTO TABLE_CHECKVALUES ('100', -100, 'Y');
+```
+
+- ORA-02290 : 체크 제약조건(VCC.SYS_C0011191)이 위배되었습니다.
+- SALARY=-100이므로 CHECK 제약조건에 위배
+
+```sql
+INSERT INTO TABLE_CHECK
+VALUES ('100', 500, '?');
+```
+
+- ORA-02290 : 체크 제약조건(VCC.CHK_MGR)이 위배되었습니다.
+- MARRIAGE='?'이므로 CHECK 제약조건에 위배
+
+#### CHECK : 사용예
+
+```sql
+CREATE TABLE TABLE_CHECK2
+(ID CHAR(3) PRIMARY KEY,
+HIREDATE DATE CHECK( HIREDATE < SYSDATE ) );
+```
+
+- ORA-02436 : CHECK 제약에 날짜 또는 시스템 변수가 잘못 지정되었습니다.
+- 변하는 값은 조건으로 사용할 수 없음
+
+```sql
+CREATE TABLE TABLE_CHECK3
+(EID CHAR(3) PRIMARY KEY,
+ENAME VARCHAR2(10) NOT NULL,
+SALARY NUMBER ,
+MARRIAGE CHAR(1),
+CHECK ( SALARY > 0 AND SALARY < 1000000 ));
+```
+
+- CHECK 조건을 여러 개 사용할 수 있음
+
+29p
