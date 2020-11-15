@@ -120,4 +120,272 @@ QUANTITY NUMBER);
 | REFERENCES<br/>TABLE (column_name ) | 해당 컬럼이 참조하고 있는 테이블 <sup>부모테이블</sup>의 특정컬럼 값들과 일치하거나 또는 NULL이 되도록 보장함 | 컬럼, 테이블 |
 |                CHECK                | 해당 컬럼에 특정 조건을 항상 만족시키도록 함                 | 컬럼, 테이블 |
 
-10p
+- 이름으로관리
+  - 문자로 시작,길이는 30자까지 가능
+  - 이름을 따로 지정하지 않으면 자동 생성 (SYS_Cxxxxxxx 형식)
+
+- 생성 시기
+  - 테이블 생성과 동시
+  - 테이블을 생성한 후
+- 컬럼 레벨 또는 테이블 레벨에서 정의할 수 있다.
+  - NOT NULL은 '컬럼레벨' 에서만 가능
+  - 컬럼 여러 개를 조합하는 경우에는 '테이블 레벨 '에서만 가능
+
+##### NOT NULL 사용 예
+
+```sql
+CREATE TABLE TABLE_NOTNULL
+(ID CHAR(3) NOT NULL,
+SNAME VARCHAR2(20));
+```
+
+| NAME  | Type         | Nullabel |
+| ----- | ------------ | -------- |
+| ID    | CHAR(3)      |          |
+| SNAME | VARCHAR2(20) | Y        |
+
+```sql
+INSERT INTO TABLE_NOTNULL
+VALUES ('100','ORACLE');
+```
+
+| ID   | SNAME  |
+| ---- | ------ |
+| 100  | ORACLE |
+
+```sql
+INSERT INTO TABLE_NOTNULL
+VALUES (NULL,'ORACLE');
+```
+
+- ORA-01400: NULL을 ("VCC"."TABLE_NOTNULL"."ID") 안에 삽입할 수 없습니다.
+
+- 'ID' 컬럼에 NULL을 입력하려고 했기 때문에 발생
+
+- 에러 메시지 표시 형식
+  - "VCC"."TABLE_NOTNULL"."ID"- > 계정.테이블.컬럼
+
+```sql
+CREATE TABLE TABLE_NOTNULL2
+(ID CHAR(3),
+SNAME VARCHAR2(20),
+CONSTRAINT TN2_ID_NNNOT NULL (ID));
+```
+
+- 'NOT NULL' 제약조건은 컬럼 레벨에서만 정의 가능
+
+- ORA-00904 : 부적합한 식별자
+
+#### UNIQUE : 단일 컬럼 생성 예
+
+```sql
+CREATE TABLE TABLE_UNIQUE
+(ID CHAR(3) UNIQUE,
+SNAME VARCHAR2(20));
+```
+
+```sql
+INSERT INTO TABLE_UNIQUE
+VALUES ('100','ORACLE');
+```
+
+| ID   | SNAME  |
+| ---- | ------ |
+| 100  | ORACLE |
+
+```sql
+INSERT INTO TABLE_UNIQUE
+VALUES ('100','ORACLE');
+```
+
+- ORA-00001 : 무결정 제약 조건(VCC.SYS_C0011181)에 위배됩니다.
+
+- 'ID' 컬럼에 중복 값을 입력하려고 했기 때문에 발생
+- 제약조건 이름을 지정하지 않았으므로 임의 이름 "SYS_C0011181"이 할당됨
+
+#### UNIQUE : 조합 컬럼 생성 예
+
+```sql
+CREATE TABLE TABLE_UNIQUE2
+(ID CHAR(3),
+SNAME VARCHAR2(20),
+SCODE CHAR(2),
+CONSTRAINTTN2_ID_UNUNIQUE (ID,SNAME));
+```
+
+- 컬럼 조합 결과를 유일하게 하려는 목적이므로 테이블 레벨에서 생성해야 함
+
+```sql
+INSERT INTO TABLE_UNIQUE2
+VALUES ('100', 'ORACLE', '01');
+```
+
+| ID   | SNAME  | SCODE |
+| ---- | ------ | ----- |
+| 100  | ORACLE | 01    |
+
+```sql
+INSERT INTO TABLE_UNIQUE2
+VALUES ('200', 'ORACLE', '01');
+```
+
+| ID   | SNAME  | SCODE |
+| ---- | ------ | ----- |
+| 100  | ORACLE | 01    |
+| 200  | ORACLE | 02    |
+
+```sql
+INSERT INTO TABLE_UNIQUE2
+VALUES ('200','ORACLE','02');
+```
+
+- ORA-00001 : 무결성 제약 조건(VCC.TN2_10_UN)에 위배됩니다.
+
+##### UNIQUE:생성예
+
+```sql
+CREATE TABLE TABLE_UNIQUE3
+(ID CHAR(3) UNIQUE,
+SNAME VARCHAR2(20) UNIQUE,
+SCODE	CHAR(2));
+```
+
+```sql
+INSERT INTO TABLE_UNIQUE3
+VALUES ('100','ORACLE','01');
+```
+
+| ID   | SNAME  | SCODE |
+| ---- | ------ | ----- |
+| 100  | ORACLE | 01    |
+
+```sql
+INSERT INTO TABLE_UNIQUE3
+VALUES ('200','ORACLE','01');
+```
+
+- ORA-00001 "" 무결성 제약 조건(VV.SYS_C0011184)에 위배됩니다.
+- 'ID' 컬럼과 'SNAME' 컬럼에 각각 설정되었기 때문에, 중복된 'SNAME' 컬럼 값이 입력 될 수 없음
+  - 두 컬럼의 조합 결과를 유일하게 하려면 '테이블 레벨' 에서 생성
+
+```sql
+CREATE TABLE TABLE_UNIQUE4
+(ID CHAR(3) CONSTRAINT TN4_ID_UNUNIQUE ,
+SNAME VARCHAR2(20) CONSTRAINT TN4_ID_UNUNIQUE ,
+SCODE CHAR(2));
+```
+
+- ORA-02264 : 기존의 제약에 사용된 이름입니다.
+
+- 제약 조건 이름을 동일하게 해서 'ID' 컬럼과 'SNAME' 컬럼 조합 결과를 유일하게 하려고 했음
+  - 두 컬럼의 조합 결과를 유일하게 하려면 '테이블 레벨' 에서 생성
+
+- UNIQUE 제약 조건이 생성된 컬럼에는 NULL 포함 가능
+
+**[단일 컬럼 경우 예]**
+
+```sql
+CREATE TABLE TABLE_UNIQUE5
+(ID NUMBER UNIQUE,
+NAME VARCHAR2(10));
+```
+
+- 'ID' 컬럼에 NULL 입력 가능
+
+| ID   | NAME   |
+| ---- | ------ |
+|      | ORACLE |
+|      | SQL    |
+|      | JAVA   |
+
+**[컬럼 조합 경우 예]**
+
+```sql
+CREATE TABLE TABLE_UNIQUE6
+(ID NUMBER,
+NAME VARCHAR2(10),
+UNIQUE (ID, NAME));
+```
+
+- 'ID, NAME' 컬럼 조합으로 NULL 가능
+
+| ID   | NAME   |
+| ---- | ------ |
+|      | ORACLE |
+| 100  | SQL    |
+|      |        |
+| 200  | JAVA   |
+|      | ORACLE |
+
+- ORA-00001 : 무결정 제약 조건(VSS.SYS_C0011187)에 위배됩니다.
+
+- 'ID, NAME' 컬럼 조합 중복
+
+#### PRIMARY KEY
+
+- UNIQUE + NOT NULL 의미
+- 테이블 당 1개만 생성 가능
+
+```sql
+CREATE TABLE TABLE_PK
+(ID CHAR(3) PRIMARY KEY,
+ SNAME VARCHAR2(20));
+```
+
+```sql
+INSERT INTO TABLE_PK
+VALUES ('100','ORACLE');
+```
+
+| ID   | SNAME  |
+| ---- | ------ |
+| 100  | ORACLE |
+
+```sql
+INSERT INTO TABLE_PK
+VALUES ('100','IBM');
+```
+
+- ORA-00001 : 무결정 제약 조건(VCC.SYS_C004108)에 위배됩니다.
+
+```sql
+INSERT INTO TABLE_PK
+VALUES (NULL, 'SUN');
+```
+
+- ORA-01400 : NULL을 ("VCC"."TABLE_PK"."ID")안에 삽입할 수 없습니다.
+
+##### PRIMARY KEY : 조합 컬럼 생성 예
+
+```sql
+CREATE TABLE TABLE_PK2
+(ID CHAR(3),
+SNAME VARCHAR2(20),
+SCODE CHAR(2),
+CONSTRAINT TP2_PKPRIMARY KEY (ID,SNAME));
+```
+
+| ID   | SNAME  | SCODE |
+| ---- | ------ | ----- |
+| 100  | ORACLE | 01    |
+| 200  | ORACLE | 01    |
+
+```sql
+INSERT INTO TABLE_PK2
+VALUES ('100','ORACLE','02');
+```
+
+- 'ID, SAME' 컬럼 조합 결과가 중복
+
+- ORA-00001 : 무결정 제약 조건(VCC.TP2_PK)에 위배됩니다.
+
+```sql
+INSERT INTO TABLE_PK2
+VALUES (NULL,'ORACLE','01');
+```
+
+- 조합되는 개별 컬럼에 NULL은 허용되지 않음
+
+- ORA-01400 : NULL을("VCC"."TABLE_PK2"."ID")안에 삽입할 수 없습니다.
+
+19p
