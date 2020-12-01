@@ -627,4 +627,330 @@ CHECK ( SALARY > 0 AND SALARY < 1000000 ));
 
 - CHECK 조건을 여러 개 사용할 수 있음
 
-29p
+##### SAMPLE SCRIPT
+
+```sql
+CREATE TABLE CONSTRAINT_EMP
+(EID CHAR(3) CONSTRAINT PKEID PRIMARY KEY,
+ENAME VARCHAR2(20) CONSTRAINT NENAME NOT NULL,
+ENO CHAR(14) CONSTRAINT NENO NOT NULL CONSTRAINT UENO UNIQUE,
+EMAIL VARCHAR2(25) CONSTRAINT UEMAIL UNIQUE,
+PHONE VARCHAR2(12),
+HIRE_DATE DATE DEFAULT SYSDATE,
+JID CHAR(2) CONSTRAINT FKJID REFERENCES JOB ON DELETE SET NULL,
+SALARY NUMBER,
+BONUS_PCT NUMBER,
+MARRIAGE CHAR(1) DEFAULT 'N' CONSTRAINT CHK CHECK(MARRIAGE IN ('Y','N')),
+MID CHAR(3) CONSTRAINT FKMID REFERENCES CONSTRAINT_EMP ON DELETE SET NULL,
+DID CHAR(2),
+CONSTRAINT FKDID FOREIGN KEY(DID) REFERENCES DEPARTMENT ON DELETE CASCADE
+);
+```
+
+### 5.1.3 서브쿼리를 활용한 테이블 생성 구문
+
+- "AS SUBQUERY" 옵션을 사용하면 테이블 생성과 행 삽입을 동시에 할 수 있음
+
+[구문]
+
+```sql
+CREATE TABLE table_name [(column_name[DEFAULT expr] [, ... ] ) ]
+AS SUBQUERY;
+```
+
+[구문 특징]
+
+- **특징**
+  - 테이블을 생성하고, 서브쿼리 실행결 과가 자동으로 입력됨
+
+- **컬럼정의**
+  - 데이터 타입 정의 불가 : 컬럼 이름 및 DEFAULT 값만 정의 가능
+  - 컬럼 이름 생략 가능 : 서브쿼리에서 사용한 컬럼 이름이 적용
+  - 제약조건 : 서브쿼리에서 사용한 대상 컬럼들의 NOT NULL 조건은 자동 반영됨
+  - 생성 시점에 컬럼 레벨에서 제약조건 생성 가능 -> REFERENCES 제약조건 불가
+
+```sql
+CREATE TABLE TABLE_SUBQUERY1
+AS SELECT EMP_ID, EMP_NAME, SALARY, DEPT_NAME, JOB_TITLE
+FROM EMPLOYEE
+LEFT JOIN DEPARTMENT USING (DEPT_ID)
+LEFT JOIN JOB USING (JOB_ID);
+```
+
+| Name      | Type         | Nullable |
+| --------- | ------------ | -------- |
+| EMP_ID    | CHAR(3)      | Y        |
+| EMP_NAME  | VARCHAR2(20) |          |
+| SALARY    | NUMBER       | Y        |
+| DEPT_NAME | VARCHAR2(30) | Y        |
+| JOB_TITLE | VARCHAR2(35) | Y        |
+
+- EMP_ID 컬럼은 원래 PRIMARY KEY 제약조건이 생성되어 있었으나 해당 제약조건은 자동으로 적용되지 않았으므로 NULL이 허용되는 상태임
+- EMP_NAME 컬럼은 설정된 NOT NULL 제약조건이 자동으로 적용된 상태임
+-  컬럼 이름을 별도로 지정하지 않았으므로 서브쿼리에서 사용한 컬럼 이름이 적용됨
+
+```sql
+CREATE TABLE TABLE_SUBQUERY2 ( EID, ENAME, SALARY, DNAME, JTITLE)
+AS SELECT EMP_ID, EMP_NAME, SALARY, DEPT_NAME, JOB_TITLE
+FROM EMPLOYEE
+LEFT JOIN DEPARTMENT USING (DEPT_ID)
+LEFT JOIN JOB USING (JOB_ID);
+```
+
+[생성 결과]
+
+| Name   | Type         | Nullable |
+| ------ | ------------ | -------- |
+| EID    | CHAR(3)      | Y        |
+| ENAME  | VARCHAR2(20) |          |
+| SALARY | NUMBER       | Y        |
+| DNAME  | VARCHAR2(30) | Y        |
+| JTITLE | VARCHAR2(35) | Y        |
+
+- 지정한 컬럼 이름으로 생성됨
+
+```sql
+CREATE TABLE TABLE_SUBQUERY3
+( EID PRIMARY KEY,
+ENAME,
+SALARY CHECK (SALARY > 2000000),
+DNAME,
+JTITLE NOT NULL)
+AS SELECT EMP_ID, EMP_NAME, SALARY, DEPT_NAME, JOB_TITLE
+FROM EMPLOYEE
+LEFT JOIN DEPARTMENT USING (DEPT_ID)
+LEFT JOIN JOB USING (JOB_ID);
+```
+
+- ORA-02446 : CREATE TABLE ... AS SELECT 실패 - 제약 위반 점검
+
+- SALARY >2000000 조건때문에 서브쿼리 실행 결과 중 2000000 보다 작은 SALARY값을 입력할 수 없음
+
+- JTITLE컬럼의 NOT NULL 조건때문에 서브쿼리 실행 결과 중 JOB_TITLE이 NULL인값을 입력할 수 없음
+
+```sql
+CREATE TABLE TABLE_SUBQUERY3
+    ( EID PRIMARY KEY, 
+     ENAME, 
+     SALARY CHECK (SALARY > 2000000), 
+     DNAME, 
+     JTITLE NOT NULL)
+     AS SELECT EMP_ID, EMP_NAME, SALARY, DEPT_NAME, JOB_TITLE
+     FROM EMPLOYEELEFT JOIN DEPARTMENT USING (DEPT_ID)
+     LEFT JOIN JOB USING (JOB_ID)
+     WHERE SALARY > 2000000;
+```
+
+- ORA-01400 : NULL을 ('VCC'.'TABLE_SUBSQUERYS"."JTITLE")안에 삽입할 수 업습니다.
+
+- WHERE 조건에 SALARY > 2000000조건을 추가하여 해결
+
+- JTITLE 컬럼의 NOT NULL 조건때문에 서브쿼리 실행 결과 중 JOB_TITLE이 NULL인 값을 입력할 수 없음
+
+### 5.1.3 서브쿼리를 활용한 테이블 생성 구문
+
+``` sql
+CREATE TABLE TABLE_SUBQUERY3
+( EID PRIMARY KEY,
+	ENAME,
+	SALARY CHECK (SALARY > 2000000),
+	DNAME,
+	JTITLE DEFAULT 'N/A'NOT NULL)
+AS SELECT EMP_ID, EMP_NAME, SALARY, DEPT_NAME, JOB_TITLE
+	FROM EMPLOYEE
+	LEFT JOIN DEPARTMENT USING (DEPT_ID)
+	LEFT JOIN JOB USING (JOB_ID)
+	WHERE SALARY > 2000000;
+```
+
+| Name   | Type         | Nullable | Default |
+| ------ | ------------ | -------- | ------- |
+| EID    | CHAR(3)      |          |         |
+| ENAME  | VARCHAR2(20) |          |         |
+| SALARY | NUMBER       | Y        |         |
+| DNAME  | VARCHAR2(30) | Y        |         |
+| JTITLE | VARCHAR2(35) |          | 'N/A'   |
+
+- EID컬럼에 PRIMARY KEY 제약 조건 적용됨
+
+- JTITLE 컬럼의 DEFAULT 설정으로 해결됨
+
+```sql
+CREATE TABLE TABLE_SUBQUERY4
+( EID PRIMARY KEY,
+	ENAME ,
+	SALARY CHECK (SALARY > 2000000),
+	DID REFERENCES DEPARTMENT,
+	JTITLE DEFAULT 'N/A' NOT NULL)
+AS SELECT EMP_ID, EMP_NAME, SALARY, DEPT_ID, JOB_TITLE
+	FROM EMPLOYEE
+	LEFT JOIN JOB USING (JOB_ID)
+	WHERE SALARY > 2000000;
+```
+
+- Error : ORA-02440 : 참조 제약과 함게 create as select는 허용되지 않습니다.
+  - REFERENCES 제약 조건 사용 불가
+
+### 5.1.4 테이블 구조 확인 - SQL*Plus
+
+- SQL> DESC[RIBE]  _table_name_
+
+| 이름      | NULL     | 유형         |
+| --------- | -------- | ------------ |
+| EMP_ID    | NOT NULL | CHAR(3)      |
+| EMAIL     |          | VARCHAR2(25) |
+| HIRE DATE |          | DATE         |
+
+- 컬럼이름, NULL포함여부, 데이터타입 확인 가능
+
+[활용 가능한 기타 SQL 구문]
+
+```sql
+SQL> COL COLUMN_NAME FOR A15
+SQL> COL DATA_TYPE FOR A15
+SQL> COL DATA_DEFAULT A15
+SQL> SELECT COLUMN_NAME,
+	2 DATA_TYPE,
+	3 DATA_DEFAULT,
+	4 NULLABLE 
+	5 FROM USER_TAB_COLS 
+	6 WHERE TABLE_NAME='EMPLOYEE';
+```
+
+| COLUMN_NAME | DATA_TYPE | DATA_DEFAULT | NULLABLE |
+| ----------- | --------- | ------------ | -------- |
+| EMP_ID      | CHAR      |              | N        |
+| HIRE_DATE   | DATE      | SYSDATE      | Y        |
+| MARRIAGE    | CHAR      | 'N'          | Y        |
+
+- COL 컬럼이름 FOR A15
+  - 지정한 컬럼을 문자 15자리까지만 표시하는 명령
+
+- 원하는 테이블 이름으로 조회 가능
+
+- SQL 윈도우에서 코드 작성 시, 테이블 이름 부분에 커서 위치 -> 오른쪽 마우스 클릭 -> DESCRIBE 선택
+
+- 화면 왼쪽 Browser창 -> 테이블 이름 선택 -> 오른쪽 마우스 클릭 -> DESCRIBE 선택
+
+| Name      | Type         | Nullabel | Default | Comments |
+| --------- | ------------ | -------- | ------- | -------- |
+| EMP_ID    | CHAR(3)      |          |         | 사번     |
+| EMP_NAME  | VARCHAR2(20) |          |         | 이름     |
+| HIRE_DATE | DATE         | Y        |         | 전화번호 |
+
+- 컬럼이름, NULL포함여부, 데이터 타입 이외에 DEFAULT 값, 컬럼 설명 까지 확인 가능
+
+### 5.1.5 데이터 딕셔너리 <sup>DataDictionary</sup>
+
+- 사용자 테이블
+  - 일반 사용자가 생성하고 유지/관리하는 테이블
+  - 사용자 데이터를 포함
+- 데이터 딕셔너리
+  - 오라클 DBMS가 내부적으로 생성하고 유지/관리하는 테이블
+  - 데이터베이스 정보(사용자 이름, 사용자 권한, 객체 정보, 제약 조건 등)를 포함
+  - USER_XXXXX 형식의 데이터 딕셔너리에 접근 가능
+
+#### 테이블이름조회
+
+```sql
+SELECT 	TABLE_NAME
+FROM 	USER_TABLES;
+```
+
+- 테이블 정보 관리
+
+```sql
+SELECT 	TABLE_NAME
+FROM 	USER_CATALOG;
+```
+
+- 테이블, 뷰, 시퀀스 정보 관리
+
+[결과(일부)]
+
+| TABLE_NAME    |
+| ------------- |
+| TABLE_NOTNULL |
+| TABLE_UNIQUE  |
+| TABLE_UNIQUE2 |
+| TABLE_UNIQUE3 |
+
+```sql
+SELECT 	OBJECT_NAME
+FROM 	USER_OBJECTS
+WHERE 	OBJECT_TYPE = 'TABLE';
+```
+
+- 테이블, 뷰, 시퀀스, 인덱스등 사용자 객체의 모든 정보 관리
+
+[결과(일부)]
+
+| OBJECT_NAME   |
+| ------------- |
+| TABLE_NOTNULL |
+| TABLE_UNIQUE  |
+| TABLE_UNIQUE2 |
+
+#### 테이블 및 객체 정보 조회
+
+```sql
+SELECT  OBJECT_TYPE AS 유형,
+		COUNT(*) AS 개수
+FROM USER_OBJECTS
+GROUP BY OBJECT_TYPE;
+```
+
+- 사용자 객체별 개수 현황 확인
+
+[결과(일부)]
+
+| 유형      | 개수 |
+| --------- | ---- |
+| PROCEDURE | 8    |
+| TABLE     | 40   |
+| INDEX     | 23   |
+| FUNCTION  | 5    |
+
+```sql
+SELECT 	OBJECT_NAME AS 이름,
+		OBJECT_TYPE AS 유형,
+		CREATEDAS 생성일,
+		LAST_DDL_TIMEAS 최종수정일
+FROM USER_OBJECTS
+WHERE OBJECT_TYPE = 'TABLE';
+```
+
+- 테이블별 생성일, 수정일 현황 확인
+
+[결과(일부)]
+
+| 이름          | 유형  | 생성일   | 최종수정일 |
+| ------------- | ----- | -------- | ---------- |
+| TABLE_NOTNULL | TABLE | 09/12/11 | 09/12/11   |
+| TABLE_UNIQUE  | TABLE | 09/12/11 | 09/12/11   |
+| TABLE_UNIQUE2 | TABLE | 09/12/11 | 09/12/11   |
+
+#### 제약조건
+
+- USER_CONSTRAINTS, <sup>주</sup>USER_CONS_COLUMNS를 이용
+
+[USER_CONSTRAINTS 구조(일부)]
+
+| Name            |
+| --------------- |
+| OWNER           |
+| CONSTRAINT_NAME |
+| TABLE_NAME      |
+
+[주요 항목 요약]
+
+|       항목        | 설명                                                         |
+| :---------------: | ------------------------------------------------------------ |
+|  CONSTRAINT_TYPE  | • P : PRIMARYKEY<br/>• U : UNIQUE<br/>• R : REFERENCES<br/>• C : CHECK, NOT NULL |
+| SEARCH_CONDITION  | CHECK 제약조건 내용                                          |
+| R_CONSTRAINT_NAME | 참조 테이블의 PRIMARY KEY 이름                               |
+|    DELETE_RULE    | 참조 테이블의 PRIMARY KEY 컬럼이 삭제될 때 적용되는 규칙<br/>"NoAction", "SETNULL", "CASCADE" 로 표시 |
+
+- <sup>주</sup>USER_CONS_COLUMNS에서는 컬럼 이름을 확인할 수 있음
+
+45p
