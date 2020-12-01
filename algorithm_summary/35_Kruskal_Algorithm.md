@@ -1,4 +1,4 @@
-# 35강: 크루스칼 알고리즘 
+# 35강: 크루스칼 알고리즘  + 백준문제 (상근이의 여행, 최소 스패닝 트리)
 
 ### 신장 트리
 
@@ -301,3 +301,89 @@ public class Main {
 - 크루스칼 알고리즘은 간선의 개수가 E개일 때, **O(ElogE)**의 시간 복잡도를 가진다.
 - 크루스칼 알고리즘에서 가장 많은 시간을 요구하는 곳은 간선의 정렬을 수행하는 부분이다.
   - 표준 라이브러리를 이용해 E개의 데이터를 정렬하기 위한 시간 복잡도는 O(ElogE)이다.
+
+### <문제> 상근이의 여행
+
+```python
+
+def find_parent(parent, x):
+    if parent[x]  != x:
+        parent[x] = find_parent(parent, parent[x])
+    return parent[x]
+
+def union_parent(parent, a, b):
+    a = find_parent(parent, a)
+    b = find_parent(parent, b)
+    if a < b:
+        parent[b] = a
+    else:
+        parent[a] = b
+        
+t = int(input())  
+while t:
+    n,m = map(int, input().split())
+    parent = [0] * (n + 1)
+
+    edges = []
+    result = 0
+
+    for i in range(1, n+1):
+        parent[i] = i
+
+
+    for _ in range(m):
+        a,b = map(int, input().split())
+        edges.append((1,a,b))
+
+    for edgs in edges:
+        cost , a, b = edgs
+        if find_parent(parent,a) != find_parent(parent, b):
+            union_parent(parent, a,b)
+            result += cost
+    print(result)    
+    t -= 1
+```
+
+### <문제> 최소 스패닝 트리
+
+```python
+def find_parent(parent, x):
+    if parent[x]  != x:
+        parent[x] = find_parent(parent, parent[x])
+    return parent[x]
+
+def union_parent(parent, a, b):
+    a = find_parent(parent, a)
+    b = find_parent(parent, b)
+    if a < b:
+        parent[b] = a
+    else:
+        parent[a] = b
+
+v,e= map(int, input().split())
+parent = [0] * (v + 1)
+
+edges = []
+result = 0
+
+for i in range(1, v+1):
+    parent[i] = i
+
+
+for _ in range(e):
+    a,b,c = map(int, input().split())
+    edges.append((c,a,b))
+
+edges.sort(key=lambda x:x[0])
+v_count = 0
+for edgs in edges:
+    c , a, b = edgs
+    if find_parent(parent,a) != find_parent(parent, b):
+        union_parent(parent, a,b)
+        result += c
+        v_count+=1
+    if v_count==v-1:
+        break
+print(result)
+```
+

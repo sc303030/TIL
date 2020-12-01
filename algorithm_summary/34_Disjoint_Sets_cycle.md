@@ -1,4 +1,4 @@
-# 34강: 서로소 집합을 활용한 사이클 판별
+# 34강: 서로소 집합을 활용한 사이클 판별 + 백준문제(친구 네트워크)
 
 - 서로소 집합은 **무방향 그래프 내애서의 사이클을 판별**할 때 사용할 수 있다.
   - 방향 그래프에서의 사이클 여부는 DFS를 이용하여 판별할 수 있다.
@@ -193,5 +193,58 @@ public class Main {
         }
     }
 }
+```
+
+### <문제> 친구 네트워크
+
+```python
+def find_parent(x):
+    if parent[x] == x:
+        return x
+    parent[x] = find_parent(parent[x])
+    return parent[x]
+
+def union_parent2(a, b):
+    a = find_parent(a)
+    b = find_parent(b)
+    sum = cnt_dict[a] + cnt_dict[b]
+    #더 작은 쪽을 부모로 갖는다
+    if a > b:
+        parent_dict[a] = b
+        number[a] = sum
+        number[b] = number[a]
+    elif a < b:
+        parent[b] = a
+        number[b] = sum
+        number[a] = number[b]
+    return
+
+def union_parent(a, b):
+    a = find_parent(a)
+    b = find_parent(b)
+    
+    if a != b :
+        parent[b] = a
+        number[a] += number[b]
+
+t = int(input())  
+for _ in range(t):
+    parent = dict()
+    number = dict()
+
+    f = int(input())
+
+    for _ in range(f):
+        x,y = input().split()
+        
+        if x not in parent:
+            parent[x] = x
+            number[x] = 1
+        if y not in parent:
+            parent[y] = y
+            number[y] = 1
+        
+        union_parent(x,y)
+        print(numver[find_parent(x)])
 ```
 

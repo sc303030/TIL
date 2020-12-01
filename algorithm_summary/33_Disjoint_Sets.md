@@ -1,4 +1,4 @@
-# 33강: 서로소 집합 자료구조
+# 33강: 서로소 집합 자료구조 + 백준문제(집합의 표현, 여행가자)
 
 ### 서로소 집합(Disjoint Sets)
 
@@ -420,5 +420,76 @@ public class Main {
         System.out.println();
     }
 }
+```
+
+### <문제> 집합의 표현
+
+```python
+def find_parent(x):
+    if parent[x] == x:
+        return x
+    parent[x] = find_parent(parent[x])
+    return parent[x]
+
+def union_parent(a, b):
+    a = find_parent(a)
+    b = find_parent(b)
+    if a < b:
+        parent[b] = a
+    else:
+        parent[a] = b
+        
+v, e = map(int, input().split())    
+parent = [i for i in range(v+1)]
+
+for i in range(e):
+    k, a, b = map(int, input().split())
+    
+    if k == 0:
+         union_parent(a, b)
+    elif k == 1:
+        if find_parent(a) == find_parent(b):
+            print('YES')
+        else:
+            print('NO')
+```
+
+### <문제> 여행가자
+
+```python
+INF = int(1e9)
+n = int(input())
+m = int(input())
+
+
+parent ={ i:i for i in range(n + 1)}
+
+def find_parent(x):
+    if parent[x] == x:
+        return x
+    parent[x] = find_parent(parent[x])
+    return parent[x]
+
+def union_parent(a,b):
+    a = find_parent(a)
+    b = find_parent(b)
+    
+    if a != b:
+        parent[b] = a
+        
+        
+for y in range(1, n+1):
+    maps = list(map(int, input().split()))
+    for x in range(1, len(maps)+1):
+        if maps[x-1] == 1:
+            union_parent(y,x)
+            
+tour = list(map(int, input().split()))            
+result = set([find_parent(i) for i in tour])            
+
+if len(result) !=1:
+    print('NO')
+else:
+    print('YES')
 ```
 

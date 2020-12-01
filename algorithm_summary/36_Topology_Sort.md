@@ -1,4 +1,4 @@
-# 36강: 위상 정렬
+# 36강: 위상 정렬 + 백준문제(줄세우기, 최종순위)
 
 - **사이클이 없는 방향 그래프**의 모든 노드를 **방향성에 거스르지 않도록 순서대로 나열**하는 것을 의미
 - 예시) 선수 과목을 고려한 학습 순서 설정
@@ -79,7 +79,6 @@
 
 - **[위상 정렬 결과]**
   - 큐에 삽입된 전체 노드 순서 : **1 -> 2 -> 5 -> 3 -> 6 -> 4 -> 7**
-  - 
 
 ### 위상 정렬의 특징
 
@@ -281,3 +280,126 @@ public class Main {
 
 - 위상 정렬을 위해 차례대로 모든 노드를 확인하며 각 노드에서 나가는 간선을 차례대로 제거해야 한다.
   - 위상 정렬 알고리즘의 시간 복잡도는 **O(V + E)**이다.
+
+### <문제> 줄세우기
+
+```python
+from collections import deque
+
+n,m = map(int, input().split())
+
+indegree = [0] * (n + 1)
+
+graph = [[] for i in range(n + 1)]
+
+for _ in range(m):
+    a, b = map(int, input().split())
+    graph[a].append(b)
+    indegree[b] +=1
+    
+def topology_sort():
+    result = []
+    q = deque()
+    
+    for i in range(1, n +1):
+        if indegree[i] == 0:
+            q.append(i)
+            
+    while q:
+        now = q.popleft()
+        result.append(now)
+        for i in graph[now]:
+            indegree[i] -= 1
+            if indegree[i] == 0:
+                q.append(i)
+                
+                
+    for i in result:
+        print(i, end=' ')
+        
+topology_sort()
+```
+
+### <문제> 최종순위
+
+```python
+from collections import deque
+import sys
+
+input = sys.stdin.readline
+
+
+def topology_sort():
+    global isImpossible, isAmbiguous
+
+    for _ in range(n):
+        if not q:
+            isImpossible = True
+            return
+        if len(q) > 1:
+            isAmbiguous = True
+            return
+
+        target = q.popleft()
+        sequence.append(target)
+
+        for x in graph[target]:
+            indegree[x] -= 1
+
+            if not indegree[x]:
+                q.append(x)
+
+
+T = int(input())
+
+for _ in range(T):
+    n = int(input())
+
+    isImpossible = False
+    isAmbiguous = False
+    sequence = []
+    indegree = [0] * (n + 1)
+    graph = [[] for _ in range(n + 1)]
+
+    lastYear = list(map(int, input().split()))
+
+    for i in range(0, n):
+        for j in range(i + 1, n):
+            indegree[lastYear[j]] += 1
+            graph[lastYear[i]].append(lastYear[j])
+
+    m = int(input())
+    for _ in range(m):
+        a, b = map(int, input().split())
+
+        isNotFound = True
+
+        for x in graph[a]:
+            if x == b:
+                isNotFound = False
+                indegree[b] -= 1
+                indegree[a] += 1
+                graph[a].remove(b)
+                graph[b].append(a)
+
+        if isNotFound:
+            indegree[a] -= 1
+            indegree[b] += 1
+            graph[b].remove(a)
+            graph[a].append(b)
+
+    q = deque()
+    for i in range(1, n + 1):
+        if not indegree[i]:
+            q.append(i)
+
+    topology_sort()
+
+    if isImpossible:
+        print("IMPOSSIBLE")
+    elif isAmbiguous:
+        print("?")
+    else:
+        print(*sequence)
+```
+

@@ -1,4 +1,4 @@
-# 32강: 최단 경로 알고리즘 기초 문제 풀이 
+# 32강: 최단 경로 알고리즘 기초 문제 풀이 + 백준문제 (미확인 도착지, **KCM Travel**)
 
 ### <문제> 전보 : 문제 설명
 
@@ -441,5 +441,158 @@ public class Main {
         }
     }
 }
+```
+
+### <문제> 플로이드
+
+```python
+INF = int(1e9) 
+
+
+n = int(input())
+m = int(input())
+
+graph = [[INF] * (n + 1) for _ in range(n + 1)]
+
+
+for a in range(1, n + 1):
+    for b in range(1, n + 1):
+        if a == b:
+            graph[a][b] = 0
+
+
+for _ in range(m):
+    a, b, c = map(int, input().split())
+    if graph[a][b] == INF:
+        graph[a][b]= c
+    elif graph[a][b] != INF and c < graph[a][b]:
+        graph[a][b] = c
+
+for k in range(1, n + 1):
+    for a in range(1, n + 1):
+        for b in range(1, n + 1):
+            graph[a][b] = min(graph[a][b], graph[a][k] + graph[k][b])
+
+for k in range(1, n + 1):
+    for a in range(1, n + 1):
+        for b in range(1, n + 1):
+            if graph[a][b] == INF:
+                graph[a][b] = 0
+            if graph[a][k] == INF:
+                graph[a][k] = 0
+            if graph[k][b] == INF:
+                graph[k][b] = 0                        
+print(graph)
+for i in range(1,n+1):
+    list_num = map(str,graph[i][1:])
+    print(' '.join(list_num))
+```
+
+### <문제> 운동
+
+```python
+INF = int(100000) 
+
+n,m = map(int, input().split())
+
+
+graph = [[INF] * (n + 1) for _ in range(n + 1)]
+
+
+for a in range(1, n + 1):
+    for b in range(1, n + 1):
+        if a == b:
+            graph[a][b] = 0
+
+
+for _ in range(m):
+    a, b, c = map(int, input().split())
+    graph[a][b] = c
+
+
+    for a in range(1, n + 1):
+        for b in range(1, n + 1):
+            graph[a][b] = min(graph[a][b], graph[a][k] + graph[k][b])
+
+        
+small_list = INF           
+for a in range(1, n + 1):
+    for b in range(1, n + 1):
+        if (graph[a][b]  + graph[b][a])<= small_list:
+            if graph[a][b] != 0 and graph[b][a] != 0:
+                small_list = (graph[a][b]  + graph[b][a])
+            
+if small_list < INF:
+    print(small_list)
+else:
+    print(-1)
+```
+
+### <문제> 미확인 도착지
+
+```python
+import heapq
+INF = int(1e9)
+
+ 
+def dijkstra(n,graph,start):
+    distance = [INF] * (n + 1)
+    q = []
+    heapq.heappush(q, (0, start))
+    distance[start] = 0
+    while q:
+        dist, now = heapq.heappop(q)
+        if distance[now] < dist:
+                continue
+        for i in graph[now]:
+            cost = dist + graph[now][i]
+            if cost < distance[i]:
+                distance[i] = cost
+                heapq.heappush(q, (cost, i))
+    return distance
+T = int(input())
+while T:
+    n,m,t = map(int, input().split())
+    s,g,h = map(int, input().split())
+    graph = [dict() for i in range(n + 1)]    
+
+    for i in range(m):
+        a,b,d = map(int, input().split())
+        if (a,b) == (g,h) or (a,b) == (h,g):
+            graph[a][b] = graph[b][a] = 2 * d - 1
+        else:
+            graph[a][b] = graph[b][a] = 2 * d
+    target = [int(input()) for _ in range(t)]
+    result = set()
+    distance = dijkstra(n, graph, s)
+    for tt in target:
+        if distance[tt] % 2 and distance[tt] < INF: 
+            result.add(tt)
+    print(*sorted(result))
+    print(sorted(result))
+    T -= 1
+```
+
+### <문제> KCM Travel
+
+```python
+INF=int(1e9)
+for __ in range(int(input())):
+    n,m,k=map(int,input().split())
+    graph =[[] for _ in range(n+1)]
+    for i in range(k):
+        u,v,c,d=map(int,input().split())
+        graph[u].append((v,c,d))
+    money=[[INF]*(m+1) for _ in range(n+1)]
+    money[1][0]=0
+    for i in range(m+1):
+        for x in range(1,n+1):
+            if money[x][i]==INF:continue
+            t=money[x][i]
+            for nx,ne,nt in graph[x]:
+                if ne+i>m:continue
+                money[nx][ne+i]=min(money[nx][ne+i],t+nt)
+    k=min(money[n])
+    print([k,'Poor KCM'][k==INF])
 ```
 

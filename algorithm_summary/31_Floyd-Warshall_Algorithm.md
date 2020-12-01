@@ -1,4 +1,4 @@
-# 31강: 플로이드 워셜 알고리즘
+# 31강: 플로이드 워셜 알고리즘 + 백준문제(플로이드, 운동)
 
 - <u>모든 노트에서 다른 모든 노드까지의 최단 경로를 모두 계산</u>한다.
 - 플로이드 워셜 알고리즘은 다익스트라 알고리즘과 마찬가자로 단계별로 **거쳐 가는 노드를 기준으로 알고리즘을 수행**한다.
@@ -85,4 +85,123 @@ for a in range(1, n + 1):
 - 노드의 개수가 N개일 때 알고리즘상으로 N번의 단계를 수행한다.
   - 각 단계마다 **O(N<sup>2</sup>)**의 연산을 통해 현재 노드를 거쳐 가는 모든 경로를 고려한다.
 - 따라서 플로이드 워셜 알고리즘의 총 시간 복잡도는 **O(N<sup>3</sup>)**이다.
+
+### <문제> 최단경로
+
+```python
+import heapq
+
+INF = int(1e9)INF = int(1e9) 
+
+
+n = int(input())
+m = int(input())
+
+graph = [[INF] * (n + 1) for _ in range(n + 1)]
+
+
+for a in range(1, n + 1):
+    for b in range(1, n + 1):
+        if a == b:
+            graph[a][b] = 0
+
+
+for _ in range(m):
+    a, b, c = map(int, input().split())
+    if graph[a][b] == INF:
+        graph[a][b]= c
+    elif graph[a][b] != INF and c < graph[a][b]:
+        graph[a][b] = c
+
+for k in range(1, n + 1):
+    for a in range(1, n + 1):
+        for b in range(1, n + 1):
+            graph[a][b] = min(graph[a][b], graph[a][k] + graph[k][b])
+
+for k in range(1, n + 1):
+    for a in range(1, n + 1):
+        for b in range(1, n + 1):
+            if graph[a][b] == INF:
+                graph[a][b] = 0
+            if graph[a][k] == INF:
+                graph[a][k] = 0
+            if graph[k][b] == INF:
+                graph[k][b] = 0                        
+print(graph)
+for i in range(1,n+1):
+    list_num = map(str,graph[i][1:])
+    print(' '.join(list_num))
+
+n,m = map(int,input().split())
+start = int(input())
+
+graph = [[] for _ in range(n+1)]
+
+distance = [INF] * (n+1)
+
+for _ in range(m):
+    a, b, c = map(int,input().split())
+    graph[a].append([b,c])
+    
+def dijkstra(start):
+    q = []
+    heapq.heappush(q,(0,start))
+    distance[start] = 0
+    while q:
+        dist, now = heapq.heappop(q)
+        if distance[now] < dist :
+            continue
+        for i in graph[now] :
+            cost = dist + i[1]
+            if cost < distance[i[0]]:
+                distance[i[0]] = cost
+                heapq.heappush(q,(cost, i[0]))
+                
+dijkstra(start)
+for i in range(1,n+1):
+    if distance[i] == INF:
+        print('INF')
+    else:
+        print(distance[i])
+```
+
+### <문제> 특정한 최단 경로
+
+```python
+INF = int(100000) 
+
+n,m = map(int, input().split())
+
+
+graph = [[INF] * (n + 1) for _ in range(n + 1)]
+
+
+for a in range(1, n + 1):
+    for b in range(1, n + 1):
+        if a == b:
+            graph[a][b] = 0
+
+
+for _ in range(m):
+    a, b, c = map(int, input().split())
+    graph[a][b] = c
+
+
+    for a in range(1, n + 1):
+        for b in range(1, n + 1):
+            graph[a][b] = min(graph[a][b], graph[a][k] + graph[k][b])
+
+        
+small_list = INF           
+for a in range(1, n + 1):
+    for b in range(1, n + 1):
+        if (graph[a][b]  + graph[b][a])<= small_list:
+            if graph[a][b] != 0 and graph[b][a] != 0:
+                small_list = (graph[a][b]  + graph[b][a])
+            
+if small_list < INF:
+    print(small_list)
+else:
+    print(-1)
+```
 

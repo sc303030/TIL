@@ -1,4 +1,4 @@
-# 29강: 다이나믹 프로그래밍 기초 문제 풀이
+# 29강: 다이나믹 프로그래밍 기초 문제 풀이 + 백준문제(설탕배달, 1로 만들기)
 
 ### <문제> 개미 전사 : 문제 설명
 
@@ -529,5 +529,43 @@ for i in range(1, n):
             
 # 열외해야 하는 병사의 최소 수를 출력
 print(n - max(dp))
+```
+
+### <문제> 설탕배달
+
+```python
+n = int(input())
+
+def fibo(x,cnt):
+    cnt = cnt
+    if x % 5 == 0: 
+        return (x // 5) + cnt
+    elif x < 0:
+        return -1
+    elif x == 0:
+        return cnt
+    else:
+        cnt += 1
+        return fibo(x -3,cnt)
+if fibo(n,0) < 0:
+    print(-1)
+else:
+    print(fibo(n,0))
+```
+
+### <문제> 1로 만들기
+
+```python
+n = int(input())
+
+d = [0] * (n+1)
+
+for i in range(2,n + 1):
+    d[i] = d[i - 1] + 1
+    if i % 2 == 0:
+        d[i] = min(d[i],d[i // 2]+1) 
+    if i % 3 == 0:
+        d[i] = min(d[i],d[i // 3]+1) 
+print(d[n])
 ```
 
