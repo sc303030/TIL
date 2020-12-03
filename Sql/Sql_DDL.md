@@ -1138,4 +1138,69 @@ EMP_NAME CHAR(20));
 
 - EMP_NAME 컬럼 : 크기 변경없으므로 CHAR 타입 변환 가능
 
-52p
+```sql
+ALTER TABLE EMP4
+MODIFY (HIRE_DATE CHAR(8));
+```
+
+- DATE 타입을 CHAR 타입으로 변환하려면 데이터가 없어야 함
+- ORA-01439 : 데이터 유형을 변경할 열은 비어 있어야 합니다.
+
+```sql
+ALTER TABLE EMP4
+MODIFY (EMP_NAME CHAR(15));
+```
+
+- CHAR(20)에서 크기를 감소시키는 것은 불가
+
+- ORA-01441 : 일부 값이 너무 커서 열 길이를 줄일 수 없음
+
+#### 컬럼 수정 예
+
+```sql
+CREATE TABLE EMP5
+	(EMP_ID CHAR(3),
+	EMP_NAME VARCHAR2(20),
+	ADDR1 VARCHAR2(20) DEFAULT'서울',
+	ADDR2 VARCHAR2(100));
+INSERT INTO EMP5
+VALUES ('A10','임태희', DEFAULT, '청담동');
+INSERT INTO EMP5
+VALUES ('B10', '이병언', DEFAULT, '분당정자동');
+SELECT * FROM EMP5;
+```
+
+| Name     | Type          | Nullable | Default |
+| -------- | ------------- | -------- | ------- |
+| EMP_ID   | CHAR(3)       | Y        |         |
+| EMP_NAME | VARCHAR2(20)  | Y        |         |
+| ADDR1    | VARCHAR2(20)  | Y        | '서울'  |
+| ADDR2    | VARCHAR2(100) | Y        |         |
+
+| EMP_ID | EMP_NAME | ADDR1 | ADDR2       |
+| ------ | -------- | ----- | ----------- |
+| A10    | 임태희   | 서울  | 청담동      |
+| B10    | 이병언   | 서울  | 분당 정자동 |
+
+```sql
+ALTER TABLEEMP5
+MODIFY (ADDR1 DEFAULT '경기');
+INSERT INTO EMP5
+VALUES ('C10', '임승우', DEFAULT, '분당효자촌');
+SELECT * FROM EMP5;
+```
+
+- DEFAULT 값은 변경 이후부터 적용
+
+| Name     | Type          | Nullable | Default |
+| -------- | ------------- | -------- | ------- |
+| EMP_ID   | CHAR(3)       | Y        |         |
+| EMP_NAME | VARCHAR2(20)  | Y        |         |
+| ADDR1    | VARCHAR2(20)  | Y        | '경기'  |
+| ADDR2    | VARCHAR2(100) | Y        |         |
+
+| EMP_ID | EMP_NAME | ADDR1 | ADDR2       |
+| ------ | -------- | ----- | ----------- |
+| A10    | 임태희   | 서울  | 청담동      |
+| B10    | 이병언   | 서울  | 분당 정자동 |
+| C10    | 임승우   | 경기  | 분당 효자촌 |
