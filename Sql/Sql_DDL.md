@@ -953,4 +953,189 @@ WHERE OBJECT_TYPE = 'TABLE';
 
 - <sup>주</sup>USER_CONS_COLUMNS에서는 컬럼 이름을 확인할 수 있음
 
-45p
+#### 제약 조건 확인
+
+```sql
+SELECT 	CONSTRAINT_NAMEAS 이름,
+        CONSTRAINT_TYPEAS 유형,
+        R_CONSTRAINT_NAMEAS 참조,
+        DELETE_RULEAS 삭제규칙,
+        SEARCH_CONDITIONAS 내용
+FROM 	USER_CONSTRAINTS
+WHERE 	TABLE_NAME='CONSTRAINT_EMP';
+```
+
+| 이름   | 유형 | 참조 | 삭제규칙 | 내용    |
+| ------ | ---- | ---- | -------- | ------- |
+| NENAME | C    |      |          | \<Long> |
+| NENO   | C    |      |          | \<Long> |
+| CHK    | C    |      |          | \<Long> |
+| PKEID  | P    |      |          | \<Long> |
+
+- 'NOT NULL' 제약 조건은 CHECK 제약조건 유형으로 관리됨
+
+```sql
+SELECT 	CONSTRAINT_NAME AS 이름,
+		CONSTRAINT_TYPE AS 유형,
+		COLUMN_NAME AS 컬럼,
+		R_CONSTRAINT_NAME AS 참조,
+		DELETE_RULE AS 삭제규칙,
+		SEARCH_CONDITION AS 내용
+FROM 	USER_CONSTRAINTS
+JOIN 	USER_CONS_COLUMNSUSING (CONSTRAINT_NAME, TABLE_NAME)
+WHERE 	TABLE_NAME='CONSTRAINT_EMP';
+```
+
+| 이름   | 유형 | 컬럼     | 참조     | 삭제규칙 | 내용    |
+| ------ | ---- | -------- | -------- | -------- | ------- |
+| NENAME | C    | ENAME    |          |          | \<Long> |
+| NENO   | C    | ENO      |          |          | \<Long> |
+| CHK    | C    | MARRIAGE |          |          | \<Long> |
+| PKEID  | P    | EID      |          |          | \<Long> |
+| FKJID  | R    | JID      | PK_JOBID | SET NULL | \<Long> |
+| FKMID  | R    | MID      | PKEID    | SET NULL | \<Long> |
+
+### 5.1.6 테이블 수정 - 범위
+
+- **컬럼 관련**
+  - 컬럼 추가/삭제
+  - 데이터 타입 변경, DEFAULT 변경
+  - 컬럼 이름 변경
+- **제약조건 관련**
+  - 제약조건 추가/ 삭제
+  - 제약조건 이름 변경
+- **테이블 관련**
+  - 테이블 이름 변경
+
+#### 구문
+
+[구문]
+
+```sql
+ALTER TABLE table_name
+ADD (column_name datatype [DEFAUL Texpr] [, …] ) |
+{ADD [CONSTRAINT constraint_name] constraint_type(column_name) } ... |
+MODIFY (column_name datatype [DEFAULTexpr] [, …] ) |
+DROP{ [COLUMN column_name] | (column_name, …) } [CASCADE CONSTRAINTS] |
+DROP PRIMARY KEY [CASCADE] | 
+	{ UNIQUE (column_name, …) [CASCADE] }... |
+	CONSTRAINT constraint_name[CASCADE];
+```
+
+[이름 변경 구문]
+
+```sql
+ALTER TABLE old_table_name RENAME TO new_table_name ;
+RENAME old_table_name TO new_table_name;
+ALTER TABLE table_name RENAME COLUMN old_column_name TO new_column_name ;
+ALTER TABLE table_name RENAME CONSTRAINT old_const_name TO new_const_name ;
+```
+
+#### 컬럼 추가
+
+- 추가되는 컬럼은 테이블의 맨 마지막에 위치하며, 생성위치를 변경할 수 없음
+
+```sql
+ALTER TABLE DEPARTMENT
+ADD( MGR_ID CHAR(3) );
+```
+
+| Name      | Type         | Nullable |
+| --------- | ------------ | -------- |
+| DEPT_ID   | CHAR(2)      |          |
+| DEPT_NAME | VARCHAR2(30) | Y        |
+| DEPT_NAME | CHAR(2)      |          |
+| MGR_ID    | CHAR(3)      | Y        |
+
+| DEPT_ID | DEPT_NAME | DEPT_NAME | MGR_ID |
+| ------- | --------- | --------- | ------ |
+| 20      | 회계팀    | A1        |        |
+
+- DEFAULT 값이 없으면 추가되는 컬럼은 NULL이 적용됨
+
+```sql
+ALTER TABLE DEPARTMENT
+ADD( MGR_ID CHAR(3) DEFAULT '101' );
+```
+
+| Name      | Type         | Nullable | Default |
+| --------- | ------------ | -------- | ------- |
+| DEPT_ID   | CHAR(2)      |          |         |
+| DEPT_NAME | VARCHAR2(30) | Y        |         |
+| DEPT_NAME | CHAR(2)      |          |         |
+| MGR_ID    | CHAR(3)      | Y        | '101'   |
+
+| DEPT_ID | DEPT_NAME | DEPT_NAME | MGR_ID |
+| ------- | --------- | --------- | ------ |
+| 20      | 회계팀    | A1        | 101    |
+
+- DEFAULT 값을 설정하면 추가되는 컬럼에 DEFAULT 값이 적용됨
+
+#### 제약조건 추가
+
+- 'NOTNULL' 이외의 제약조건은 ADD 구문 사용(테이블 레벨에서의 정의 구문과 유사)
+
+- 'NOTNULL' 제약조건은 MODIFY 구문 사용
+
+```sql
+CREATE TABLE EMP3 AS SELECT * FROM EMPLOYEE;
+ALTER TABLE EMP3
+ADD PRIMARY KEY (EMP_ID)
+ADD UNIQUE (EMP_NO)
+MODIFY HIRE_DATE NOT NULL;
+```
+
+1. 샘플 테이블 EMP3  생성
+2. EMP_ID  컬럼에 PRIAMRY KEY 제약조건 추가
+3. EMP_NO 컬럼에 UNIQUE 제약조건 추가
+4. HIRE_DATE 컬럼에 NOT NULL 제약조건 추가
+
+[제약조건 추가 결과 확인]
+
+| 이름         | 유형 | 컬럼     | 참조 | 삭제규칙 | 내용    |
+| ------------ | ---- | -------- | ---- | -------- | ------- |
+| SYS_C0011246 | C    | EMP_NAME |      |          | \<Long> |
+
+#### 컬럼 수정
+
+- **컬럼 데이터 타입 관련**
+  - 대상 컬럼이 비어있는 경우에만 타입 변경 가능
+  - 단, 컬럼 크기를 변경하지 않거나 증가시키는 경우 CHAR⇔VARCHAR2 변환 가능
+
+- **컬럼 크기 관련**
+  - 대상 컬럼이 비어있는 경우 또는 테이블 전체에 데이터가 없는 경우 크기 감소 가능
+  - 포함된 데이터에 영향을 미치지않는 범위에서는 크기 감소 가능
+- **DEFAULT 관련**
+  - DEFAULT 값이 변경되면 변경 이후부터 적용
+
+#### 컬럼 수정 예
+
+```sql
+CREATE TABLE EMP4
+AS SELECT EMP_ID, EMP_NAME, HIRE_DATE
+FROM EMPLOYEE;
+```
+
+| Name      | Type         |
+| --------- | ------------ |
+| EMP_ID    | CHAR(3)      |
+| EMP_NAME  | VARCHAR2(20) |
+| HIRE_DATE | DATE         |
+
+```sql
+ALTER TABLE EMP4
+MODIFY (EMP_ID VARCHAR2(5),
+EMP_NAME CHAR(20));
+```
+
+| Name      | Type        |
+| --------- | ----------- |
+| EMP_ID    | VARCHAR2(5) |
+| EMP_NAME  | CHAR(20)    |
+| HIRE_DATE | DATE        |
+
+- EMP_ID 컬럼 : 크기를 증가시켰으므로 VARCHAR2 타입 변환 가능
+
+- EMP_NAME 컬럼 : 크기 변경없으므로 CHAR 타입 변환 가능
+
+52p
