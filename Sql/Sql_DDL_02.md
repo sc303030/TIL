@@ -353,4 +353,247 @@ AS Subquery
   - WITH READ ONLY : 뷰를 통해 DML 작업 허용 안 함
   - 제약조건으로 간주되므로 별도 이름 지정 가능 
 
-69p
+#### 생성 예
+
+- 뷰를 생성할 때 사용하는 서브쿼리는 일반적인 SELECT 구문을 사용
+- 생성된 뷰는 테이블처럼 취급됨
+
+```sql
+CREATE OR REPLACE VIEW V_EMP
+AS 	SELECT 	EMP_NAME, DEPT_ID
+	FROM	EMPLOYEE
+	WHERE	DEPT_ID = '90';
+```
+
+```sql
+SELECT	*
+FROM	V_EMP;
+```
+
+| EMP_NAME | DEPT_ID |
+| -------- | ------- |
+| 한선기   | 90      |
+| 강중훈   | 90      |
+| 최만식   | 90      |
+
+```sql
+SELECT	COLUMN_NAME, DATA_TYPE, NULLABLE
+FROM	USER_TAB_COLS
+WHERE	TABLE_NAME = 'V_EMP';
+```
+
+| COLUMN_NAME | DATA_TYPE | NULLABLE |
+| ----------- | --------- | -------- |
+| EMP_NAME    | VARCHAR2  | N        |
+| DEPT_ID     | CHAR      | Y        |
+
+```sql
+CREATE	OR	REPLACE VIEW V_EMP_DEPT_JOB
+AS 		SELECT  EMP_NAME,
+				DEPT_NAME,
+				JOB_TITLE
+		FROM	EMPLOYEE
+		LEFT	JOIN DEPARTMENT USING (DEPT_ID)
+		LEFT	JOIN JOB USING (JOB_ID)
+		WHERE		 JOB_TITLE = '사원';
+```
+
+```sql
+SELECT	*
+FROM	V_EMP_DEPT_JOB;
+```
+
+| EMP_NAME | DEPT_NAME   | JOB_TITLE |
+| -------- | ----------- | --------- |
+| 펭펭     | 해외영업1팀 | 사원      |
+| 펭하     |             | 사원      |
+| 펭수     | 해외영업1팀 | 사원      |
+| 펭빠     | 본사 인사팀 | 사원      |
+
+```sql
+SELECT	COLUMN_NAME, DATA_TYPE,	NULLABLE
+FROM	USER_TAB_COLS
+WHERE	TABLE_NAME = 'V_EMP_DEPT_JOB';
+```
+
+| COLUMN_NAME | DATA_TYPE | NULLABLE |
+| ----------- | --------- | -------- |
+| EMP_NAME    | VARCHAR2  | N        |
+| DEPT_NAME   | VARCHAR2  | Y        |
+| JOB_TITLE   | VARCHAR2  | Y        |
+
+#### 생성 예 : ALIAS 사용
+
+- 뷰 정의 부분에서 지정 가능
+- 서브쿼리 부분에서 지정 가능
+
+```sql
+CREATE OR REPLACE VIEW V_EMP_DEPT_JOB (ENM, DNM, TITLE)
+AS 	SELECT EMP_NAME, DEPT_NAME, JOB_TITLE
+	FROM EMPLOYEELEFT 
+	JOIN DEPARTMENT USING (DEPT_ID)
+	LEFT JOIN JOB USING (JOB_ID)
+	WHERE JOB_TITLE = '사원';
+```
+
+```sql
+CREATE OR 	REPLACE VIEW V_EMP_DEPT_JOB
+AS SELECT 	EMP_NAME AS ENM,
+		  	DEPT_NAME AS DNM,
+			JOB_TITLE AS TITLE
+	FROM EMPLOYEE
+    LEFT JOIN DEPARTMENT USING (DEPT_ID)
+    LEFT JOIN JOB USING (JOB_ID)
+    WHERE JOB_TITLE = '사원';
+```
+
+| COLUMN_NAME | DATA_TYPE | NULLABLE |
+| ----------- | --------- | -------- |
+| ENM         | VARCHAR2  | N        |
+| DNM         | VARCHAR2  | Y        |
+| TITLE       | VARCHAR2  | Y        |
+
+- 뷰 컬럼이 함수나 표현식에서 파생되는 경우 반드시 사용해야 함
+
+```sql
+CREATE OR REPLACE VIEW V_EMP ("Enm", "Gender", "Years")AS
+SELECT 	EMP_NAME, 
+		DECODE(SUBSTR(EMP_NO, 8,1),'1','남자','3','남자','여자'),				    
+		ROUND(MONTHS_BETWEEN(SYSDATE, HIRE_DATE)/12, 0)
+FROM EMPLOYEE;
+```
+
+- 서브쿼리 부분에서 ALIAS 지정해도 됨
+
+| COLUMN_NAME | DATA_TYPE | NULLABLE |
+| ----------- | --------- | -------- |
+| Enm         | VARCHAR2  | N        |
+| Gender      | VARCHAR2  | Y        |
+| Years       | NUMBER    | Y        |
+
+```sql
+CREATE OR REPLACE VIEW V_EMP AS
+SELECT EMP_NAME , 
+		DECODE(SUBSTR(EMP_NO, 8,1),'1','남자','3','남자','여자'),
+		ROUND(MONTHS_BETWEEN(SYSDATE, HIRE_DATE)/12, 0)
+FROM EMPLOYEE;
+```
+
+- ERROR : ORA-00998 : 이 식은 열의 별명과 함께 지정해야 합니다.
+
+---
+
+- 특정 컬럼에만 선택적으로 ALIAS를 지정하는 것은 서브쿼리 부분에서만 가능
+
+```sql
+CREATE OR REPLACE VIEW V_EMP AS
+SELECT 	EMP_NAME, 
+		DECODE(SUBSTR(EMP_NO, 8,1),'1','남자','3','남자','여자')AS "Gender",
+		ROUND(MONTHS_BETWEEN(SYSDATE, HIRE_DATE)/12,0) AS "Years"
+FROM EMPLOYEE;
+```
+
+| COLUMN_NAME | DATA_TYPE | NULLABLE |
+| ----------- | --------- | -------- |
+| EMP_NAME    | VARCHAR2  | N        |
+| Gender      | VARCHAR2  | Y        |
+| Years       | NUMBER    | Y        |
+
+```sql
+CREATE OR REPLACE VIEW V_EMP ("Gender", "Years") AS
+SELECT 	EMP_NAME ,
+		DECODE(SUBSTR(EMP_NO, 8,1),'1','남자','3','남자','여자'),
+		ROUND(MONTHS_BETWEEN(SYSDATE, HIRE_DATE)/12, 0)
+FROM EMPLOYEE;
+```
+
+- ERROR : ORA-01730 : 지정한 열명의 수가 부적합합니다.
+- 서브쿼리의 EMP_NAME 컬럼은 ALIAS 없이 그대로 사용하려는 의미로 생략
+  - 뷰 생성부분에서는 전체 컬럼에 대해 지정해야 함
+
+#### 생성 예 : 제약 조건
+
+- 뷰의 원래 목적은 아니지만 뷰를 통한 DML 작업은 가능함
+- DML 작업 결과는 베이스 테이블의 데이터에 적용 -> COMMIT / ROLLBACK 작업 필요
+- 뷰를 통한 DML 작업은 여러 가지 제한이 있음
+- 뷰 생성 시 DML 작업에 대한 제한을 설정할 수 있음
+  - WITH READ ONLY : 뷰를 통한 DML 작업 불가
+  - WITH CHECK OPTION : 뷰를 통해 접근 가능한 데이터에 대해서만 DML 작업 수행 가능
+- WITH READ ONLY
+
+```SQL
+CREATE OR REPLACE VIEW V_EMP
+AS SELECT *
+	FROM EMPLOYEE
+WITH READ ONLY;
+```
+
+- WITH READ ONLY를 사용한 샘플 뷰
+
+- DML 작업에 따라 에러 유형은 다르지만 DML 작업을 허용하지 않는다.
+
+```sql
+UPDATE V_EMP
+SET PHONE = NULL;
+```
+
+```sql
+INSERT INTO V_EMP (EMP_ID, EMP_NAME, EMP_NO)
+VALUES ('666','펭펭','666666-6666666');
+```
+
+- ERROR : ORA-01799 : 가상 열은 사용할 수 없습니다.	
+
+```sql
+DELETE FROM V_EMP;
+```
+
+- ERROR : ORA-01752 : 뷰로 부터 정확하게 하나의 키 - 보전된 테이블 없이 삭제할 수 없습니다.
+
+---
+
+- WITH CHECK OPTION - 조건에 따라 INSERT / UPDATE 작업 제한(DELETE는 제한 없음)
+
+```sql
+CREATE OR REPLACE VIEW V_EMP
+AS 	SELECT EMP_ID, EMP_NAME, EMP_NO, MARRIAGE
+	FROM EMPLOYEE
+	WHERE MARRIAGE = 'N'
+WITH CHECK OPTION;
+```
+
+- WITH CHECK OPTION을 사용한 샘플 뷰
+
+| EMP_ID | EMP_NAME | EMP_NO         | MARRIAGE |
+| ------ | -------- | -------------- | -------- |
+| 124    | 펭펭     | 641231-2269080 | N        |
+| 149    | 펭하     | 640524-2148639 | N        |
+| 205    | 펭빠     | 790833-2105839 | N        |
+
+```sql
+INSERT INTO V_EMP (EMP_ID, EMP_NAME, EMP_NO, MARRIAGE)
+VALUES ('666','펭펭','666666-6666666', 'Y');
+```
+
+```sql
+UPDATE V_EMP
+SET MARRIAGE = 'Y';
+```
+
+- ERROR : ORA-01405 : 뷰의 WITH CHECK OPTION 의 조건에 위배 됩니다.
+
+```sql
+UPDATE V_EMP
+SET EMP_ID = '000'
+WHERE EMP_ID = '124';
+```
+
+| EMP_ID | EMP_NAME | EMP_NO         | MARRIAGE |
+| ------ | -------- | -------------- | -------- |
+| 124    | 펭펭     | 641231-2269080 | N        |
+| 149    | 펭하     | 640524-2148639 | N        |
+| 205    | 펭빠     | 790833-2105839 | N        |
+
+- 뷰를 생성할 때 사용한 WHERE 조건에 적용되지 않는 범위에서는 허용됨
+
+77P
