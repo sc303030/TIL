@@ -596,4 +596,313 @@ WHERE EMP_ID = '124';
 
 - 뷰를 생성할 때 사용한 WHERE 조건에 적용되지 않는 범위에서는 허용됨
 
-77P
+### 5.2.4 뷰 - 내용 확인
+
+- 뷰 생성 시 사용한 서브쿼리 자체가 데이터 딕셔너리에 저장됨
+
+```sql
+CREATE OR REPLACE VIEW V_EMP
+AS 	SELECT EMP_ID, EMP_NAME, EMP_NO, MARRIAGE
+	FROM EMPLOYEE
+	WHERE MARRIAGE = 'N'
+	WITH CHECK OPTION;
+```
+
+```sql
+SELECT 	VIEW_NAME, TEXT
+FROM 	USER_VIEWS
+WHERE 	VIEW_NAME = 'V_EMP';
+```
+
+- USER_VIEW
+  - 뷰 정보를 관리하는 데이터 딕셔너리
+
+| VIEW_NAME | TEXT    |
+| --------- | ------- |
+| V_EMP     | \<Long> |
+
+### 5.2.5 뷰 - 데이터 조회 절차
+
+1. 뷰를 사용한 SQL 구문 해석
+2. 데이터 딕셔너리 "USER_VIEWS"에서 뷰 정의 검색
+3. SQL 구문을 실행한 계정이 관련된 베이스 테이블에 접근하여 SELECT 할 수 있는 권한이 있는지 확인
+4. 뷰 대신 베이스 테이블을 기반으로 하는 동등한 작업으로 변환
+5. 베이스 테이블을 대상으로 데이터 조회
+
+### 5.2.6 뷰 - 사용
+
+```SQL
+CREATE OR REPLACE VIEW V_EMP_INFO
+AS 	SELECT EMP_NAME, DEPT_NAME, JOB_TITLE
+	FROM EMPLOYEE
+	LEFT JOIN DEPARTMENT USING (DEPT_ID)
+	LEFT JOIN JOB USING (JOB_ID);
+```
+
+- V_EMP_INFO 데이터(일부)
+
+| EMP_NAME | DEPT_NAME   | JOB_TITLE |
+| -------- | ----------- | --------- |
+| 펭펭     | 해외영업1팀 | 사원      |
+| 펭하     | 기술지원팀  | 부사장    |
+
+```sql
+SELECT EMP_NAME
+FROM V_EMP_INFO
+WHERE DEPT_NAME = '해외영업1팀'
+AND JOB_TITLE = '사원';
+```
+
+| EMP_NAME |
+| -------- |
+| 펭펭     |
+
+```sql
+CREATE OR REPLACE VIEW V_DEPT_SAL ("Did", "Dnm", "Davg")
+AS	SELECT 	NVL(DEPT_ID,'N/A'),
+			NVL(DEPT_NAME,'N/A'),
+			ROUND(AVG(SALARY),-3)
+FROM DEPARTMENT
+RIGHT JOIN EMPLOYEE USING (DEPT_ID)
+GROUP BY DEPT_ID, DEPT_NAME;
+```
+
+- V_DEPT_SAL 데이터
+
+| Did  | Dnm         | Davg    |
+| ---- | ----------- | ------- |
+| N/A  | N/A         | 1900000 |
+| 60   | 기술지원팀  | 3300000 |
+| 90   | 해외영업3팀 | 6033000 |
+
+- \" "를 사용하여 alias를 지정한 경우에는 \" "까지 기술해야 함
+
+```sql
+SELECT "Dnm", "Davg"
+FROM V_DEPT_SAL
+WHERE "Davg" > 3000000;
+```
+
+| Dnm         | Davg    |
+| ----------- | ------- |
+| 기술지원팀  | 3300000 |
+| 해외영업3팀 | 6033000 |
+
+```sql
+SELECT Dnm, Davg
+FROM V_DEPT_SAL
+WHERE Davg > 3000000;
+```
+
+- ERROR : ORA-00904 : 'DAVG' : 부적합한 식별자
+
+### 5.2.7 뷰 - 수정
+
+- 뷰 수정 의미 -> 별도 구문 없음
+  - 뷰를 삭제하고 새로 생성
+  - 기존 내용을 덮어써서 수정
+
+```sql
+CREATE OR REPLACE	VIEW V_EMP
+AS 	SELECT EMP_NAME, JOB_ID
+	FROM EMPLOYEE
+	WHERE SALARY > 3000000;
+```
+
+```sql
+CREATE OR REPLACEVIEW V_EMP
+AS 	SELECT EMP_NAME, JOB_ID
+	FROM EMPLOYEE
+	WHERE SALARY > 4000000;
+```
+
+- CREATE IR REPLACE 구문을 사용했으므로 기존에 존재하는 V_EMO 이름을 그대로 사용하고, 내용만 수정되었음
+
+```SQL
+CREATE VIEW V_EMP
+AS SELECT EMP_NAME, JOB_ID
+FROM EMPLOYEE
+WHERE SALARY > 4000000;
+```
+
+- CREATE구문을 사용했으므로 이미 사용중인 V_EMP 이름이 중복되어 에러 발생함
+- ERROR - ORA-00955 : 기존의 객체가 이름을 사용하고 있습니다.
+
+### 5.2.8 뷰 - 삭제
+
+- 데이터 딕셔너리에 저장된 서브쿼리를 삭제하는 의미
+
+```sql
+DROP VIEW view_name;
+```
+
+### 5.2.9 뷰 - 인라인 뷰<sup>Inline View</sup> 개념
+
+- 별칭을 사용하는 서브쿼리 -> 일반적으로 FROM 절에서 사용
+
+```sql
+CREATE OR REPLACE VIEW V_DEPT_SALAVG("Did", "Davg")
+AS SELECT 	NVL(DEPT_ID, 'N/A'),
+			ROUND(AVG(SALARY),-3)
+FROM 		EMPLOYEE
+GROUP BY 	DEPT_ID;
+SELECT		 EMP_NAME, SALARY
+FROM		EMPLOYEE
+JOIN		V_DEPT_SALAVGON ( NVL(DEPT_ID, 'N/A') = "Did" )
+WHERE		SALARY > "Davg"
+ORDER BY 2 DESC;
+```
+
+```sql
+SELECT EMP_NAME, SALARY
+FROM 	(SELECT NVL(DEPT_ID,'N/A') AS "Did",
+				ROUND(AVG(SALARY),-3) AS "Davg"
+		  FROM EMPLOYEE
+		  GROUP BY DEPT_ID) INLV
+JOIN 	EMPLOYEE ON ( NVL(DEPT_ID, 'N/A') = INLV."Did" )
+WHERE 	SALARY > INLV."Davg"
+ORDER BY 2 DESC;
+```
+
+| Did  | Davg    |
+| ---- | ------- |
+| N/A  | 1900000 |
+| 50   | 2300000 |
+| 20   | 2500000 |
+| 90   | 6033000 |
+
+| EMP_NAME | SALARY  |
+| -------- | ------- |
+| 펭펭     | 9000000 |
+| 펭하     | 3500000 |
+| 펭빠     | 3410000 |
+
+- FROM 절이 수행되면서 별칭 INLV로 지정된 뷰가 생성되고 사용됨
+- 별도로 생성하는 경우와 동일한 효과
+
+#### 뷰 - 인라인 뷰 활용 : Top N 분석 개념
+
+- Top N 분석 : 조건에 맞는 최상위(또는 최하위) 레코드 n개를 식별해야 하는 경우에 사용
+  - 최상위 소득자 3명
+  - 최근 6개월 동안 가장 많이 팔린 제품 3가지
+  - 실적이 가장 좋은 영업 사원 5명
+- 오라클 환경에서 Top N 분석 원리
+  - 원하는 순서대로 정렬
+  - ROWNUM 이라는 가상 컬럼을 이용하여 정렬 순서대로 순번 부여
+  - 부여된 순번을 이용하여 필요한 수 만큼 식별
+
+- ROWNUM 개념
+  - SQL 구문 수행 후, Result Set 각 행에 1부터 시작하는 일련의 숫자를 자동으로 할당한 가상 컬럼
+
+```sql
+SELECT ROWNUM, EMP_NAME, SALARY
+FROM (	SELECT NVL(DEPT_ID,'N/A') AS "Did",
+		ROUND(AVG(SALARY),-3) AS "Davg"
+		FROM EMPLOYEE
+		GROUP BY DEPT_ID) INLV
+JOIN EMPLOYEE ON ( NVL(DEPT_ID, 'N/A') = INLV."Did")
+WHERE SALARY > INLV."Davg";
+```
+
+| ROWNUM | EMP_NAME | SALARY  |
+| ------ | -------- | ------- |
+| 1      | 펭펭     | 9000000 |
+| 2      | 펭하     | 3500000 |
+| 3      | 펭빠     | 3410000 |
+
+- ROWNUM 특징
+  - WHERE 절이 실행되면서 순차적으로 할당됨
+  - 할당된 후에는 변경되지 않음
+
+```sql
+SELECT ROWNUM, EMP_NAME, SALARY 
+FROM (SELECT NVL(DEPT_ID,'N/A') AS "Did", 
+      		 ROUND(AVG(SALARY),-3) AS "Davg"
+      FROM EMPLOYEE 
+      GROUP BY DEPT_ID) INLV 
+JOIN EMPLOYEE ON ( NVL(DEPT_ID, 'N/A') = INLV."Did")
+WHERE SALARY > INLV."Davg"
+ORDER BY 3 DESC;
+```
+
+| ROWNUM | EMP_NAME | SALARY  |
+| ------ | -------- | ------- |
+| 1      | 펭펭     | 9000000 |
+| 2      | 펭하     | 3500000 |
+| 3      | 펭빠     | 3410000 |
+
+- WHERE 절이 수행되면서 조건을 만족시키는 행에 ROWNUM을 할당한 결과로 1차 Result set을 생성
+- 1차 Result set에 대해 정렬을 수행하므로 정렬 순서대로 ROWNUM이 할당될 수 없음
+
+#### 뷰 - 인라인 뷰 활용 : Top N 분석
+
+- ROWNUM 사용
+  - ROWNUM 값으로 특정 행을 선택할 수 없음
+  - 단, Result set의 1<sup>st</sup> 행(ROWNUM = 1)은 선택 가능
+
+```sql
+SELECT ROWNUM, EMP_NAME, SALARY
+FROM (SELECT 	NVL(DEPT_ID,'N/A') AS "Did",
+				ROUND(AVG(SALARY),-3) AS "Davg"
+	  FROM EMPLOYEE
+	  GROUP BY DEPT_ID) INLV
+JOIN EMPLOYEE ON ( NVL(DEPT_ID, 'N/A') = INLV."Did")
+WHERE SALARY > INLV."Davg"
+AND ROWNUM = 3;
+```
+
+| ROWNUM | EMP_NAME | SALARY |
+| ------ | -------- | ------ |
+|        |          |        |
+
+- WHERE 절이 모두 수행되어야 ROWNUM이 할당됨
+- 특정 ROWNUM 값이 할당되기 이전이므로 실행 되지만 원하는 결과를 만들 수 없음
+
+```sql
+SELECT ROWNUM, EMP_NAME, SALARY 
+FROM (SELECT NVL(DEPT_ID,'N/A') AS "Did", 
+      		 ROUND(AVG(SALARY),-3) AS "Davg"
+      FROM EMPLOYEE GROUP BY DEPT_ID) INLV 
+JOIN EMPLOYEE ON ( NVL(DEPT_ID, 'N/A') = INLV."Did")
+WHERE SALARY > INLV."Davg"
+AND ROWNUM = 1;
+```
+
+| ROWNUM | EMP_NAME | SALARY  |
+| ------ | -------- | ------- |
+| 1      | 펭펭     | 9000000 |
+
+- ROWNUM 사용
+  - ROWNUM 값을 이용하여 일정 범위에 해당하는 행만 선택할 수 있음
+  - N 순위보다 같거나 작은 범위만 식별 가능 : 예) 상위 5건 -> [ROWNUM <=5]
+
+```sql
+SELECT ROWNUM, EMP_NAME, SALARY 
+FROM (SELECT 	NVL(DEPT_ID,'N/A') AS "Did", 
+      			ROUND(AVG(SALARY),-3) AS "Davg"
+      FROM EMPLOYEE 
+      GROUP BY DEPT_ID) INLV 
+JOIN EMPLOYEE ON ( NVL(DEPT_ID, 'N/A') = INLV."Did")
+WHERE SALARY > INLV."Davg"
+AND ROWNUM <= 5;
+```
+
+| ROWNUM | EMP_NAME | SALARY  |
+| ------ | -------- | ------- |
+| 1      | 펭펭     | 9000000 |
+| 2      | 펭하     | 3500000 |
+| 3      | 펭빠     | 3800000 |
+
+- 지정한 범위에 포함되는 행 선택 가능
+- 원하는 순서대로 정렬된 결과는 아님
+
+[ 원하는 순서대로 정렬된 결과 ]
+
+| ROWNUM | EMP_NAME | SALARY  |
+| ------ | -------- | ------- |
+| 1      | 펭펭     | 9000000 |
+| 3      | 펭빠     | 3800000 |
+| 2      | 펭하     | 3500000 |
+
+ 90P
+
