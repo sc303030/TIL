@@ -1,4 +1,4 @@
-### 5.1.6 테이블 수정 - 컬럼 삭제
+5.1.6 테이블 수정 - 컬럼 삭제
 
 - 컬럼 하나를 삭제 가능
 - 컬럼 여러 개를 한번에 삭제 가능(구문이 달라짐)
@@ -904,5 +904,317 @@ AND ROWNUM <= 5;
 | 3      | 펭빠     | 3800000 |
 | 2      | 펭하     | 3500000 |
 
- 90P
+ ### 5.2.9 뷰 - 인라인뷰 활용 : Top N 분석 구문
 
+- 순번을 활용하려면  ROWNUM이 할당되기 전에 미리 정렬을 해야 함
+
+- 미리 정렬된 결과를 가지고 있도록 하기 위해 인라인 뷰를 사용
+
+```sql
+SELECT * | select_list
+FROM (	SELECT select_list
+		FROM table_name
+		...
+		ORDER BY기준컬럼)
+WHERE ROWNUM <= (또는< ) N;
+```
+
+#### Top N 분석 사용 예
+
+```sql
+SELECT ROWNUM, EMP_NAME, SALARY 
+FROM (SELECT EMP_NAME, SALARY 
+      FROM (SELECT 	NVL(DEPT_ID,'N/A') AS "Did", 
+            		ROUND(AVG(SALARY),-3) AS "Davg"
+            FROM EMPLOYEE 
+            GROUP BY DEPT_ID) INLV 
+      JOIN EMPLOYEE ON ( NVL(DEPT_ID, 'N/A') = INLV."Did")
+      WHERE SALARY > INLV."Davg"
+      ORDER BY 2 DESC)
+WHERE ROWNUM <= 5;
+```
+
+- 인라인 뷰를 사용하여 부서 별 평균급여 값을 기준으로 정렬된 결과를 먼저 생성
+
+| ROWNUM | EMP_NAME | SALARY  |
+| ------ | -------- | ------- |
+| 1      | 펭펭     | 9000000 |
+| 2      | 펭빠     | 3800000 |
+| 3      | 펭하     | 3500000 |
+| 4      | 펭수     | 3410000 |
+| 5      | 펭러뷰   | 3400000 |
+
+### 5.3.1 시퀀스 개념 및 생성 구문
+
+- 순차적으로 정수 값을 자동으로 생성하는 객체
+
+```sql
+CREATE SEQUENCE sequence_name
+[ INCREMENT BYN] [ START WITH N]
+[ {MAXVALUE N | NOMAXVALUE}] [ {MINVALUE N| NOMINVALUE} ]
+[ {CYCLE| NOCYCLE} ] [ { CACHE N| NOCACHE} ] ;
+```
+
+[구문설명]
+
+- INCREMENT BY _N_
+  - 시퀀스 번호 증가/감소 간격(N은 정수, 기본 값 1)
+- START WITH N
+  - 시퀀스 시작 번호(N은 정수, 기본 값 1)
+- MAXVALUE/<u>NOMAXVALUE</u>, MINVALUE/<u>NOMINVALUE</u>
+  - MAXVALUE _N_ : 시퀀스의 최대 값 임의 지정(N은 정수)
+  - NOMAXVALUE : 표현 가능한 최대 값(오름 차순 : 10<SUP>27</SUP> , 내림차순 : -1 ) 까지 생성
+  - MINVALUE _N_ : 시퀀스의 최소 값 임의 지정(N은 정수)
+  - NOMINVALUE : 표현 가능한 최소 값(오름차순 : 1, 내림차순 : -10<SUP>26</SUP>)까지 생성
+- CYCLE/<u>NOCYCLE</u>
+  - 최대/최소 값 도달 시 반복 여부 결정
+- <u>CACHE</u>/NOCACHE
+  - 지정한 수량 만큼 미리 메모리에 생성 여부 결정(최소 값 2, 기본 값 20)
+
+### 5.3.2 시퀀스 생성 예 1
+
+```sql
+CREATE SEQUENCE SEQ_EMPID
+STAR	TWITH	300
+INCREMENT	BY	5
+MAXVALUE	310
+NOCYCLE
+NOCACHE;
+```
+
+- 초기값 : 300부터 시작
+- 증가값 : 5씩 증가
+- MAXVALUE 310 : 310까지 생성
+- NOCYCLE : MAXVALUE(310)까지 생성 후 더 이상 생성 안 됨
+- NOCACHE : 미리 메모리에 생성하지 않음
+
+```sql
+SELECT SEQ_EMPID.NEXTVAL FROM DUAL;
+```
+
+- 1회 사용
+
+| NEXTVAL |
+| ------- |
+| 300     |
+
+- 2회 사용
+
+| NEXTVAL |
+| ------- |
+| 305     |
+
+- 3회 사용
+
+| NEXTVAL |
+| ------- |
+| 310     |
+
+- 4회 사용
+  - ERROR : ORA-08004 : 시퀀스 SEQ_EMPID.NEXTVAL exceeds MAXVALUE은 사례로 될 수 없습니다.
+  - MAXVALUE 값에 도달했고 NOCYCLE이기 때문에 4회 사용시 에러 발생
+
+#### 시퀀스 생성 예 2
+
+```sql
+CREATE SEQUENCE SEQ2_EMPID
+START WITH	5
+INCREMENT BY	5
+MAXVALUE	15
+CYCLE
+NOCACHE;
+```
+
+- 초기값 : 5부터시작
+- 증가값 : 5씩증가
+- MAXVALUE 15 : 15까지 생성
+- CYCLE : MAXVALUE(15) 까지 생성 후 1부터 5씩 증가하여 MAXVALUE 범위안에서 반복 생성됨
+- NOCACHE : 미리 메모리에 생성하지 않음
+
+```sql
+SELECT SEQ2_EMPID.NEXTVAL FROM DUAL;
+```
+
+- 1회 사용
+
+| NEXTVAL |
+| ------- |
+| 5       |
+
+- 2회 사용
+
+| NEXTVAL |
+| ------- |
+| 10      |
+
+- 3회 사용
+
+| NEXTVAL |
+| ------- |
+| 15      |
+
+- 4회 사용
+  - 4회 사용부터 1, 6, 11이 반복적으로 생성됨
+
+| NEXTVAL |
+| ------- |
+| 1       |
+
+| NEXTVAL |
+| ------- |
+| 6       |
+
+| NEXTVAL |
+| ------- |
+| 11      |
+
+### 5.3.3 시퀀스 사용 방법
+
+- NEXTVAL 속성
+  - 새로운 시퀀스 값을 반환
+  - '_sequence_name_.NEXTVAL" 형태로 사용
+- CURRVAL 속성
+  - 현재 시퀀스 값(NEXTVAL 속성에 의해 가장 마지막으로 반환된 시퀀스 값)을 반환
+  - '_sequence_name_.CURRVAL' 형태로 사용
+  - NEXTVAL 속성이 먼저 실행되어야 사용 가능
+
+### 시퀀스 사용 - NEXTVAL과 CURRVAL 관계
+
+```sql
+CREATE SEQUENCE SEQ3_EMPID
+INCREMENT BY 5
+START WITH 300 MAXVALUE 310
+NOCYCLE NOCACHE;
+```
+
+```sql
+SELECT SEQ3_EMPID.NEXTVAL FROM DUAL;
+```
+
+- 처음
+
+| NEXTVAL |
+| ------- |
+| 300     |
+
+- 2회
+
+| NEXTVAL |
+| ------- |
+| 305     |
+
+- 3회
+
+| NEXTVAL |
+| ------- |
+| 310     |
+
+- 4회
+
+- ERROR : ORA-08004 : 시퀀스 SEQ3-EMPID.NEXTVAL exceeds MAXVALE은 사례로 될 수 없습니다.
+
+```sql
+SELECT SEQ3_EMPID.CURRVAL FROM DUAL;
+```
+
+| CURRVAL |
+| ------- |
+| 300     |
+
+| CURRVAL |
+| ------- |
+| 305     |
+
+| CURRVAL |
+| ------- |
+| 310     |
+
+| CURRVAL |
+| ------- |
+| 310     |
+
+•••
+
+- ERROR : ORA-08002 : SEP3_EMPID.CURRVAL은 이 세션에서는 정의 되어 있지 않습니다.
+- NEXTVAL 속성 사용 전에는 사용할 수 없음
+
+```sql
+CREATE SEQUENCE SEQID
+INCREMENT BY 1
+START WITH 300
+MAXVALUE 310
+NOCYCLE NOCACHE;
+```
+
+```sql
+INSERT INTO EMPLOYEE (EMP_ID, EMP_NO, EMP_NAME)
+VALUES (TO_CHAR(SEQID.NEXTVAL),
+		'850130-1558215', '김영민');
+INSERT INTO EMPLOYEE (EMP_ID, EMP_NO, EMP_NAME)
+VALUES (TO_CHAR(SEQID.NEXTVAL),
+		'840221-1361299', '구진표');
+SELECT EMP_ID, EMP_NO, EMP_NAME
+FROM EMPLOYEE
+ORDER BY 1 DESC;
+```
+
+- 시퀀스 값을 사용하려는 EMP_ID 컬럼 타입이 CHAR 타입이기 때문에 TO_CHAR 함수를 사용하여 타입 변환을 하였음
+
+| EMP_ID | EMP_NO         | EMP_NAME |
+| ------ | -------------- | -------- |
+| 301    | 840221-1361299 | 구진표   |
+| 300    | 850130-1558215 | 김영민   |
+
+### 5.3.4 시퀀스 수정 및 삭제
+
+- START WITH 값은 수정 불가
+  - 시작 값을 변경하려면 삭제 후 새로 생성
+  - 한번도 사용하지 않은 경우에도 수정 불가
+- 변경된 값은 이후 시퀀스부터 적용
+- 시퀀스 수정 구문
+
+```sql
+ALTER SEQUENCE	sequence_name
+[ INCREMENT BY	N]
+[ {MAXVALUE	N| NOMAXVALUE}] [ {MINVALUE	N| NOMINVALUE} ]
+[ {CYCLE	| NOCYCLE} ] [ { CACHE	N	| NOCACHE} ] ;
+```
+
+- 시퀀스 삭제 구문
+
+```sql
+DROP SEQUENCE sequence_name;
+```
+
+#### 시퀀스 수정 예
+
+```sql
+CREATE SEQUENCE SEQID2
+INCREMENT BY 1
+START WITH 300
+MAXVALUE 310
+NOCYCLE NOCACHE;
+SELECT SEQID2.NEXTVAL FROM DUAL;
+SELECT SEQID2.NEXTVAL FROM DUAL;
+ALTER SEQUENCE SEQID2
+INCREMENT BY 5;
+SELECT SEQID2.NEXTVAL FROM DUAL;
+```
+
+| NEXTVAL |
+| ------- |
+| 300     |
+
+| NEXTVAL |
+| ------- |
+| 301     |
+
+- DROP 목록
+
+| NEXTVAL |
+| ------- |
+| 302     |
+
+| NEXTVAL |
+| ------- |
+| 306     |
