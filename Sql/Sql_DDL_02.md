@@ -1218,3 +1218,196 @@ SELECT SEQID2.NEXTVAL FROM DUAL;
 | NEXTVAL |
 | ------- |
 | 306     |
+
+### 5.3.5 시퀀스 정보 확인
+
+```sql
+CREATE SEQUENCE SEQ1
+INCREMENT BY 1
+START WITH 1
+NOCACHE;
+SELECT SEQ1.NEXTVAL FROM DUAL;
+SELECT SEQ1.CURRVAL FROM DUAL;
+```
+
+| NEXTVAL | CURRVAL |
+| ------- | ------- |
+| 1       | 1       |
+
+```sql
+CREATE SEQUENCE SEQ2
+INCREMENT BY 1
+START WITH 1
+CACHE 5;
+SELECT SEQ2.NEXTVAL FROM DUAL;
+SELECT SEQ2.CURRVAL FROM DUAL;
+```
+
+| NEXTVAL | CURRVAL |
+| ------- | ------- |
+| 1       | 1       |
+
+```sql
+SELECT 	SEQUENCE_NAME,
+		CACHE_SIZE,
+		LAST_NUMBER
+FROM USER_SEQUENCES
+WHERE SEQUENCE_NAME IN ('SEQ1','SEQ2');
+```
+
+| SEQUENCE_NAME | CACHE_SIZE | LAST_NUMBER |
+| ------------- | ---------- | ----------- |
+| SEQ1          | 0          | 2           |
+| SEQ2          | 5          | 6           |
+
+- LAST_NUMBER
+  - CACHE 미사용 : 새로 반환될 시퀀스 값
+  - CACHE 사용 : CACHE로 생성된 이후 시퀀스 값(메모리에 생성된 시퀀스도 사용된 것으로 간주함)
+
+### 5.4.1 인덱스 개념
+
+- 키워드와 해당 내용의 위치가 정렬된 상태로 구성됨
+- 키워드를 이용해 원하는 내용을 빠르게 찾기 위한 목적으로 사용
+- 데이터베이스에서 인덱스는 컬럼 값을 이용해 원하는 행을 빠르게 찾기 위한 목적으로 사용\
+
+### 5.4.2 인덱스 구조
+
+- 정렬된 특정 컬럼 값<sup>Key</sup>과 해당 컬럼 값이 포함된 행 위치<sup>Rowid</sup>로 구성
+
+[DEPARTMENT 테이블]
+
+- DEPT_ID 컬럼에 인덱스 생성
+
+| DEPT_ID | DEPT_NAME    |
+| ------- | ------------ |
+| 20      | 회계팀       |
+| 10      | 본사 인사팀  |
+| 50      | 해외영업 1팀 |
+
+[인덱스]
+
+- DEPT_ID 컬럼값은 정렬된 형태로 구성
+
+| DEPT_ID | ROWID              |
+| ------- | ------------------ |
+| 10      | AAACikAAEAAAAWlAAB |
+| 20      | AAACikAAEAAAAWlAAA |
+| 30      | AAACikAAEAAAAWlAAG |
+
+### 5.4.3 인덱스 사용 시 고려 사항
+
+- 인덱스 특징
+  - 테이블과 연관되지만 독립적인 객체
+  - 자동적으로 사용되고 관리됨
+  - DISK I/O를 줄임으로써 검색 속도를 향상시킬 수 있음
+- 인덱스를 사용하는 것이 효율적인 경우
+  - WHERE 절이나 JOIN 조건에 주로 사용되는 컬럼
+  - UNIQUE 속성의 컬럼이나 NULL이 많이 포함된 컬럼
+  - 넓은 범위의 값이 포함된 컬럼
+- 인덱스를 사용하지 않는 것이 더 효율적인 경우
+  - 테이블이 작은 경우 ( 데이터가 적은 경우)
+  - 테이블 갱신이 자주 발생하는 경우
+  - 다량의 데이터가 조회되는 경우
+
+### 5.4.4 인덱스 유형
+
+- 인덱스를 생성하는 대상 컬럼에 따라 Unique Index, Nonunique Index로 구분
+- Unique Index
+  - Unique Index가 생성된 컬럼에는 중복 값이 포함될 수 없음
+  - 오라클은 'PRIMART KEY' 제약조건을 생성하면 자동으로 해당 컬럼에 Unique Index를 생성
+  - PRIMARY KEY를 이용하여 access 하는 경우  성능 향상 효과 있음
+- Nonunique Index
+  - 빈번하게 사용되는 일반 컬럼을 대상으로 생성함
+  - 주로 성능 향상을 위한 목적으로 생성
+
+### 5.4.5 인덱스 생성 1
+
+[기본 구문]
+
+```sql
+CREATE [UNIQUE] INDEX index_name ON table_name ( column_list |function, expr );
+```
+
+- Unique Index 생성
+
+```sql
+CREATE UNIQUE INDEX IDX_DNM ON DEPARTMENT(DEPT_NAME);
+```
+
+- Nonunique Index 생성
+
+```sql
+CREATE INDEX IDX_JID ON EMPLOYEE (JOB_ID);
+```
+
+#### 인덱스 생성 실습
+
+1. EMPLOYEE 테이블의 EMP_NAME 컬럼에 'IDX_ENM' 이름의 Unique index를 생성하시오.
+
+```sql
+CREATE UNIQUE INDEX IDX_ENM ON EMPLOYEE(EMP_NAME);
+```
+
+2. 다음과 같은 새로운 데이터를 입력해 보고, 오류 원인을 생각해 보시오.
+
+```sql
+INSERT INTO EMPLOYEE (EMP_ID, EMP_NO, EMP_NAME)
+VALUES ('400', '871120-1243877', '감우섭');
+```
+
+- ERROR : ORA-00001 : 무결성 제약 조건(SCHOOL.IDX_ENM)에 위배됩니다.
+  - EMP_NAME 컬럼에 이미 '감우섭'이름의 데이터가 존재하기 때문에 중복되는 값은 입력될 수 없다.
+    - Unique Index는 UNIQUE 제약조건의 기능을 수행
+
+3. EMPLOYEE 테이블의 DEPT_ID 컬럼에 'IDX_DID' 이름의 Unique Index를 생성해보고 오류 원인을 생각해보시오.
+
+```sql
+CREATE UNIQUE INDEX IDX_DID ON EMPLOYEE(DEPT_ID);
+```
+
+- Error : ORA-01452 : 중복키가 있습니다. 유일한 인덱스를 작성할 수 없습니다.
+
+### 5.4.6 인덱스 삭제
+
+- 인덱스 삭제 구문을 이용하여 삭제
+- 테이블이 삭제되면 관련된 인덱스는 함께 자동으로 삭제됨
+- 인덱스 삭제 구문
+
+```sql
+DROP INDEX index_name ;
+```
+
+### 5.4.7 인덱스 정보 확인
+
+- EMPLOYEE 테이블에 생성된 인덱스 현황 조회
+
+```sql
+SELECT INDEX_NAME, COLUMN_NAME, INDEX_TYPE, UNIQUENESS
+FROM USER_INDEXES
+JOIN USER_IND_COLUMNS USING (INDEX_NAME, TABLE_NAME)
+WHERE TABLE_NAME = 'EMPLOYEE';
+```
+
+| INDEX_NAME | COLUMN_NAME  | INDEX_TYPE            | UNIQUENESS |
+| ---------- | ------------ | --------------------- | ---------- |
+| PK_EMPID   | EMP_ID       | NORMAL                | UNIQUE     |
+| UNI_EMPNO  | EMP_NO       | NORMAL                | UNIQUE     |
+| IDX_HDATE  | SYS_NC00013$ | FUNCTION-BASED NORMAL | NINUNIQUE  |
+
+- FUNCTION-BASED INDEX 경우 컬럼 이름이 다르게 표시된다.
+
+### 5.4.8 인덱스를 이용한 데이터 조회 방법
+
+- EMP_ID 컬럼에 인덱스가 생성되어 있음
+
+1. QUERY 실행
+
+```sql
+SELECT EMP_NAME
+FROM EMPLOYEE
+WHERE EMP_ID = '124';
+```
+
+2. 인덱스 조회
+3. ROWID 식별
+4. ROWID를 이용하여 테이블 Access
