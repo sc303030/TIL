@@ -152,5 +152,119 @@ AND ‘GOUCH’
 
     ​                   = 데이터별 평균 row수 / 테이블의 총 row수 X 100
 
-188p
+### 6.2.3 인덱스 선정 고려사항
 
+- 인덱스 선정시 고려해야 하는 것은?
+  - **인덱스와 테이블 I/O수의 합계**가 전체 테이블을 스캔하는 I/O수보다 적은 경에만 성능향상에 기여한다고 볼 수 있음 (손익분기점 : 10 ~ 15% 이내)
+  - 새로 **추가된 인덱스는 기존 엑세스 경로에 영향**을 미칠 수 있음
+  - 여러 칼럼을 결합하여 인덱스를 구성하는 경우 **컬럼의 순서 중요**
+  - 데이터의 입력, 삭제 혹은 인덱스로 사용이 된 **컬럼의 값을 수정하는 경우 인덱스 데이터도 변경**되어야 하므로 그에 다른 오베헤도 고려해야 함
+    - 너무 많은 인덱스는 오히려 성능 저하
+  - 인덱스를 위한 추가적인 기억공간을 필요로 함
+
+### 6.2.4 인덱스 선정 시기  및 절차
+
+- 인덱스 선정 시기
+
+![index04](./img/index04.PNG)
+
+- 일반적인 절차
+  1. **모든 테이블에 대한 접근 경로(access path) 조사**
+  2. 인덱스 컬럼 선정 및 분포도 조사
+  3. Critical Access Path 결정 및 우선순위 선정
+  4. 인덱스 컬럼의 조합 및 순서 결정
+  5. 시험생성 및 테스트
+  6. 결정된 인덱스 기준으로 프로그램 반영
+  7. 적용
+- Critical Access Path : 반복적으로 자주 사영되는 것
+
+- 테이블 접근 경로(access path)표 작성 예시
+
+![index05](./img/index05.png)
+
+### 6.3.1 인덱스 사용
+
+- Index Unique Scan
+  - Unique Index의 Equal (=) 검색
+- Index Range Scan
+  - Unique 인덱스의 범위 (Range) 검색
+  - Non-Unique 인덱스의 범위 (Range) 검색
+- 결과의 결합 - CONCATENATION
+  - OR 조건, NOR BETWEEN 검색
+- INLIST
+  - IN 조건
+- Index Unique Scan
+  - Unique Index의 Equal (=) 검색
+  - Non-Unique Index인 경우는 Unique Scan을 할 수 없음
+- SQL > SELECT * FROM EMP WHERE EMPNO = 1234;
+- Execution Plan
+
+| 0       | SELECT  STATEMENT Optomizer=RULE            |
+| ------- | ------------------------------------------- |
+| **1 0** | **TABLE ACCESS (BY INDEX Rowid) OF 'EMP'**  |
+| **2 1** | **INDEX(UNIQUE SCAN) OF 'PK_EMP' (UNIQUE)** |
+
+- Index Range Scan
+
+  - Unique 인덱스의 범위 (Range) 검색
+  - 범위 연산자 사용한 경우
+
+- **SQL> SELECT \* FROM EMP WHERE** **EMPNO >= 4321;**
+
+  **SQL> SELECT \* FROM EMP WHERE** **EMPNO > 4321;**
+
+  **SQL> SELECT \* FROM EMP WHERE** **EMPNO <= 4321;**
+
+  **SQL> SELECT \* FROM EMP WHERE** **EMPNO < 4321;**
+
+- Execution Plan
+
+| 0       | SELECT STATEMENT Optimizer=RULE             |
+| ------- | ------------------------------------------- |
+| **1 0** | **TABLE ACCESS (BY INDEX Rowid) OF 'EMP'**  |
+| **2 1** | **INDEX(UNIQUE SCAN) OF 'PK_EMP' (UNIQUE)** |
+
+- Index Range Scan
+
+  - Non-Unique 인덱스의 범위 (Range) 검색
+  - 범위 경계값이 UNIQUE하게 들어 오는 경우도 RANGE SCAN
+
+- **SELECT \* FROM EMP WHERE** **JOB LIKE 'SALE%';** 
+
+  **SELECT \* FROM EMP WHERE** **JOB** **=** **'SALESMAN';**
+
+- Execution Plan
+
+| 0       | **SELECT STATEMENT Optimizer=RULE**              |
+| ------- | ------------------------------------------------ |
+| **1 0** | **TABLE ACCESS (BY INDEXRowid) OF 'EMP'**        |
+| **2 1** | **INDEX (RANGE SCAN) OF 'EMP_JOB' (NON-UNIQUE)** |
+
+- 결과의 결합 - CONCATENATION  OR 조건
+
+- **SELECT \* FROM EMP WHERE EMPNO = 7654** **OR** **EMPNO = 7788;**
+- Execution Plan
+
+| 0       | **SELECT STATEMENT Optimizer=RULE**          |
+| ------- | -------------------------------------------- |
+| **1 0** | **CONCATENATION**                            |
+| **2 1** | **TABLE ACCESS (BY INDEX Rowid) OF 'EMP'**   |
+| **3 2** | **INDEX (UNIQUE SCAN) OF 'PK_EMP' (UNIQUE)** |
+| **4 1** | **TABLE ACCESS (BY INDEXRowid) OF 'EMP'**    |
+| **5 4** | **INDEX (UNIQUE SCAN) OF 'PK_EMP' (UNIQUE)** |
+
+- NOT BETWEEN 검색
+- **SELECT \* FROM EMP WHERE EMPNO** **NOT BETWEEN** **7654** **AND** **7788;**  
+- **동일효과** **:                      WHERE EMPNO** **<** **7654** **OR** **EMPNO** **>** **7788;**
+
+- Execution Plan
+
+| 0       | **SELECT STATEMENT Optimizer=RULE**         |
+| ------- | ------------------------------------------- |
+| **1 0** | **CONCATENATION**                           |
+| **2 1** | **TABLE ACCESS (BY INDEXRowid) OF 'EMP'**   |
+| **3 2** | **INDEX (RANGE SCAN) OF 'PK_EMP' (UNIQUE)** |
+| **4 1** | **TABLE ACCESS (BY INDEXRowid) OF 'EMP'**   |
+| **5 4** | **INDEX (RANGE SCAN) OF 'PK_EMP' (UNIQUE)** |
+
+201P
