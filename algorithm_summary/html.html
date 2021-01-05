@@ -1,0 +1,271 @@
+<!doctype html>
+<html>
+<head>
+<meta charset='UTF-8'><meta name='viewport' content='width=device-width initial-scale=1'>
+<title>03_python_grammar-Numerical_data_type</title></head>
+<body><h1>3강: 파이썬 문법 - 수 자료형 </h1>
+<h3>자료형</h3>
+<ul>
+<li><p>모든 프로그래밍은 결국 데이터를 다루는 행위</p>
+<ul>
+<li>자료형에 대한 이해는 프로그래밍의 길에 첫걸음</li>
+
+</ul>
+</li>
+<li><p>파이썬의 자료형은 정수형, 실수형, 복소수형, 문자열, 리스트, 튜플, 사전 등이 있다.</p>
+<ul>
+<li><p>파이썬의 자료형은 필수적으로 알아둬야 한다.</p>
+</li>
+<li><p>리스트 = C++ 벡터라이브러리, 자바의 어레이리스트 라이브러리</p>
+<ul>
+<li>별도의 표준 라이브러리를 가지고 오지 않아도 쉽고 간결하게 이용 가능하다.</li>
+
+</ul>
+</li>
+
+</ul>
+</li>
+
+</ul>
+<h3>정수형</h3>
+<ul>
+<li><p>정수형(Intrger)은 정수를 다루는 자료형</p>
+<ul>
+<li>양의 정수, 음의 정수, 0이 포함된다.</li>
+
+</ul>
+</li>
+<li><p>코딩 테스트에서 출제되는 많은 문제들은 정수형으로 주로 다루게 된다.</p>
+</li>
+
+</ul>
+<pre><code class='language-python' lang='python'>#양의 정수
+a = 1000
+print(a)
+
+#음의 정수
+a = -7
+print(a)
+
+# 0
+a = 0
+print(a)
+&gt;
+1000
+-1
+0
+</code></pre>
+<pre><code class='language-python' lang='python'>a = 777
+print(a)
+&gt; 777
+
+a = -5 
+print(a)
+&gt; -5
+
+a = a + 5
+print(a)
+&gt; 777
+
+a = a + 3
+print(a)
+&gt; 780
+</code></pre>
+<h3>실수형</h3>
+<ul>
+<li><p>실수형(Real Number)은 <strong>소수점 아래의 데이터를 포함하는 수 자료형</strong> </p>
+<ul>
+<li><p>파이썬에서는 변수에 소수점을 붙인 수를 대입하면 실수형 변수로 처리</p>
+<ul>
+<li>온점을 붙이면 자동으로 소수</li>
+
+</ul>
+</li>
+<li><p>소수부가 0이거나, 정수부가 0인 소수는 0을 생략하고 작성할 수 있다.</p>
+<ul>
+<li>0.7 -&gt; .7 도 가능</li>
+
+</ul>
+</li>
+
+</ul>
+</li>
+
+</ul>
+<pre><code class='language-python' lang='python'>#양의 실수
+a = 157.93
+print(a)
+&gt; 157.93
+
+#음의 실수
+a = -1837.2
+print(a)
+&gt; -1837.2
+
+# 소수부가 0일 대 0을 생략
+a = 5.
+print(a)
+&gt; 5.0
+
+# 정수부가 0일 때 0을 생략
+a = -.7
+print(a)
+&gt; -0.7
+</code></pre>
+<h3>지수 표현 방식</h3>
+<ul>
+<li><p>파이썬에서는 e나 E를 이용한 <strong>지수 표현 방식을 이용</strong> 할 수 있습니다.</p>
+<ul>
+<li>e나 E 다음에 오는 수는 10의 지수부를 의믜합니다.</li>
+<li>예를 들어 1e9라고 입력하게 되면, 10의 9제곱(1,000,000,000)이 됩니다.</li>
+
+</ul>
+</li>
+
+</ul>
+<center>유효숫자e<sup>지수</sup> = 유효숫자 x 10<sup>지수</sup></center>
+<ul>
+<li>지수 표현 방식은 임의의 큰 수를 표현하기 위해 자주 사용된다.</li>
+<li>최단 경로 알고리즘에서는 도달할 수 없는 노드에 대하여 최단 거리를  <strong>무한(INF)</strong>로 설정하곤 한다.</li>
+<li>이때 가능한 최댓값이 10억 미만이라면 무한(INF)의 값으로 1e9를 이용할 수 있다.</li>
+
+</ul>
+<pre><code class='language-python' lang='python'># 1,000,000,000의 지수 표현 방식
+a = 1e9
+print(a)
+&gt; 1000000000.0
+
+
+#752.5
+a = 75.25e1
+print(a)
+&gt;752.5
+
+#3.954
+a = 3954e-3
+print(a)
+&gt;3.954
+</code></pre>
+<pre><code class='language-python' lang='python'>a = 1e9
+print(a)
+&gt; 100000000.0
+
+a = int(1e9)
+# 정수로 바꿔서 출력하는 것이 좋다.
+print(a)
+&gt; 100000000
+</code></pre>
+<h3>실수형 더 알아보기</h3>
+<ul>
+<li><p>오늘날 가장 널리 쓰이는 IEEE754 표준에서는 실수형을 저장하기 위해 4바이트, 혹은 8바이트의 고정된 크기의 메모리를 할당하므로, <strong>컴퓨터 시스템은 실수 정보를 표현하는 정확도에 한계를 가짐</strong></p>
+</li>
+<li><p>예를 들어 10진수 체계에서는 0.3과 0.6을 더한 값이 0.9로 정확이 떨어진다.</p>
+<ul>
+<li><p>하지만 2진수에서는 0.9를 정확히 표현할 수 있는 방법이 없다.</p>
+</li>
+<li><p>컴퓨터는 최대한 0.9와 가깝에 표현하지만, 미세한 오차가 발생하게 된다.</p>
+<ul>
+<li>2를 3으로 나눈 값을 최대한 정확하게 표현 하려면 0.3333으로 표현한다.</li>
+<li>그래서 3/2와 같이 분수나 컴퓨터는 이진수로 표현</li>
+
+</ul>
+</li>
+
+</ul>
+</li>
+
+</ul>
+<pre><code class='language-python' lang='python'>a = 0.3 +0.6
+print(a)
+&gt; 0.8999999999999999
+
+
+if a ==0.9:
+	print(True)
+else:
+	print(False)
+&gt; False
+	
+</code></pre>
+<ul>
+<li><p>개발 과정에서 실수 값을 제대로 비교하지 못해서 원하는 결과를 얻지 못할 수 있다.</p>
+</li>
+<li><p>이렇 때는 <strong>round() 함수</strong>를 이용할 수 있으며, 이러한 방법이 권장된다.</p>
+<ul>
+<li><strong>round() 함수</strong> : 반올림함수</li>
+
+</ul>
+</li>
+<li><p>예를 들어 123.456을 소수 셋째 자리에서 반올림하려면 round(123.456,2)라고 작성한다.</p>
+<ul>
+<li>결과는 123.46이 된다.</li>
+
+</ul>
+</li>
+
+</ul>
+<pre><code class='language-python' lang='python'>a = 0.3 + 0.6
+print(round(a,4))
+&gt; 0.9
+
+
+if round(a,4) == 0.9:
+	print(True)
+else:
+	print(False)
+&gt; True
+</code></pre>
+<h3>수 자료형의 연산</h3>
+<ul>
+<li><p>수 자료형에 대하여 <strong>사칙연산</strong>과 나머지 연산가자 많이 사용된다.</p>
+</li>
+<li><p>단 나누기 연산자(/)를 주의해서 사용해야 한다.</p>
+<ul>
+<li>파이썬에서 나누기 연산자(/)는 나눠진 결과를 실수형으로 반환</li>
+
+</ul>
+</li>
+<li><p>다양한 로직을 설계할 때 <strong>나머지 연산자(%)</strong>를 이용해야 할 때가 많다</p>
+<ul>
+<li>예시 : a가 홀수인지 체크해야 하는 경우</li>
+<li>특정한 양의 정수를 2로 나누었을 때 나머지가 1이라면 홀수</li>
+
+</ul>
+</li>
+<li><p>파이썬에서는 몫을 얻기 위해 <strong>몫 연산자(//)</strong> 를 사용한다.</p>
+</li>
+<li><p>이외에도 <strong>거듭 제곱 연산자(**)</strong>를 비롯해 다양한 연산자들이 존재</p>
+</li>
+
+</ul>
+<pre><code class='language-python' lang='python'>a = 7
+b = 3
+
+# 나누기
+print(a / b)
+&gt; 2.33333333333335
+
+#나머지
+print(a % b)
+&gt;1
+
+# 몫
+print(a // b)
+&gt; 2
+</code></pre>
+<pre><code class='language-python' lang='python'>a = 5
+b = 3
+
+#거듭 제곱
+print(a ** b)
+&gt; 125
+
+
+#제곱근
+print(a ** 0.5)
+&gt;2.23606797749979
+</code></pre>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+</body>
+</html>
