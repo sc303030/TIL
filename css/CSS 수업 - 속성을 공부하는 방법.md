@@ -47,3 +47,33 @@
 ![css_02](../img/css_02.jpg)
 
 - 사용자가 폰트 크기를 조정하면 rem은 변하고 px는 변하지 않는다.
+
+# CSS 수업 - 타이포그래피 : color
+
+### color name
+
+```html
+<html>
+    <head>
+        <style>
+            h1{color:red;}
+            
+        </style>
+    </head>
+    <body>
+        <h1>
+            Hello World
+        </h1>
+    </body>
+</html>
+```
+
+### hex(16진수)
+
+- #FF0000
+
+### rgb
+
+- Red, Green, Blue
+
+- rgb(255,255,255)
