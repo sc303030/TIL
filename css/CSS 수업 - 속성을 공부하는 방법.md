@@ -77,3 +77,83 @@
 - Red, Green, Blue
 - rgb(255,255,255)
 - 255가 낮을수록 어두워진다.
+
+# CSS 수업 - 타이포그래피 : font
+
+```html
+<html>
+    <head>
+        <style>
+            #type1{
+                font-size:5rem;
+                font-family:arial, verdana, 'Helvetica Neue', monospace;
+                font-weight: bold;
+                line-height: 2;
+            }
+            p{
+                font: bold 5rem/2 arial, verdana, 'Helvetica Neue', serif;
+            }
+            
+        </style>
+    </head>
+    <body>
+        <p id='type1'>
+            Hello World
+        </p>
+        <p id='type2'>
+            Hello World
+        </p>
+    </body>
+</html>
+```
+
+- 원하는 폰트가 깔려있지 않을 수 있음.
+  - arial이 없으면 verdana가 적용되고 둘다 없으면 Helvetica Neue가 적용된다.
+
+![css03](../img/css_03.jpg)
+
+- Sans는 부정의 의미가 있어서 장식이 없다.
+
+- monospace
+  - 고정폭, 폰트의 모든 폭을 동일하게 설정
+
+- line-height
+  - 위 아래 폰트 간격
+- font-weight
+  - 폰트 굵기
+
+- font: bold 5rem/2 arial, verdana, 'Helvetica Neue', serif;
+  - 모든 속성들을 나열
+
+# CSS 수업 - 타이포그래피 : 웹폰트
+
+```html
+<html>
+    <head>
+    	<link href='폰트링크' rel='stylesheet'>
+        <style>
+            #font1{
+                font-family: 'Open Sans Condensed', sans-serif;
+            }
+            #font2{
+                font-family: 'Indie Flower', cursive;
+            }
+        </style>
+    </head>
+    <body>
+        <p id='font1'>
+            Hello World
+        </p>
+        <p id='font2'>
+            Hello World
+        </p>
+    </body>
+</html>
+```
+
+- 폰트링크를 연결하고 font-family로 지정해주면 적용된다.(구글폰트 기준)
+
+- \<link href='폰트링크' rel='stylesheet'>
+  - href='폰트링크' 에서 링크에 해당되는 것을 다운받는다.
+- 폰트생성기로 보유하고 있는 폰트를 웹폰트로 만들 수 있다.
+- font-family에서 이름을 바꿔서 적용 가능
