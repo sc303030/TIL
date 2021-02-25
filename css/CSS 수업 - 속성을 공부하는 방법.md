@@ -157,3 +157,34 @@
   - href='폰트링크' 에서 링크에 해당되는 것을 다운받는다.
 - 폰트생성기로 보유하고 있는 폰트를 웹폰트로 만들 수 있다.
 - font-family에서 이름을 바꿔서 적용 가능
+
+# CSS 수업 - 상속
+
+```html
+<html>
+    <head>
+        <style>
+            li{color:red;}
+            h1{color:red;}
+            html{color:red;}
+            #select{color:bliak;}
+            body{border:1px solid red;}
+        </style>
+    </head>
+    <body>
+        <h1>
+            수업내용
+        </h1>
+        <ul>
+            <il>html</il>
+            <li>css</li>
+            <li id='select'>javascript</li>
+        </ul>
+    </body>
+</html>
+```
+
+- 부모의 색상을 자식이 물려받는게 가장 편리함
+- #select : 이건 생산성이 더 높음 
+
+- 어떤 상속이 상복받는게 나을지 아닐지 판단하여 속성이 적용된다.
