@@ -72,3 +72,4 @@ public class Main {
 
 - (10,20) 하나랑 (30,40)하나 만들어서 중앙을 구한다.
 - one.getCenter했으니 one의 값이 Node가 되고 two가 other가 되어서 계산된다.
+- 푸쉬실험
