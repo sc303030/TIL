@@ -49,3 +49,38 @@
 - 인라인에서는 높이와 넓이가 무시된다.
 
 ![css08](../img/css08.jpg)
+
+# CSS 수업 - 마진 겹침 1
+
+- 마진이 사라지는 경우가 있음. 
+
+```html
+<html>
+    <head>
+        <style>
+            h1{
+                border: 1px solid red;
+                margin: 100px;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>
+            hello world
+        </h1>
+        <h1>
+            hello world
+        </h1>
+    </body>
+</html>
+```
+
+![css09](../img/css09.jpg)
+
+![css10](../img/css10.jpg)
+
+![css11](../img/css11.jpg)
+
+- 마진이 겹쳤다.
+- 마진값중에 더 큰 값이 두 개 사이의 마진값이 된다.
+- 만약에 양쪽다 마진이 있다면 2배가 되어버린다.
