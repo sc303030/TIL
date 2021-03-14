@@ -110,3 +110,104 @@
   - 바꾸고 싶으면 상대적으로 바꾼다.
     - 이 때 오프셋을 사용할 수 있다.
 
+# CSS 수업 - 포지션 2 : absolute
+
+```html
+<html>
+    <head>
+        <style>
+            #parent, #other{
+                border:5px solid tomato;
+            }
+            #me{
+                background-color:blakk;
+                color:white;
+                position: absolute;
+                left:0px;
+                top:0px;
+            }
+        </style>
+    </head>
+    <body>
+        <div id='other'>
+            other
+        </div>
+        <div id='parent'>
+            parent
+            <div id='me'>
+                me
+            </div>
+        </div>
+    </body>
+</html>
+```
+
+![css16](../img/css16.jpg)
+
+```html
+ #me{
+                background-color:blakk;
+                color:white;
+                position: relative;
+                left:0px;
+                top:0px;
+            }
+```
+
+![css15](../img/css15.jpg)
+
+- relateive를 하면 부모를 기준으로 만들어지고 absolute를 하면 부모 기준 상관없이 html 기준으로 시작된다.
+
+```html
+ #me{
+                background-color:blakk;
+                color:white;
+                position: absolute;
+            }
+```
+
+- 포지션 값이 없으면 부모를 기준으로 시작한다.
+
+![17](../img/css17.jpg)
+
+- 기본값은 원래 있어야 할 곳에 있는 곳이 기본값이다.
+
+- 크기를 키우고 싶으면 `width:200px;`를 추가한다.
+
+```html
+<html>
+    <head>
+        <style>
+            #parent, #other{
+                border:5px solid tomato;
+            }
+            #parent{
+                position:relative;
+            }
+            #me{
+                background-color:blakk;
+                color:white;
+                position: absolute;
+                left:0px;
+                top:0px;
+            }
+        </style>
+    </head>
+    <body>
+        <div id='other'>
+            other
+        </div>
+        <div id='parent'>
+            parent
+            <div id='me'>
+                me
+            </div>
+        </div>
+    </body>
+</html>
+```
+
+![css18](../img/css18.jpg)
+
+- ststic가 아닌 부모가 나타날때까지 지나가다가 static가 아닌게 나오면 거기서부터 시작한다.
+- 부무와의 관계가 끊기기 때문에 본인의 크기로 지정된다.
