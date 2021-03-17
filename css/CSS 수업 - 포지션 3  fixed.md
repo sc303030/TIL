@@ -85,3 +85,72 @@
 ![css21](../img/css21.jpg)
 
 - 서로 부여해야 할 속성이 다르다.
+
+# CSS 수업 - flex 2 : basic
+
+```html
+<!doctype>
+<html>
+    <head>
+        <style>
+            .container{
+                background-color: powderblue;
+            }
+            .item{
+                background-color: tomato;
+                color: white;
+                border: 1px solid white;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="condatiner">
+            <div class="item">1</div>
+            <div class="item">2</div>
+            <div class="item">3</div>
+            <div class="item">4</div>
+            <div class="item">5</div>
+        </div>
+    </body>
+</html>
+```
+
+![css22](../img/css22.jpg)
+
+- 부모에게 `display: flex;` 을 주는게 시작이다.
+
+![css23](../img/css23.jpg)
+
+- flex 적용 후 달라졌다.
+
+- flex는 태그들을 정렬하는 방법
+
+- `flex-direction: row` 가 기본값
+- `flex-direction: row-reverse;` 하면 뒤바뀐다.
+
+![css24](../img/css24.jpg)
+
+- `flex-direction: column`
+- 컬럼으로 정렬
+
+![css25](../img/css25.jpg)
+
+- ` flex-direction: column-reverse;`
+
+![css26](../img/css26.jpg)
+
+- `height: 300px;` 를 부여하면 flex를 한 것과 안 한것의 차이가 드러난다.
+
+```html
+  .container{
+                background-color: powderblue;
+                height: 300px;
+                display: flex;
+                flex-direction: column-reverse;
+            }
+```
+
+![css27](../img/css27.jpg)
+
+- 원래 밑에쪽에 공간이 있었는데 reverse를 통해 바꾸니 순서가 바뀌었다.
+
