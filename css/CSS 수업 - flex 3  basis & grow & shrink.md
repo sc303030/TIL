@@ -121,7 +121,18 @@
 
 - flex-shrink의 값을 0으로 주면 줄어들지 않고 1이상을 주면 줄어드는 크기를 받아서 작아진다.
 
+```html
+ .item:nth-child(1){
+                flex-basis: 150px;
+                flex-shrink: 1;
+            }
+
+.item:nth-child(2){
+                flex-basis: 150px;
+                flex-shrink: 2;
+            }
 ```
 
-```
+- 크기가 큰 쪽이 더 많이 줄어든다.
 
+![css35](../img/css35.jpg)
