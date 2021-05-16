@@ -49,3 +49,33 @@ $ yarn run dev
 ```
 
 - 위와 같은 명령어로 실행하면 드디어 제이슨 파일이 보인다.
+
+### 다시 본문으로
+
+- props는 기본적으로  변경될 수 없는 값을 쓸 때
+- state는 변경되는 값을 쓸 때 사용한다.
+
+- componentDidMount
+  - 모든 컴포넌트가 마운트 되었을 때 실행되는 것
+
+```react
+componentDidMount(){
+    this.callApi()
+      .then(res => this.setState({customers:res}))
+      .catch(err => console.log(err));
+  }
+  callApi = async () => {
+    const response = await fetch('/api/customers')
+    const body = await response.json()
+    return body;
+  }
+```
+
+- response
+  - 접속하고자 하는 주소의 api를 넣는다.
+- body
+  - 해당 정보를 json형태로 받겠다.
+
+- this.callApi()
+  - return된 body가 this.callapi로 불러와져서 res로 변수이름이 바뀌고 customers변수에 담는다.
+
