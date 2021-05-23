@@ -22,10 +22,17 @@ yarn add http-proxy-middleware
 - cilent > src에 setupProxy.js를 생성하고 아래의 내용을 넣어준다.
 
 ```react
-const createProxyMiddleware  = require('http-proxy-middleware');
+const { createProxyMiddleware } = require('http-proxy-middleware');
 
 module.exports = function(app) {
-app.use( '/api', createProxyMiddleware({ target: 'http://localhost:5000', changeOrigin: true,}));};
+  app.use(
+    '/api',
+    createProxyMiddleware({
+      target: 'http://localhost:5000',
+      changeOrigin: true,
+    })
+  );
+};
 ```
 
 - 바깥폴더에 있는 package.json에 proxy가 있다면 지워주자.
@@ -36,9 +43,9 @@ $ yarn add concurrently
 
 ```react
     "scripts": {
-        "server": "nodemon server.js",
-        "client": "yarn run start --prefix client",
-        "dev": "concurrently \"yarn run server\" \"yarn run client\""
+        "client": "cd client && yarn start",
+        "server": "node server.js",
+        "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\""
     },
 ```
 
