@@ -16,10 +16,10 @@ for(num=1;num <= 5; num++){
 ```
 
 	1. num=1 먼저 실행됨
- 	2. num<=5를 확인
- 	3. println(num)을 확인
- 	4. num++을 함
-      	1. 다시 2로 가서 반복
+	2. num<=5를 확인
+	3. println(num)을 확인
+	4. num++을 함
+	  	1. 다시 2로 가서 반복
 
 ```java
 public class ForTest {
@@ -60,7 +60,18 @@ public class ForTest {
 
 - 증감식 생략 가능
 
-  - ```
+  - ```java
+    for(i=0;i<5;){
+    	i = (++i) % 10;
+    }
+    ```
+  
+- 무한 반복
+
+  - ```java
+    for( ; ;){
+    
+    }
     ```
 
-  - 14:04
+    
