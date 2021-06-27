@@ -100,5 +100,8 @@ app.get('/api/customers', (req, res) => {
 ```
 
 - serve.js 수정
+- $ concurrently --kill-others-on-fail "yarn sever" "yarn client" 'concurrently'은(는) 내부 또는 외부 명령, 실행할 수 있는 프로그램, 또는 배치 파일이 아닙니다. error Command failed with exit code 1. 라는 오류 발생
+  - npm i concurrently express --save 설치
 
-10분
+- 아주 잘 구동되었다. 
+- db접속도 문제 없었다.

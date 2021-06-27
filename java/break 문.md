@@ -22,4 +22,35 @@ for(num = 1; ; num++) {
 
 - 이런식으로 내부에서 break를 걸어주면 그 순간 빠져나올 수 있음
 
-7:20
+# continue 문
+
+- 반복문 값이 참이면 내부 블럭의 다른 내용문을 수행하지 않음
+  - 다시 제어문으로 올라가라
+
+```java
+public class ContinueTest {
+
+	public static void main(String[] args) {
+			
+		int num;
+		
+		for(num=1; num<=100; num++) {
+			if(num % 3 !=0) continue;
+			System.out.println(num);
+		}
+		
+	}
+
+}
+>
+9
+12
+15
+18
+21
+24
+27
+```
+
+- 3으로 나눠지는 값들을 출력
+  - 아닌 것들은 수행하지 않고 다시 제어문으로 올라감
