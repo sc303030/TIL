@@ -22,12 +22,12 @@
 - **[Step 1]** **1번** 노드를 거쳐 가는 경우를 고려하여 테이블을 갱신한다.
   - **점화식** : D<sub>ab</sub> = min( D<sub>ab</sub>,  D<sub>a1</sub> +  D<sub>1b</sub>)
 
-![fw03](./img/fw03.jpg)
+![fw03](C:\Users\gh\TIL\algorithm_summary\31_Floyd-Warshall_Algorithm.assets\fw03.jpg)
 
 - **[Step 2]** **2번** 노드를 거쳐 가는 경우를 고려하여 테이블을 갱신한다.
   - **점화식** : D<sub>ab</sub> = min( D<sub>ab</sub>,  D<sub>a2</sub> +  D<sub>2b</sub>)
 
-![fw04](C:\Users\gh\TIL\algorithm_summary\31_Floyd-Warshall_Algorithm.assets\fw04.jpg)   
+![fw04](./img/fw04.jpg)   
 
 - **[Step 3]** **3번** 노드를 거쳐 가는 경우를 고려하여 테이블을 갱신한다.
   - **점화식** : D<sub>ab</sub> = min( D<sub>ab</sub>,  D<sub>a3</sub> +  D<sub>3b</sub>)
