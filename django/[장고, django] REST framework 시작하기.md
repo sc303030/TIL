@@ -206,3 +206,48 @@ serializer.data
 e', 'print("hello, world")\n'), ('linenos', False), ('language', 'python'), ('style', 'friendly')])]
 ```
 
+### ModelSerializers
+
+- 위에서 사용한 serializer는 필드에 대한 속성을 선언해줘야 했는데 modelserializer는 fields만 지정해주면 해당 속성을 자동으로 생성해준다.
+- `create()`, `update()`도 자동으로 생성해준다.
+
+#### restapi > appapi > serializers.py 
+
+> 위에서 생성한 코드를 변경하기
+
+```python
+class SnippetSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Snippet
+        fields = ['id', 'title', 'code', 'linenos', 'language', 'style']
+```
+
+### 실행하기
+
+```bash
+python manage.py shell
+```
+
+```bash
+from appapi.serializers import SnippetSerializer
+serializer = SnippetSerializer()
+print(repr(serializer))
+```
+
+- fields에서 선언한 필드값들의 속성이 자동으로 생성된 것을 볼 수 있다.
+
+```bash
+>>> from appapi.serializers import SnippetSerializer
+>>> serializer = SnippetSerializer()
+>>> print(repr(serializer))
+SnippetSerializer():
+    id = IntegerField(label='ID', read_only=True)
+    title = CharField(allow_blank=True, max_length=100, required=False)
+    code = CharField(style={'base_template': 'textarea.html'})
+    linenos = BooleanField(required=False)
+    language = ChoiceField(choices=[('abap', 'ABAP'), ('abnf', 'ABNF'), ('actionscript', 'ActionScript'), ('actionscript3', 'ActionScript 3'), ('ada', 'Ada'), ('adl', 'ADL'), ('agda', 'Agda'), ('aheui', 'Aheui'), ('alloy', 'Alloy'
+), ('ambienttalk', 'AmbientTalk'), ('amdgpu', 'AMDGPU') ...
+     style = ChoiceField(choices=[('abap', 'abap'), ('algol', 'algol'), ('algol_nu', 'algol_nu'), ('arduino', 'arduino'), ('autumn', 'autumn'), ('borland', 'borland'), ('bw', 'bw'), ('colorful', 'colorful'), ('default', 'default'),
+ ('dracula', 'dracula'), ('emacs', 'emacs') ...
+```
+
