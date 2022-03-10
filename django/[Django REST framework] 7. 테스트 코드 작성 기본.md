@@ -614,7 +614,7 @@ urlpatterns = [
 ### [urls 확인하기]
 
 - 현재 연결되어 있는 urls를 확인하고 `reverse`에 적어야 하기 때문에 라이브러리를 설치하고 urls를 확인하자.
-  - 설치 후 `settings.py`에서 `INSTALLED_APPS`에 추가해야 한다.
+  - 설치 후 `settings.py`에서 `'django_extensions',`을  `INSTALLED_APPS`에 추가해야 한다.
 
 ```bash
 pip install django-extensions
