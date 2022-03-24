@@ -1,4 +1,4 @@
-# [Django REST framework] 2. 휴대폰 인증 문자 API
+# [Django REST framework] 휴대폰 인증 문자 API 구현하기
 
 - 1.휴대폰 인증 문자 모델 생성하기에서 만든 모델이 정확하게 동작하는지 API로 만들어서 확인하는 작업이다.
 
