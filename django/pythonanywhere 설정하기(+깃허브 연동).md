@@ -1,4 +1,4 @@
-# pythonanywhere django 배포하기(+깃허브 연동)
+# pythonanywhere django 배포하기(+깃허브 연동)_01
 
 - 다음 과정들은 로그인 후 진행하면 된다.
   - 편의상 로그인은 생략하였다.
@@ -66,3 +66,70 @@
 
 3. Python3.9를 선택한다.
 4. 선택을 완료한다.
+
+### 6. web 환경 설정 하기
+
+1. allowed_host와 wsgi 수정하기
+
+   1. allowed_host 수정
+
+      1. go to directory를 클릭하여 이동한다.
+
+         ![pyany_06](image/pyany_06.jpg)
+
+      2. pythonanywhere의 user 디렉토리로 이동한다.
+
+         ![pyany_07](image/pyany_07.jpg)
+
+      3. settings.py가 있는 폴더로 이동한다.
+
+         ![pyany_08](image/pyany_08.jpg)
+
+      4. settings.py를 클릭하여 편집화면으로 들어간다.
+
+         ![pyany_09](image/pyany_09.jpg)
+
+      5. ALLOWED_HOSTS에 5.web 생성하기에서 선택했던 도메인을 추가한다.
+
+         ![pyany_10](image/pyany_10.jpg)
+
+   2. 다시 web으로 돌아와 var/www/`username`_pythonanywhere_com_wsgi.py를 클릭한다.
+
+      ![pyany_11](image/pyany_11.jpg)
+
+      1. 중간에 주석처리된 DJANGO만 나두고 나머지 코드는 다 삭제한다.
+
+         1. 해당 코드를 수정하여 재사용할 것이다.
+
+         ![pyany_12](image/pyany_12.jpg)
+
+         2. 먼저 path를 수정한다.
+            1. path에서 mysite 부분에 `github 레포 이름` 을 추가한다.
+               1. `path = '/home/nbapredict/nba_predict_django'`
+
+         3. DJANGO_SETTINGS_MODULE 수정하기
+            1. mysite을 django 프로젝트 이름으로 변경한다.
+               1. `os.environ['DJANGO_SETTINGS_MODULE'] = 'nba_predict_django.settings'` 
+            2. DJANGO_SETTINGS_MODULE이 장고 프로젝트의 settings.py를 바라볼 수 있게 경로를 설정하는 것이라 상황에 따라 path에 프로젝트 명을 더 기입해야 할 수 있다.
+
+![pyany_13](image/pyany_13.jpg)
+
+2. Virtualenv 경로 설정하기
+   1. home/`username`/`github repo 이름`/`env 이름`
+      1. /home/nbapredict/nba_predict_django/nbaPredictEnv
+
+![pyany_05](image/pyany_05.jpg)
+
+### 7. web 접속하기
+
+1. Reload를 하여 수정한 내역을 적용한 후 접속하기
+
+   ![pyany_15](image/pyany_15.jpg)
+
+2. 연결 확인하기
+
+   ![pyany_14](image/pyany_14.jpg)
+
+### api 주소로 들어가지 않아서 not found가 뜨는 것이고 django랑은 잘 연결되었다.
+
+마이그레이션과 추가 설정은 2탄에서 계속!
