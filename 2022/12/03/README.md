@@ -1,7 +1,0 @@
-### 2022년 12월 3일 토요일
-
-- 알고리즘
-  - [프로그래머스 - N_Queen](https://github.com/sc303030/algorithm_practice/blob/master/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%5B%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4%5D%20N-Queen%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
-
-- 자료구조
-  - [자료구조 소개 3](https://github.com/sc303030/TIL/blob/master/2022/12/03/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0%20%EC%86%8C%EA%B0%9C%203%20-%20%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98%EC%9D%98%20%EC%9D%B4%ED%95%B4%EC%99%80%20%ED%91%9C%ED%98%84%20%EB%B0%A9%EB%B2%95%2C%20%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98%EC%9D%98%20%EC%98%88%EC%99%80%20%EC%84%B1%EB%8A%A5%20%EB%B6%84%EC%84%9D.md)
