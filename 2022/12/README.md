@@ -142,3 +142,18 @@
 
 - 자료구조
   - [그래프2](https://github.com/sc303030/TIL/blob/master/KOCW/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/%EA%B7%B8%EB%9E%98%ED%94%842.md)
+- 대관 알리미
+  - [프로젝트 시작](https://github.com/sc303030/gym)
+
+
+### 16일 금요일
+
+- 알고리즘
+  - [백준-양한마리-양두마리](https://github.com/sc303030/algorithm_practice/blob/master/5.DFS/%5B%EB%B0%B1%EC%A4%80%5D%2011123%EB%B2%88%20%EC%96%91%20%ED%95%9C%EB%A7%88%EB%A6%AC...%20%EC%96%91%20%EB%91%90%EB%A7%88%EB%A6%AC...%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+
+- 대관 알리미
+  - [pytest 추가](https://github.com/sc303030/gym/commit/d0d0e6a04db076e2ca06796fccd4f66a78ab2def)
+  - [url에 접속하여 crawling](https://github.com/sc303030/gym/commit/be6eb57353bcbbefa6319b820b1bc8c47b43b3fd)
+
+- 데이터 베이스
+  - [데이터 베이스 설계 1](https://github.com/sc303030/TIL/blob/master/KOCW/%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%B2%A0%EC%9D%B4%EC%8A%A4/%EB%8D%B0%EC%9D%B4%ED%84%B0%20%EB%B2%A0%EC%9D%B4%EC%8A%A4%20%EC%84%A4%EA%B3%84%201.md)
