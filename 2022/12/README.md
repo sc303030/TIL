@@ -157,3 +157,15 @@
 
 - 데이터 베이스
   - [데이터 베이스 설계 1](https://github.com/sc303030/TIL/blob/master/KOCW/%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%B2%A0%EC%9D%B4%EC%8A%A4/%EB%8D%B0%EC%9D%B4%ED%84%B0%20%EB%B2%A0%EC%9D%B4%EC%8A%A4%20%EC%84%A4%EA%B3%84%201.md)
+
+### 17일 토요일
+
+- 알고리즘
+  - [백준-알고리즘 수업 - 너비 우선 탐색 1](https://github.com/sc303030/algorithm_practice/blob/master/6.BFS/%5B%EB%B0%B1%EC%A4%80%5D%2024444%EB%B2%88%20%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98%20%EC%88%98%EC%97%85%20-%20%EB%84%88%EB%B9%84%20%EC%9A%B0%EC%84%A0%20%ED%83%90%EC%83%89%201%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+
+- 대관 알리미
+  - [celery & redis_설치](https://github.com/sc303030/gym/commit/b04fb90f789fa27ada148d1c9325396441636c53)
+  - [celery 설정](https://github.com/sc303030/gym/commit/b2f2869848c48762fda2f3480c92e9a7579f5960)
+
+- 데이터 베이스
+  - [데이터베이스 시스템의 개요 1](https://github.com/sc303030/TIL/blob/master/KOCW/%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%B2%A0%EC%9D%B4%EC%8A%A4/%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%B2%A0%EC%9D%B4%EC%8A%A4%20%EC%8B%9C%EC%8A%A4%ED%85%9C%EC%9D%98%20%EA%B0%9C%EC%9A%94%201.md)
