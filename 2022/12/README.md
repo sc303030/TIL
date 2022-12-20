@@ -192,3 +192,13 @@
 
 - 대관 알리미
   - celery 수정, crawling 코드 수정
+
+### 20일 화요일
+
+- 데이터 베이스
+  - [관계 데이터 베이스 2](https://github.com/sc303030/TIL/blob/master/KOCW/%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%B2%A0%EC%9D%B4%EC%8A%A4/%EA%B4%80%EA%B3%84%20%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%B2%A0%EC%9D%B4%EC%8A%A4%202.md)
+
+- 알고리즘
+  - [백준_도로검문](https://github.com/sc303030/algorithm_practice/blob/master/11.Dijkstra_algorithm/%5B%EB%B0%B1%EC%A4%80%5D%202307%EB%B2%88%20%EB%8F%84%EB%A1%9C%EA%B2%80%EB%AC%B8%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+- 대관 알리미
+  - celery포함 test 코드 완료, celery 정상 작동 확인
