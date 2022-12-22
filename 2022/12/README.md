@@ -208,3 +208,15 @@
   - 카카오톡 알림 전송은 그룹채팅으로는 불가능해 그냥 나에게만 전송하도록 하는 방향으로 만들려고 한다.
   - celery-beat 테스트 진행
     - 크롤링으로 진행 예정
+
+### 22일 목요일
+
+- 알고리즘
+  - [백준-인터넷설치](https://github.com/sc303030/algorithm_practice/blob/master/11.Dijkstra_algorithm/%5B%EB%B0%B1%EC%A4%80%5D%201800%EB%B2%88%20%EC%9D%B8%ED%84%B0%EB%84%B7%20%EC%84%A4%EC%B9%98%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+
+- 데이터 베이스
+  - [관계대수1](https://github.com/sc303030/TIL/blob/master/KOCW/%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%B2%A0%EC%9D%B4%EC%8A%A4/%EA%B4%80%EA%B3%84%EB%8C%80%EC%88%98%201.md)
+
+- 대관 알리미
+  - 카카오 메시지 보내기 celery 등록, beat로 작동 확인
+  - 토큰 모델 생성하여 관리
