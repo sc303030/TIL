@@ -220,3 +220,14 @@
 - 대관 알리미
   - 카카오 메시지 보내기 celery 등록, beat로 작동 확인
   - 토큰 모델 생성하여 관리
+
+### 23일 금요일
+
+- 알고리즘
+  - [백준-최소비용구하기2](https://github.com/sc303030/algorithm_practice/blob/master/11.Dijkstra_algorithm/%5B%EB%B0%B1%EC%A4%80%5D%20%EC%B5%9C%EC%86%8C%EB%B9%84%EC%9A%A9%20%EA%B5%AC%ED%95%98%EA%B8%B0%202%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+
+- 데이터베이스
+  - 관계대수2
+- 대관 알리미
+  - reminder를 보내지 않았으면 전송하기
+  - 토큰 재생성, 크롤링 crontab 등록 완료
