@@ -231,3 +231,14 @@
 - 대관 알리미
   - reminder를 보내지 않았으면 전송하기
   - 토큰 재생성, 크롤링 crontab 등록 완료
+
+### 24일 토요일
+
+- 알고리즘
+  - [백준-최단경로구하기](https://github.com/sc303030/algorithm_practice/blob/master/11.Dijkstra_algorithm/%5B%EB%B0%B1%EC%A4%80%5D%201916%EB%B2%88%20%EC%B5%9C%EC%86%8C%EB%B9%84%EC%9A%A9%20%EA%B5%AC%ED%95%98%EA%B8%B0%20%ED%8C%8C%EC%9D%B4%EC%8D%AC%20(re).md)
+
+- 데이터베이스
+  - [SQL1](https://github.com/sc303030/TIL/blob/master/KOCW/%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%B2%A0%EC%9D%B4%EC%8A%A4/SQL1.md)
+
+- 대관 알리미
+  - poetry 경로만 수정하면 될 듯
