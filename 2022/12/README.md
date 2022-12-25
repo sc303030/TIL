@@ -242,3 +242,11 @@
 
 - 대관 알리미
   - poetry 경로만 수정하면 될 듯
+
+### 25일 일요일
+
+- 알고리즘
+  - [백준-네트워크복구](https://github.com/sc303030/algorithm_practice/blob/master/11.Dijkstra_algorithm/%5B%EB%B0%B1%EC%A4%80%5D%202211%EB%B2%88%20%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC%20%EB%B3%B5%EA%B5%AC%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+
+- 데이터베이스
+  - [SQL2](https://github.com/sc303030/TIL/blob/master/KOCW/%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%B2%A0%EC%9D%B4%EC%8A%A4/SQL2.md)
