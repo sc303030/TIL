@@ -250,3 +250,19 @@
 
 - 데이터베이스
   - [SQL2](https://github.com/sc303030/TIL/blob/master/KOCW/%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%B2%A0%EC%9D%B4%EC%8A%A4/SQL2.md)
+
+### 26일 월요일
+
+- 대관 알리미
+  - 공통 컴포넌트 만들기
+
+### 27일 화요일
+
+- 알고리즘
+  - [백준-합리적인 이동경로](https://github.com/sc303030/algorithm_practice/blob/master/11.Dijkstra_algorithm/%5B%EB%B0%B1%EC%A4%80%5D%202176%EB%B2%88%20%ED%95%A9%EB%A6%AC%EC%A0%81%EC%9D%B8%20%EC%9D%B4%EB%8F%99%EA%B2%BD%EB%A1%9C%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+
+- 데이터 베이스
+  - [SQL3](https://github.com/sc303030/TIL/blob/master/KOCW/%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%B2%A0%EC%9D%B4%EC%8A%A4/SQL3.md)
+
+- 대관 알리미
+  - 도커, 도커 컴포즈 성공
