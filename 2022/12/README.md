@@ -266,3 +266,14 @@
 
 - 대관 알리미
   - 도커, 도커 컴포즈 성공
+
+### 28일 수요일
+
+- 알고리즘
+  - [백준-최단경로](https://github.com/sc303030/algorithm_practice/blob/master/11.Dijkstra_algorithm/%5B%EB%B0%B1%EC%A4%80%5D%201753%EB%B2%88%20%EC%B5%9C%EB%8B%A8%EA%B2%BD%EB%A1%9C%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+
+- 데이터베이스
+  - [SQL4](https://github.com/sc303030/TIL/blob/master/KOCW/%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%B2%A0%EC%9D%B4%EC%8A%A4/SQL4.md)
+
+- 대관 알리미
+  - aws ec2, rbd 생성 완료(프리티어 사용중)
