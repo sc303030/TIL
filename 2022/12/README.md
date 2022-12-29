@@ -277,3 +277,16 @@
 
 - 대관 알리미
   - aws ec2, rbd 생성 완료(프리티어 사용중)
+
+### 29일 목요일
+
+- 알고리즘
+  - [백준-숨바꼭질3](https://github.com/sc303030/algorithm_practice/blob/master/11.Dijkstra_algorithm/%5B%EB%B0%B1%EC%A4%80%5D%2013549%EB%B2%88%20%EC%88%A8%EB%B0%94%EA%BC%AD%EC%A7%88%203%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+
+- 데이터베이스
+  - [데이터 모델링](https://github.com/sc303030/TIL/blob/master/KOCW/%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%B2%A0%EC%9D%B4%EC%8A%A4/%EB%8D%B0%EC%9D%B4%ED%84%B0%20%EB%AA%A8%EB%8D%B8%EB%A7%81.md)
+
+- 대관 알리미
+  - aws ec2에 도커 컴포즈 완료, rds 연결 완료
+    - 학교 정보도 잘 들어갔음을 확인
+    - 시간되면 크롤링이 수행되었는지 확인하면 될 것 같다.
