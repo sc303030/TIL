@@ -290,3 +290,21 @@
   - aws ec2에 도커 컴포즈 완료, rds 연결 완료
     - 학교 정보도 잘 들어갔음을 확인
     - 시간되면 크롤링이 수행되었는지 확인하면 될 것 같다.
+
+### 30일 금요일
+
+- 대관 알리미
+  - celery beat 실행 확인
+    - 크롤링하여 새로운 목록 삽입 확인
+  - 컨테이너 실행 시 토큰 삽입 추가하기
+  - celery task를 group으로 묶어서 실행하는 것 추가하기
+    - 기존에는 그냥 for loop로 했더니 등록이 안 되는 task가 생겨서 수정하기
+  - 도커에 수정된 부분 반영 완료
+    - aws ec2에서 실행 확인
+  - 토큰도 저장됨, 학교도 업데이트 된 것도 확인
+  
+- 알고리즘
+  - [백준-알고스팟](https://github.com/sc303030/algorithm_practice/blob/master/6.BFS/%5B%EB%B0%B1%EC%A4%80%5D%201261%EB%B2%88%20%EC%95%8C%EA%B3%A0%EC%8A%A4%ED%8C%9F%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+
+- 데이터베이스
+  - [데이터베이스_설계](https://github.com/sc303030/TIL/blob/master/KOCW/%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%B2%A0%EC%9D%B4%EC%8A%A4/%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%B2%A0%EC%9D%B4%EC%8A%A4%20%EC%84%A4%EA%B3%84.md)
