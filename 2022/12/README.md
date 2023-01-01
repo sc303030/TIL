@@ -308,3 +308,18 @@
 
 - 데이터베이스
   - [데이터베이스_설계](https://github.com/sc303030/TIL/blob/master/KOCW/%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%B2%A0%EC%9D%B4%EC%8A%A4/%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%B2%A0%EC%9D%B4%EC%8A%A4%20%EC%84%A4%EA%B3%84.md)
+
+### 31일 토요일
+
+- 대관 알리미
+  - gym 컨테이너가 계속 종료돼 다시 찾아보니 도커에 대한 이해가 부족했다.
+    - 도커는 실행할 프로레스가 없으면 그대로 종료된다.
+    - 그래서 command에 작성한 명령어가 실행되면 계속 재시작 됐던 것이다.
+    - 이참에 도커도 다시 공부해야겠다.
+    - 그래서 명령어 마지막에 bin/bash를 작성하여 재식작이 안되게 하였다.
+      - 여기서도 도커 컴포즈 restart 설정을 오류가 났을 때만 재시작 하도록 했다.
+  - celery는 객체를 넘길 수 없기에 celery task에서 객체로 매개변수를 넘겨주는 걸 id로 변경해서 받는 쪽에서 object를 가져오도록 수정하였다.
+  - group와 reminder를 실행하는 부분의 시간차가 발생해서 reminder를 보내는건 18시에만 실행하도록 따로 수정
+  
+- 알고리즘
+  - [백준-미로만들기](https://github.com/sc303030/algorithm_practice/blob/master/11.Dijkstra_algorithm/%5B%EB%B0%B1%EC%A4%80%5D%202665%EB%B2%88%20%EB%AF%B8%EB%A1%9C%EB%A7%8C%EB%93%A4%EA%B8%B0%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
