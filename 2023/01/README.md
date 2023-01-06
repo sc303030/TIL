@@ -42,3 +42,11 @@
 - 대관 알리미
   - pre-push 적용
   - git-action workflows 추가
+
+### 1월 6일 금요일
+
+- 알고리즘
+  - [백준-부분수열의 합](https://github.com/sc303030/algorithm_practice/blob/master/23.%EB%B0%B1%ED%8A%B8%EB%9E%99%ED%82%B9/%5B%EB%B0%B1%EC%A4%80%5D%201182%EB%B2%88%20%EB%B6%80%EB%B6%84%EC%88%98%EC%97%B4%EC%9D%98%20%ED%95%A9%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+
+- 운영체제
+  - 운영체제의 역사
