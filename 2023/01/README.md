@@ -53,3 +53,8 @@
 
 - 대관 알리미
   - git action 성공
+
+### 1월 7일 토요일
+
+- 알고리즘
+  - [백준-N과M(5)](https://github.com/sc303030/algorithm_practice/blob/master/23.%EB%B0%B1%ED%8A%B8%EB%9E%99%ED%82%B9/%5B%EB%B0%B1%EC%A4%80%5D%2015654%EB%B2%88%20N%EA%B3%BC%20M%20(5)%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
