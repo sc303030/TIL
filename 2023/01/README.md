@@ -58,3 +58,15 @@
 
 - 알고리즘
   - [백준-N과M(5)](https://github.com/sc303030/algorithm_practice/blob/master/23.%EB%B0%B1%ED%8A%B8%EB%9E%99%ED%82%B9/%5B%EB%B0%B1%EC%A4%80%5D%2015654%EB%B2%88%20N%EA%B3%BC%20M%20(5)%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+
+### 1월 8일 일요일
+
+- 알고리즘
+  - [백준-차이를 최대로](https://github.com/sc303030/algorithm_practice/blob/master/23.%EB%B0%B1%ED%8A%B8%EB%9E%99%ED%82%B9/%5B%EB%B0%B1%EC%A4%80%5D%2010813%EB%B2%88%20%EC%B0%A8%EC%9D%B4%EB%A5%BC%20%EC%B5%9C%EB%8C%80%EB%A1%9C%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+
+- 대관 알리미
+  - codecov 적용 완료
+  - readme에 codecov 배치 추가
+- 컴퓨터 구조
+  - 운영체제 듣다가 컴퓨터 구조를 먼저 들어야 할 것 같아서 컴퓨터 구조 듣기 시작
+  - 컴퓨터 구조 소개
