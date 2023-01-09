@@ -70,3 +70,8 @@
 - 컴퓨터 구조
   - 운영체제 듣다가 컴퓨터 구조를 먼저 들어야 할 것 같아서 컴퓨터 구조 듣기 시작
   - 컴퓨터 구조 소개
+
+### 1월 9일 월요일
+
+- 알고리즘
+  - [백준-순열](https://github.com/sc303030/algorithm_practice/blob/master/23.%EB%B0%B1%ED%8A%B8%EB%9E%99%ED%82%B9/%5B%EB%B0%B1%EC%A4%80%5D%2010974%EB%B2%88%20%EC%88%9C%EC%97%B4%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
