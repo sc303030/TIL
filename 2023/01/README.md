@@ -85,3 +85,15 @@
   - 아키텍처 소개 1
 - 대관 알리미
   - models 테스트 코드 생성
+
+### 1월 11일 수요일
+
+- 알고리즘
+  - [백준-외판원순회2](https://github.com/sc303030/algorithm_practice/blob/master/23.%EB%B0%B1%ED%8A%B8%EB%9E%99%ED%82%B9/%5B%EB%B0%B1%EC%A4%80%5D%2010971%EB%B2%88%20%EC%99%B8%ED%8C%90%EC%9B%90%20%EC%88%9C%ED%9A%8C%202%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+
+- 컴퓨터 구조
+  - 아키텍처 소개 2
+
+- 대관 알리미
+  - create_reminder 테스트 코드 생성
+  - code coverage 50%
