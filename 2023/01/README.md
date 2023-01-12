@@ -97,3 +97,12 @@
 - 대관 알리미
   - create_reminder 테스트 코드 생성
   - code coverage 50%
+
+### 1월 12일 목요일
+
+- 알고리즘
+  - [백준-부등호](https://github.com/sc303030/algorithm_practice/blob/master/23.%EB%B0%B1%ED%8A%B8%EB%9E%99%ED%82%B9/%5B%EB%B0%B1%EC%A4%80%5D%202529%EB%B2%88%20%EB%B6%80%EB%93%B1%ED%98%B8%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+
+- 대관 알리미
+  - test_view 테스트 코드 생성
+  - coverage 53%
