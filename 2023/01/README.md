@@ -106,3 +106,18 @@
 - 대관 알리미
   - test_view 테스트 코드 생성
   - coverage 53%
+
+### 1월 13일 금요일
+
+- 알고리즘
+  - [백준-도영이가 만든 맛있는 음식](https://github.com/sc303030/algorithm_practice/blob/master/23.%EB%B0%B1%ED%8A%B8%EB%9E%99%ED%82%B9/%5B%EB%B0%B1%EC%A4%80%5D%202961%EB%B2%88%20%EB%8F%84%EC%98%81%EC%9D%B4%EA%B0%80%20%EB%A7%8C%EB%93%A0%20%EB%A7%9B%EC%9E%88%EB%8A%94%20%EC%9D%8C%EC%8B%9D.md)
+
+- 컴퓨터 구조
+  - 아키텍처 소개 3
+- 대관 알리미
+  - test_tasks 작업중
+    - send_kakao_reminder가 말썽
+    - send_reminder의 값을 mocker.patch로 return_value를 200을 주도록 했는데 적용되지 않음
+      - 그래서 계속 access_token을 못 찾는다는 오류 발생...
+  - coverage 79% 달성
+  - github action에서 redis 부분 문제 해결하기...
