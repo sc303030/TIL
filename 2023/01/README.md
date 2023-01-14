@@ -121,3 +121,17 @@
       - 그래서 계속 access_token을 못 찾는다는 오류 발생...
   - coverage 79% 달성
   - github action에서 redis 부분 문제 해결하기...
+
+### 1월 14일 토요일
+
+- 알고리즘
+  - [백준-연산자 끼워넣기 (2)](https://github.com/sc303030/algorithm_practice/blob/master/23.%EB%B0%B1%ED%8A%B8%EB%9E%99%ED%82%B9/%5B%EB%B0%B1%EC%A4%80%5D%2015658%EB%B2%88%20%EC%97%B0%EC%82%B0%EC%9E%90%20%EB%81%BC%EC%9B%8C%EB%84%A3%EA%B8%B0%20(2)%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+
+- 컴퓨터 구조
+  - 다시 나에게 맞는 강의를 찾아서 처음부터 듣기로 하였다.
+  - Computer Abstractions and Technology 1
+
+- 대관 알리미
+  - save_token 2개 함수로 분리
+  - test_save_token 생성
+  - 테스트 커버리지 86% 달성
