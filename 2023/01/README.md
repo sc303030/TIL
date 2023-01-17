@@ -148,3 +148,14 @@
   - github action redis 추가 완료
     - pytest 통과
   - codecoverage 97% 달성
+
+### 1월 17일 화요일
+
+- 알고리즘
+  - [백준-에너지 모으기](https://github.com/sc303030/algorithm_practice/blob/master/23.%EB%B0%B1%ED%8A%B8%EB%9E%99%ED%82%B9/%5B%EB%B0%B1%EC%A4%80%5D%2016198%EB%B2%88%20%EC%97%90%EB%84%88%EC%A7%80%20%EB%AA%A8%EC%9C%BC%EA%B8%B0%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+
+- 컴퓨터 구조
+  - Computer Abstractions and Technology 3,4
+- 대관 알리미
+  - README.md 업데이트
+    - poetry 설치법, pre-push 등 필요한 부분 작성
