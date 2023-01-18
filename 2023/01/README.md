@@ -159,3 +159,13 @@
 - 대관 알리미
   - README.md 업데이트
     - poetry 설치법, pre-push 등 필요한 부분 작성
+
+### 1월 18일 수요일
+
+- 알고리즘
+  - [백준-링크와스타트](https://github.com/sc303030/algorithm_practice/blob/master/23.%EB%B0%B1%ED%8A%B8%EB%9E%99%ED%82%B9/%5B%EB%B0%B1%EC%A4%80%5D%2015661%EB%B2%88%20%EB%A7%81%ED%81%AC%EC%99%80%20%EC%8A%A4%ED%83%80%ED%8A%B8%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+
+- 컴퓨터 구조
+  - Instruction:Language of the Computer 1, 2
+- 선수 은퇴나이 예측
+  - django에 예측 알고리즘 추가하기
