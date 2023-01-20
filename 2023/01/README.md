@@ -169,3 +169,17 @@
   - Instruction:Language of the Computer 1, 2
 - 선수 은퇴나이 예측
   - django에 예측 알고리즘 추가하기
+
+### 1월 19일 목요일
+
+- 알고리즘
+  - 오늘부터는 투포인터 시작!
+  - [백준-수열](https://github.com/sc303030/algorithm_practice/blob/master/19.Two_Pointer/%5B%EB%B0%B1%EC%A4%80%5D%202559%EB%B2%88%20%EC%88%98%EC%97%B4%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+
+### 1월 20일 금요일
+
+- 알고리즘
+  - [백준-회전초밥](https://github.com/sc303030/algorithm_practice/blob/master/19.Two_Pointer/%5B%EB%B0%B1%EC%A4%80%5D%202531%EB%B2%88%20%ED%9A%8C%EC%A0%84%20%EC%B4%88%EB%B0%A5%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+
+- 컴퓨터 구조
+  - Instruction:Language of the Computer 3, 4
