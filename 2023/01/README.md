@@ -183,3 +183,16 @@
 
 - 컴퓨터 구조
   - Instruction:Language of the Computer 3, 4
+
+### 1월 25일 수요일
+
+- 알고리즘
+  - [백준-겹치는 건 싫어](https://github.com/sc303030/algorithm_practice/blob/master/19.Two_Pointer/%5B%EB%B0%B1%EC%A4%80%5D%2020922%EB%B2%88%20%EA%B2%B9%EC%B9%98%EB%8A%94%20%EA%B1%B4%20%EC%8B%AB%EC%96%B4%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+
+### 1월 26일 목요일
+
+- 알고리즘
+  - [백준-귀여운라이언](https://github.com/sc303030/algorithm_practice/blob/master/19.Two_Pointer/%5B%EB%B0%B1%EC%A4%80%5D%2015565%EB%B2%88%20%EA%B7%80%EC%97%AC%EC%9A%B4%20%EB%9D%BC%EC%9D%B4%EC%96%B8%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+
+- 컴퓨터 구조
+  - [Linking 1](https://www.youtube.com/watch?v=NI1nrmKMH6g&t=1960s)
