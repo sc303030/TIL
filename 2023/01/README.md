@@ -196,3 +196,15 @@
 
 - 컴퓨터 구조
   - [Linking 1](https://www.youtube.com/watch?v=NI1nrmKMH6g&t=1960s)
+
+### 1월 27일 금요일
+
+- 알고리즘
+  - [백준-수들의 합 2](https://github.com/sc303030/algorithm_practice/blob/master/19.Two_Pointer/%5B%EB%B0%B1%EC%A4%80%5D%202003%EB%B2%88%20%EC%88%98%EB%93%A4%EC%9D%98%20%ED%95%A9%202%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+
+### 1월 28일 토요일
+
+- 알고리즘
+  - [백준-먹을것인가_먹힐것인가](https://github.com/sc303030/algorithm_practice/blob/master/19.Two_Pointer/%5B%EB%B0%B1%EC%A4%80%5D%207795%EB%B2%88%20%EB%A8%B9%EC%9D%84%20%EA%B2%83%EC%9D%B8%EA%B0%80%20%EB%A8%B9%ED%9E%90%20%EA%B2%83%EC%9D%B8%EA%B0%80%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+- 컴퓨터 구조
+  - [Linking 2](https://www.youtube.com/watch?v=MAOd1aIKk20)
