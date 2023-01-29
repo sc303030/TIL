@@ -208,3 +208,11 @@
   - [백준-먹을것인가_먹힐것인가](https://github.com/sc303030/algorithm_practice/blob/master/19.Two_Pointer/%5B%EB%B0%B1%EC%A4%80%5D%207795%EB%B2%88%20%EB%A8%B9%EC%9D%84%20%EA%B2%83%EC%9D%B8%EA%B0%80%20%EB%A8%B9%ED%9E%90%20%EA%B2%83%EC%9D%B8%EA%B0%80%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
 - 컴퓨터 구조
   - [Linking 2](https://www.youtube.com/watch?v=MAOd1aIKk20)
+
+### 1월 29일 일요일
+
+- 알고리즘
+  - [백준-게으른 백곰](https://github.com/sc303030/algorithm_practice/blob/master/19.Two_Pointer/%5B%EB%B0%B1%EC%A4%80%5D%2010025%EB%B2%88%20%EA%B2%8C%EC%9C%BC%EB%A5%B8%20%EB%B0%B1%EA%B3%B0%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+
+- 컴퓨터 구조
+  - [Linking3](https://www.youtube.com/watch?v=-98fwmQNufc)
