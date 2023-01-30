@@ -216,3 +216,11 @@
 
 - 컴퓨터 구조
   - [Linking3](https://www.youtube.com/watch?v=-98fwmQNufc)
+
+### 1월 30일 월요일
+
+- 알고리즘
+  - [백준-k보다 큰 구간](https://github.com/sc303030/algorithm_practice/blob/master/19.Two_Pointer/%5B%EB%B0%B1%EC%A4%80%5D%2014246%EB%B2%88%20K%EB%B3%B4%EB%8B%A4%20%ED%81%B0%20%EA%B5%AC%EA%B0%84%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+
+- 컴퓨터 구조
+  - [Computer Arithmetic 1](https://www.youtube.com/watch?v=FuwogqSdzGQ)
