@@ -224,3 +224,8 @@
 
 - 컴퓨터 구조
   - [Computer Arithmetic 1](https://www.youtube.com/watch?v=FuwogqSdzGQ)
+
+### 1월 31일 화요일
+
+- 알고리즘
+  - [백준-주몽](https://github.com/sc303030/algorithm_practice/blob/master/19.Two_Pointer/%5B%EB%B0%B1%EC%A4%80%5D%201940%EB%B2%88%20%EC%A3%BC%EB%AA%BD%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
