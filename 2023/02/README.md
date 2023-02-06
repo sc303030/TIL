@@ -29,3 +29,16 @@
 
 - 컴퓨터 구조
   - [Pipeline 2](https://www.youtube.com/watch?v=1VWwzrdnoqg)
+
+### 2월 6일 월요일
+
+- 알고리즘
+  - [백준-CD](https://github.com/sc303030/algorithm_practice/blob/master/19.Two_Pointer/%5B%EB%B0%B1%EC%A4%80%5D%204158%EB%B2%88%20CD%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+
+- 컴퓨터 구조
+  - [Pipeline 3](https://www.youtube.com/watch?v=4ya12LcWI7g)
+
+- 대관 알리미
+  - mysql db를 보면 같은 id가 띄엄 띄엄 되어있다.
+  - 아마 constraint때문인 것 같아서 test를 해보았는데 test 코드상에서는 문제가 없었다.
+  - 그래서 로컬에서 mysql db로 실험해보면서 이유를 찾으려 한다.
