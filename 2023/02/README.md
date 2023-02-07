@@ -42,3 +42,14 @@
   - mysql db를 보면 같은 id가 띄엄 띄엄 되어있다.
   - 아마 constraint때문인 것 같아서 test를 해보았는데 test 코드상에서는 문제가 없었다.
   - 그래서 로컬에서 mysql db로 실험해보면서 이유를 찾으려 한다.
+
+### 2월 7일 화요일
+
+- 알고리즘
+  - [백준-쉬운 계산 수](https://github.com/sc303030/algorithm_practice/blob/master/10.dynamic_programming/%5B%EB%B0%B1%EC%A4%80%5D%2010844%EB%B2%88%20%EC%89%AC%EC%9A%B4%20%EA%B3%84%EC%82%B0%20%EC%88%98%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+
+- 컴퓨터 구조
+  - [Pipeline 4](https://www.youtube.com/watch?v=Ot3N3OcmgVU)
+
+- 대관 알리미
+  - mysql db 로컬로 연동
