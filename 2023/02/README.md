@@ -47,9 +47,16 @@
 
 - 알고리즘
   - [백준-쉬운 계산 수](https://github.com/sc303030/algorithm_practice/blob/master/10.dynamic_programming/%5B%EB%B0%B1%EC%A4%80%5D%2010844%EB%B2%88%20%EC%89%AC%EC%9A%B4%20%EA%B3%84%EC%82%B0%20%EC%88%98%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
-
 - 컴퓨터 구조
   - [Pipeline 4](https://www.youtube.com/watch?v=Ot3N3OcmgVU)
-
 - 대관 알리미
   - mysql db 로컬로 연동
+
+### 2월 8일 수요일
+
+- 알고리즘
+  - [백준-1,2,3 더하기](https://github.com/sc303030/algorithm_practice/blob/master/10.dynamic_programming/%5B%EB%B0%B1%EC%A4%80%5D%209095%EB%B2%88%201%2C2%2C3%20%EB%8D%94%ED%95%98%EA%B8%B0%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+- 컴퓨터 구조
+  - [Memory Hierarchy 1](https://www.youtube.com/watch?v=Sb16Hu6eCXQ&t=2744s)
+- 대관 알리미
+  - mysql에서는 unique constraint 때문에 id가 밀리는 것을 확인
