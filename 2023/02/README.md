@@ -60,3 +60,12 @@
   - [Memory Hierarchy 1](https://www.youtube.com/watch?v=Sb16Hu6eCXQ&t=2744s)
 - 대관 알리미
   - mysql에서는 unique constraint 때문에 id가 밀리는 것을 확인
+
+### 2월 9일 목요일
+
+- 알고리즘
+  - [백준-가장 긴 증가하는 부분 수열](https://github.com/sc303030/algorithm_practice/blob/master/10.dynamic_programming/%5B%EB%B0%B1%EC%A4%80%5D%2011053%EB%B2%88%20%EA%B0%80%EC%9E%A5%20%EA%B8%B4%20%EC%A6%9D%EA%B0%80%ED%95%98%EB%8A%94%20%EB%B6%80%EB%B6%84%20%EC%88%98%EC%97%B4%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+
+- 대관 알리미
+  - mysql에서 constraint로 걸리는 부분은 트랜잭션 영역 밖의 일이라서 그렇다.
+  - django models에서 저장하기 전에 따로 id를 부여하는 부분을 만들어 줘야 한다.
