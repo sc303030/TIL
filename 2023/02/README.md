@@ -69,3 +69,8 @@
 - 대관 알리미
   - mysql에서 constraint로 걸리는 부분은 트랜잭션 영역 밖의 일이라서 그렇다.
   - django models에서 저장하기 전에 따로 id를 부여하는 부분을 만들어 줘야 한다.
+
+### 2월 10일 금요일
+
+- 알고리즘
+  - [백준-연속합](https://github.com/sc303030/algorithm_practice/blob/master/10.dynamic_programming/%5B%EB%B0%B1%EC%A4%80%5D%201912%EB%B2%88%20%EC%97%B0%EC%86%8D%ED%95%A9%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
