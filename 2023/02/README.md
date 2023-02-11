@@ -74,3 +74,15 @@
 
 - 알고리즘
   - [백준-연속합](https://github.com/sc303030/algorithm_practice/blob/master/10.dynamic_programming/%5B%EB%B0%B1%EC%A4%80%5D%201912%EB%B2%88%20%EC%97%B0%EC%86%8D%ED%95%A9%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+
+### 2월 11일 토요일
+
+- 알고리즘
+  - [백준-2xn 타일링2](https://github.com/sc303030/algorithm_practice/blob/master/10.dynamic_programming/%5B%EB%B0%B1%EC%A4%80%5D%2011727%EB%B2%88%202xn%20%ED%83%80%EC%9D%BC%EB%A7%81%202%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+
+- 컴퓨터 구조
+  - [Memory Hierarchy 2](https://www.youtube.com/watch?v=_AkIfK3qL64)
+
+- 대관 알리미
+  - id를 마지막 row에서 1을 더해서 저장하도록 수정
+  - mysql에서 constraint인 것들은 id가 증가하지 않고 저장된 row의 id가 증가하는 것을 확인
