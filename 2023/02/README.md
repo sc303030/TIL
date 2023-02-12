@@ -86,3 +86,11 @@
 - 대관 알리미
   - id를 마지막 row에서 1을 더해서 저장하도록 수정
   - mysql에서 constraint인 것들은 id가 증가하지 않고 저장된 row의 id가 증가하는 것을 확인
+
+### 2월 12일 일요일
+
+- 알고리즘
+  - [백준-이친수](https://github.com/sc303030/algorithm_practice/blob/master/10.dynamic_programming/%5B%EB%B0%B1%EC%A4%80%5D%202193%EB%B2%88%20%EC%9D%B4%EC%B9%9C%EC%88%98%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+
+- 컴퓨터 구조
+  - [Memory Hierarchy 3](https://www.youtube.com/watch?v=vYmPGHKirkI&embeds_euri=http%3A%2F%2Fkuocw.korea.ac.kr%2F&source_ve_path=MjM4NTE&feature=emb_title)
