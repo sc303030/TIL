@@ -94,3 +94,11 @@
 
 - 컴퓨터 구조
   - [Memory Hierarchy 3](https://www.youtube.com/watch?v=vYmPGHKirkI&embeds_euri=http%3A%2F%2Fkuocw.korea.ac.kr%2F&source_ve_path=MjM4NTE&feature=emb_title)
+
+### 2월 13일 월요일
+
+- 알고리즘
+  - [백준-포도주 시식](https://github.com/sc303030/algorithm_practice/blob/master/10.dynamic_programming/%5B%EB%B0%B1%EC%A4%80%5D%202156%EB%B2%88%20%ED%8F%AC%EB%8F%84%EC%A3%BC%20%EC%8B%9C%EC%8B%9D%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+
+- 컴퓨터 구조
+  - [Virtual Memory 1](https://www.youtube.com/watch?v=yN-NAeL98mM)
