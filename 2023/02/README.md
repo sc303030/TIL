@@ -102,3 +102,8 @@
 
 - 컴퓨터 구조
   - [Virtual Memory 1](https://www.youtube.com/watch?v=yN-NAeL98mM)
+
+### 2월 15일 수요일
+
+- 알고리즘
+  - [백준-퇴사](https://github.com/sc303030/algorithm_practice/blob/master/10.dynamic_programming/%5B%EB%B0%B1%EC%A4%80%5D%2014501%EB%B2%88%20%ED%87%B4%EC%82%AC%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
