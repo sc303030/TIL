@@ -115,3 +115,8 @@
 
 - 컴퓨터 구조
   - [Virtual Memory 2](https://www.youtube.com/watch?v=67PyYZRMwVU)
+
+### 2월 17일 금요일
+
+- 알고리즘
+  - [백준-카드 구매하기](https://github.com/sc303030/algorithm_practice/blob/master/10.dynamic_programming/%5B%EB%B0%B1%EC%A4%80%5D%2011052%EB%B2%88%20%EC%B9%B4%EB%93%9C%20%EA%B5%AC%EB%A7%A4%ED%95%98%EA%B8%B0%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
