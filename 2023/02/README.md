@@ -120,3 +120,16 @@
 
 - 알고리즘
   - [백준-카드 구매하기](https://github.com/sc303030/algorithm_practice/blob/master/10.dynamic_programming/%5B%EB%B0%B1%EC%A4%80%5D%2011052%EB%B2%88%20%EC%B9%B4%EB%93%9C%20%EA%B5%AC%EB%A7%A4%ED%95%98%EA%B8%B0%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+
+### 2월 20일 월요일
+
+- 알고리즘
+  - [백준-오르막 수](https://github.com/sc303030/algorithm_practice/blob/master/10.dynamic_programming/%5B%EB%B0%B1%EC%A4%80%5D%2011057%EB%B2%88%20%EC%98%A4%EB%A5%B4%EB%A7%89%20%EC%88%98%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+
+### 2월 21일 화요일
+
+- 알고리즘
+  - [백준-가장 큰 부분 증가 수열](https://github.com/sc303030/algorithm_practice/blob/master/10.dynamic_programming/%5B%EB%B0%B1%EC%A4%80%5D%2011055%EB%B2%88%20%EA%B0%80%EC%9E%A5%20%ED%81%B0%20%EC%A6%9D%EA%B0%80%20%EB%B6%80%EB%B6%84%20%EC%88%98%EC%97%B4%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+
+- 컴퓨터 구조
+  - [Virtual Memory 3](https://www.youtube.com/watch?v=Vk_j1UWHjrM)
