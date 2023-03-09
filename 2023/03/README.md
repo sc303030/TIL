@@ -12,3 +12,8 @@
 
 - 알고리즘
   - [프로그래머스-시소 짝꿍](https://github.com/sc303030/algorithm_practice/blob/bc92554914a654da97ca6046e41abc171b3803eb/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%5B%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4%5D%20%EC%8B%9C%EC%86%8C%20%EC%A7%9D%EA%BF%8D.md)
+
+### 3월 9일 목요일
+
+- 알고리즘
+  - [프로그래머스-숫자 변환하기](https://github.com/sc303030/algorithm_practice/blob/5af28a210a49a1dd04cabfac0a8ac95c26de9269/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%5B%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4%5D%20%EC%88%AB%EC%9E%90%20%EB%B3%80%ED%99%98%ED%95%98%EA%B8%B0.md)
