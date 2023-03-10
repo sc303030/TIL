@@ -17,3 +17,8 @@
 
 - 알고리즘
   - [프로그래머스-숫자 변환하기](https://github.com/sc303030/algorithm_practice/blob/5af28a210a49a1dd04cabfac0a8ac95c26de9269/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%5B%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4%5D%20%EC%88%AB%EC%9E%90%20%EB%B3%80%ED%99%98%ED%95%98%EA%B8%B0.md)
+
+### 3월 10일 금요일
+
+- 알고리즘
+  - [프로그래머스-귤 고르기](https://github.com/sc303030/algorithm_practice/blob/ecf996399bff86b73a1b85a873105737cde23c68/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%5B%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4%5D%20%EA%B7%A4%20%EA%B3%A0%EB%A5%B4%EA%B8%B0%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
