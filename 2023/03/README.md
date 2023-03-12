@@ -27,3 +27,8 @@
 
 - 알고리즘
   - [프로그래머스-무인도 여행](https://github.com/sc303030/algorithm_practice/blob/6f6c32c5ed2de16b7ed05419f12d38c342d7d95a/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%5B%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4%5D%20%EB%AC%B4%EC%9D%B8%EB%8F%84%20%EC%97%AC%ED%96%89%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+
+### 3월 12일 일요일
+
+- 알고리즘
+  - [프로그래머스-점 찍기](https://github.com/sc303030/algorithm_practice/blob/409470300b4e2306a4bba2e9ae0ed1d50566eb41/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%5B%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4%5D%20%EC%A0%90%20%EC%B0%8D%EA%B8%B0%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
