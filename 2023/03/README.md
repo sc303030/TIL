@@ -37,3 +37,8 @@
 
 - 알고리즘
   - [프로그래머스-마법의 엘리베이터](https://github.com/sc303030/algorithm_practice/blob/bb4b48059ed7e6f465f3beae69e2f4a5df393929/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%5B%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4%5D%20%EB%A7%88%EB%B2%95%EC%9D%98%20%EC%97%98%EB%A6%AC%EB%B2%A0%EC%9D%B4%ED%84%B0%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+
+### 3월 14일 화요일
+
+- 알고리즘
+  - [프로그래머스-디펜스 게임](https://github.com/sc303030/algorithm_practice/blob/9338bcafbd2086e2691fa1f974a0e908580edf60/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%5B%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4%5D%20%EB%94%94%ED%8E%9C%EC%8A%A4%20%EA%B2%8C%EC%9E%84%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
