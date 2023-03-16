@@ -42,3 +42,13 @@
 
 - 알고리즘
   - [프로그래머스-디펜스 게임](https://github.com/sc303030/algorithm_practice/blob/9338bcafbd2086e2691fa1f974a0e908580edf60/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%5B%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4%5D%20%EB%94%94%ED%8E%9C%EC%8A%A4%20%EA%B2%8C%EC%9E%84%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+
+### 3월 15일 수요일
+
+- 알고리즘
+  - [프로그래머스-교점에 별 만들기](https://github.com/sc303030/algorithm_practice/blob/fad3e63cde02e86d7ee5400f20374ce0713598e0/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%5B%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4%5D%20%EA%B5%90%EC%A0%90%EC%97%90%20%EB%B3%84%20%EB%A7%8C%EB%93%A4%EA%B8%B0%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+
+### 3월 16일 목요일
+
+- 알고리즘
+  - [프로그래머스-숫자 카드 만들기](https://github.com/sc303030/algorithm_practice/blob/ec26cbffaebff0c6fc9411fa82383ae48c7de728/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%5B%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4%5D%20%EC%88%AB%EC%9E%90%20%EC%B9%B4%EB%93%9C%20%EB%82%98%EB%88%84%EA%B8%B0%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
