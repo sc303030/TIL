@@ -72,3 +72,13 @@
 - Open cv 강의 듣기
   - https://www.youtube.com/watch?v=V8Lpf3WCZ4g&list=PLRx0vPvlEmdBx9X5xSgcEk4CEbzEiws8C
   - 동빈나 강의
+
+### 3월 22일 수요일
+
+- 알고리즘
+  - [프로그래머스-소수 찾기](https://github.com/sc303030/algorithm_practice/blob/f35aefc04e8ac621ceacb9ffc5bee5068729c0be/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%5B%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4%5D%20%EC%86%8C%EC%88%98%20%EC%B0%BE%EA%B8%B0%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+
+- 운영체제
+  - [프로세스](https://www.youtube.com/watch?v=_NQrpp00OqY)
+- Open CV
+  - 강의 3개
