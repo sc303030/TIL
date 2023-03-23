@@ -82,3 +82,14 @@
   - [프로세스](https://www.youtube.com/watch?v=_NQrpp00OqY)
 - Open CV
   - 강의 3개
+
+### 3월 23일 목요일
+
+- 알고리즘
+  - [프로그래머스-N개의 최소공배수](https://github.com/sc303030/algorithm_practice/blob/9f9dbe9c7378945c371d09e353ede65ea127e085/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%5B%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4%5D%20N%EA%B0%9C%EC%9D%98%20%EC%B5%9C%EC%86%8C%EA%B3%B5%EB%B0%B0%EC%88%98%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+
+- 운영체제
+  - [인터럽트와 Exception, 쓰레드](https://www.youtube.com/watch?v=MCJvDdhJW_Y&t=2480s)
+
+- Open CV
+  - 강의 2개
