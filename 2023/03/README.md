@@ -101,3 +101,11 @@
 
 - Open CV
   - 2개 수강
+
+### 3월 25일 토요일
+
+- 알고리즘
+  - [프로그래머스-3xn 타일링](https://github.com/sc303030/algorithm_practice/blob/a31f008137257203e95d124473ea05acd34f5fcc/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%5B%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4%5D%203xn%20%ED%83%80%EC%9D%BC%EB%A7%81%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+
+- Open CV
+  - 강의 2개
