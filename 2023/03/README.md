@@ -114,3 +114,14 @@
 
 - Open CV
   - 강의 1개
+
+### 3월 27일 월요일
+
+- 알고리즘
+  - [프로그래머스-가장 큰 정사각형 찾기](https://github.com/sc303030/algorithm_practice/blob/2ee50eee7b744c4bd3a1f2d66a82dcaf5f3b9b4b/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%5B%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4%5D%20%EA%B0%80%EC%9E%A5%20%ED%81%B0%20%EC%A0%95%EC%82%AC%EA%B0%81%ED%98%95%20%EC%B0%BE%EA%B8%B0%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+
+- Open CV
+  - 강의 2개
+
+- 운영체제
+  - [쓰레드](https://www.youtube.com/watch?v=tkVF4E3H_M4&t=2016s)
