@@ -125,3 +125,14 @@
 
 - 운영체제
   - [쓰레드](https://www.youtube.com/watch?v=tkVF4E3H_M4&t=2016s)
+
+### 3월 28일 화요일
+
+- 알고리즘
+  - [프로그래머스-최댓값과 최솟값](https://github.com/sc303030/algorithm_practice/blob/4a6422925df41aa3a0de1d928f557618b5c31ce1/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%5B%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4%5D%20%EC%B5%9C%EB%8C%93%EA%B0%92%EA%B3%BC%20%EC%B5%9C%EC%86%9F%EA%B0%92%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+
+- 운영체제
+  - [상호동기와 배제](https://www.youtube.com/watch?v=oTIp836P0-w)
+
+- Open CV
+  - 캡챠 이미지 분석 방법 강의
