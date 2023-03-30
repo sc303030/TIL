@@ -144,3 +144,14 @@
 
 - Open CV
   - 이미지 분류해서 학습까지 완료
+
+### 3월 30일 목요일
+
+- 알고리즘
+  - [프로그래머스-미로 탈출](https://github.com/sc303030/algorithm_practice/blob/a0ad309eaa210f45bd795c24e8c9f72d61a84bfd/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%5B%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4%5D%20%EB%AF%B8%EB%A1%9C%ED%83%88%EC%B6%9C%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+
+- 운영체제
+  - [상호배제와 동기 2](https://www.youtube.com/watch?v=AI4OlRph30s)
+
+- Open CV
+  - 강의 완료
