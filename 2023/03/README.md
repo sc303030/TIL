@@ -155,3 +155,11 @@
 
 - Open CV
   - 강의 완료
+
+### 3월 31일 금요일
+
+- 알고리즘
+  - [프로그래머스-테이블 해시 함수](https://github.com/sc303030/algorithm_practice/blob/e98ef457d9bd682f8b5537e3f3c79fc6b2175850/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%5B%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4%5D%20%ED%85%8C%EC%9D%B4%EB%B8%94%20%ED%95%B4%EC%8B%9C%20%ED%95%A8%EC%88%98%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+
+- 운영체제
+  - [상호배제와 데드락](https://www.youtube.com/watch?v=9sgRBjpSwXc)
