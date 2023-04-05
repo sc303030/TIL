@@ -7,3 +7,15 @@
   - 사진에서 좌표 찾는 법
     - 마우스로 클릭해서 찾는 법이랑
     - 자동으로 찾아 주는 방법 찾아보기
+
+### 4월 5일 수요일
+
+- 알고리즘
+  - [프로그래머스-하노이의 탑](https://github.com/sc303030/algorithm_practice/blob/9e27975990036c004c8133cb52f3c282e5ee5db8/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%5B%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4%5D%20%ED%95%98%EB%85%B8%EC%9D%B4%EC%9D%98%20%ED%83%91%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+
+- 운영체제
+  - [데드락](https://www.youtube.com/watch?v=onLrdeSZVXA)
+- Open CV
+  - [새로운 추적 깃허브](https://github.com/Basket-Analytics/BasketTracking#usage)
+  - 직접 영상 대입할 수 있는 깃허브 발견
+  - 코드 분석하면서 영상 커스텀 하면 될 것 같은 희망이 생겨서 기분이 좋다.
