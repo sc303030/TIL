@@ -29,3 +29,15 @@
 - Open CV
   - 아무래도 내 컴퓨터로는 힘들 것 같다.
   - 나중에 맥북사서 다시 도전하려고 한다.
+
+### 4월 7일 금요일
+
+- 알고리즘
+  - [프로그래머스-JadenCase 문자열 만들기](https://github.com/sc303030/algorithm_practice/blob/21cfc19ba4310283004d01e72d7a028cd42779cb/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%5B%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4%5D%20JadenCase%20%EB%AC%B8%EC%9E%90%EC%97%B4%20%EB%A7%8C%EB%93%A4%EA%B8%B0%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+
+- django
+  - 감각을 다시 키우기 위해 강의 수강
+- node.js
+  - 관심 있던 기술이여서 강의 시작
+- cs 강의
+  - 듣던 강의로는 어려울 것 같아 정리된 강의 수강하려고 결제~
