@@ -51,3 +51,15 @@
   - 3번째 섹션 중간까지 완료
 - cs 강의
   - 이산 수학 - 집합
+
+### 4월 10일 월요일
+
+- 알고리즘
+  - [프로그래머스-연속된 부분 수열의 합](https://github.com/sc303030/algorithm_practice/blob/13f4d85ef936434b2af4396525b9a11279c5ca67/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%5B%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4%5D%20%EC%97%B0%EC%86%8D%EB%90%9C%20%EB%B6%80%EB%B6%84%20%EC%88%98%EC%97%B4%EC%9D%98%20%ED%95%A9%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+
+- node.js
+  - 콜백 함수까지 완료
+- django
+  - 뷰 복습 01
+- cs 강의
+  - 집합과 논리 완료
