@@ -63,3 +63,17 @@
   - 뷰 복습 01
 - cs 강의
   - 집합과 논리 완료
+
+### 4월 11일 화요일
+
+- node.js
+  - 섹션5. Express 완료
+
+- django
+  - 섹션 4. 템플릿 시스템 완료
+
+- cs 강의
+  - ch2. 증명 완료
+
+- 알고리즘
+  - [프로그래머스-이중우선순위큐](https://github.com/sc303030/algorithm_practice/blob/62d9972baec5d0703eda15a0bb4fe164c2368577/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%5B%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4%5D%20%EC%9D%B4%EC%A4%91%EC%9A%B0%EC%84%A0%EC%88%9C%EC%9C%84%ED%81%90%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
