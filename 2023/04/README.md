@@ -77,3 +77,20 @@
 
 - 알고리즘
   - [프로그래머스-이중우선순위큐](https://github.com/sc303030/algorithm_practice/blob/62d9972baec5d0703eda15a0bb4fe164c2368577/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%5B%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4%5D%20%EC%9D%B4%EC%A4%91%EC%9A%B0%EC%84%A0%EC%88%9C%EC%9C%84%ED%81%90%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+
+### 4월 12일 수요일
+
+- node.js
+  - 섹션 6. Express 템플릿 엔진
+  - 섹션 7. Express, URL을 이용한 정보의 전달 완료
+
+- django
+  - 섹션 5. 장식자와 뷰
+  - 섹션 6. 장고 모델을 활용한 데이터베이스 처리 완료
+
+- 알고리즘
+  - [프로그래머스-나머지 한 점](https://github.com/sc303030/algorithm_practice/blob/8f68b741dd5e9c1f278211b957401af2ed2e435c/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%5B%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4%5D%20%EB%82%98%EB%A8%B8%EC%A7%80%20%ED%95%9C%20%EC%A0%90%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+  - [프로그래머스-디스크 컨트롤러](https://github.com/sc303030/algorithm_practice/blob/2262c9a823296956577be21bd414721b22dc16ff/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%5B%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4%5D%20%EB%94%94%EC%8A%A4%ED%81%AC%20%EC%BB%A8%ED%8A%B8%EB%A1%A4%EB%9F%AC%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+
+- 이산수학
+  - 함수, 수열과 관계 완료
