@@ -94,3 +94,17 @@
 
 - 이산수학
   - 함수, 수열과 관계 완료
+
+### 4월 13일 목요일
+
+- node.js
+  - 섹션 8. Express, POST 방식을 이용한 정보의 전달
+
+- django
+  - 섹션 7. 데이터베이스 API
+
+- 알고리즘
+  - [백준-달팽이](https://github.com/sc303030/algorithm_practice/blob/1d31ab6a7baf34b498b68223a8ac4976c1f4b5d4/2.implemented/%5B%EB%B0%B1%EC%A4%80%5D%201913%EB%B2%88%20%EB%8B%AC%ED%8C%BD%EC%9D%B4%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+
+- 이산수학
+  - ch04. 알고리즘
