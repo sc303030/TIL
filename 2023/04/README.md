@@ -108,3 +108,20 @@
 
 - 이산수학
   - ch04. 알고리즘
+
+### 4월 14일 금요일
+
+- Node.js
+  - 섹션 9. node.js를 이용한 웹앱 제작 실습
+
+- kubernetes와 docker
+  - Part1. Docker 기초
+    - aws ec2를 사용하여 환경설정
+
+- 알고리즘
+  - [프로그래머스-달리기 경주](https://github.com/sc303030/algorithm_practice/blob/261932fcb5ea13ce6864c23e6de2479f8ae1234c/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%5B%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4%5D%20%EB%8B%AC%EB%A6%AC%EA%B8%B0%20%EA%B2%BD%EC%A3%BC%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+  - 회전 알고리즘
+    - https://shoark7.github.io/programming/algorithm/rotate-2d-array
+
+- 컴퓨터 네트워크
+  - 1강 수강
