@@ -125,3 +125,21 @@
 
 - 컴퓨터 네트워크
   - 1강 수강
+
+### 4월 15일 토요일
+
+- django channels
+  - 기본 구현
+
+- node.js
+  - orientdb 연결 설정
+
+- 컴퓨터 네트워크
+  - ch01. 컴퓨터 네트워크와 인터넷
+    - 01 ~ 06 완료
+- kubernetes와 docker
+  - 도커 기본 명렁어 ~ 도커 네트워크
+
+- 알고리즘
+  - [프로그래머스-추억 점수](https://github.com/sc303030/algorithm_practice/blob/d9e6e3b84ac466ff60d8e1c3d5a8b6f0e07534b5/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%5B%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4%5D%20%EC%B6%94%EC%96%B5%20%EC%A0%90%EC%88%98%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+  - [프로그래머스-크기가 작은 부분 문자열](https://github.com/sc303030/algorithm_practice/blob/d9e6e3b84ac466ff60d8e1c3d5a8b6f0e07534b5/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%5B%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4%5D%20%ED%81%AC%EA%B8%B0%EA%B0%80%20%EC%9E%91%EC%9D%80%20%EB%B6%80%EB%B6%84%20%EB%AC%B8%EC%9E%90%EC%97%B4%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
