@@ -159,3 +159,25 @@
   - 채널레이어를 활용한 프로세스간 통신
 - kubernetes와 docker
   - 7. 도커 컨테이너 다루기 - 볼륨
+
+### 4월 18일 화요일
+
+- Node.js
+  - mysql 3.1 구조
+  - mysql 4: mysql 사용하기
+  - mysql 5 : update & delete
+  - mysql 6 : node-mysql 1 : 접속
+  - mysql 7 : node-mysql2 : select&insert
+- django channels
+  - (실습) 웹소켓 Liveblog
+
+- kubernetes와 docker
+  - 08.도커 컨테이너 다루기 - 로그
+  - 09.도커 이미지 다루기 - 이미지 빌드
+
+- 알고리즘
+  - [프로그래머스-가장 가까운 같은 글자](https://github.com/sc303030/algorithm_practice/blob/d9fd5d110412d78e10cff817f3e210b67f5a5dcd/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%5B%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4%5D%20%EA%B0%80%EC%9E%A5%20%EA%B0%80%EA%B9%8C%EC%9A%B4%20%EA%B0%99%EC%9D%80%20%EA%B8%80%EC%9E%90%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+  - [프로그래머스-둘만의 암호](https://github.com/sc303030/algorithm_practice/blob/fe68907748f5845cf38f71f1666e97ed7ab0f290/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%5B%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4%5D%20%EB%91%98%EB%A7%8C%EC%9D%98%20%EC%95%94%ED%98%B8%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+
+- 컴퓨터 네트워크
+  - ch02-01. 리눅스 환경 구축(1) WSL
