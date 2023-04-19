@@ -181,3 +181,28 @@
 
 - 컴퓨터 네트워크
   - ch02-01. 리눅스 환경 구축(1) WSL
+
+### 4월 19일 수요일
+
+- Node.js
+  - MySQL 8 : node-mysql 3 : UPDATE & DELETE
+  - MySQL 웹앱 제작 읽기1 - 글목록
+- django channels
+  - 채널레이어로 전송할 수 있는 데이터 타입
+  - 웹소켓 재접속
+  - Consumer 클래스의 상속 관계
+  - 로비 채팅 페이지 구현
+- kubernetes와 docker
+  - 10. 도커 이미지 다루기 - Dockerfile
+    11. 도커 이미지 다루기 - 이미지 압축파일로 저장 및 불러오기
+    12. 도커 이미지 다루기 - 도커 허브 저장소 이용
+    13. 도커 이미지 다루기 AWS ECR 저장소 이용
+
+- 알고리즘
+  - [프로그래머스-대충 만든 자판](https://github.com/sc303030/algorithm_practice/blob/a2b2a868a8a6879e9dee60811b5ba87484c07a97/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%5B%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4%5D%20%EB%8C%80%EC%B6%A9%20%EB%A7%8C%EB%93%A0%20%EC%9E%90%ED%8C%90%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+  - [프로그래머스-문자열 나누기](https://github.com/sc303030/algorithm_practice/blob/2a3381e70d558527e728c7bc6e8310bf8ee79479/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%5B%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4%5D%20%EB%AC%B8%EC%9E%90%EC%97%B4%20%EB%82%98%EB%88%84%EA%B8%B0%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+
+- 컴퓨터 네트워크
+  - Ch02-04. 네트워크 디바이스와 드라이버 (1) 이더넷 프레임과 길이
+  - Ch02-05. 네트워크 디바이스와 드라이버 (2) 레지스터와 네트워크 드라이버
+  - Ch02-06. 네트워크 디바이스와 드라이버 (3) 드라이버와 소켓 시스템콜의 흐름
