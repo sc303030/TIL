@@ -231,3 +231,8 @@
 - 컴퓨터 네트워크
   - Ch02-07. 네트워크 계층의 프로토콜 (1) 네트워크 계층의 각 노드의 역할
   - Ch02-08. 네트워크 계층의 프로토콜 (2) IP 주소의 구성과 특수 주소
+
+### 4월 21일 금요일
+
+- 알고리즘
+  - [프로그래머스-개인정보 수집 유효기간](https://github.com/sc303030/algorithm_practice/blob/f368320139b171dd6c0051a7c45a017e912de0bb/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%5B%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4%5D%20%EA%B0%9C%EC%9D%B8%EC%A0%95%EB%B3%B4%20%EC%88%98%EC%A7%91%20%EC%9C%A0%ED%9A%A8%EA%B8%B0%EA%B0%84%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
