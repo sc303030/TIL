@@ -236,3 +236,24 @@
 
 - 알고리즘
   - [프로그래머스-개인정보 수집 유효기간](https://github.com/sc303030/algorithm_practice/blob/f368320139b171dd6c0051a7c45a017e912de0bb/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%5B%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4%5D%20%EA%B0%9C%EC%9D%B8%EC%A0%95%EB%B3%B4%20%EC%88%98%EC%A7%91%20%EC%9C%A0%ED%9A%A8%EA%B8%B0%EA%B0%84%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+
+### 4월 22일 토요일
+
+- django channels
+  - 대기실에서 채팅방 목록 보기
+  - 로그인 유저만 채팅방 참여 허용
+  - 자신의 메세지는 다르게 스타일링하기
+
+- node.js
+  - Javascript 와 HTTP
+  - cookie 1 – intro
+  - [supervisor 실행 오류 해결](https://maximum-curry30.tistory.com/556)
+
+- 쿠버네티스
+  - 01.오리엔테이션
+  - 02.쿠버네티스와 클러스터 동작 방식
+- 알고리즘
+  - [프로그래머스-성격 유형 검사하기](https://github.com/sc303030/algorithm_practice/blob/8bab3b076d8f45bf0bc34fa9150cc698c086f40a/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%5B%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4%5D%202022%20KAKAO%20TECH%20INTERNSHIP%20%EC%84%B1%EA%B2%A9%20%EC%9C%A0%ED%98%95%20%EA%B2%80%EC%82%AC%ED%95%98%EA%B8%B0%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+
+- 컴퓨터 구조
+  - Ch02-09. 네트워크 계층의 프로토콜 (3) IP헤더의 구조와 단편화 방법
