@@ -257,3 +257,23 @@
 
 - 컴퓨터 구조
   - Ch02-09. 네트워크 계층의 프로토콜 (3) IP헤더의 구조와 단편화 방법
+
+### 4월 24일 월요일
+
+- Node.js
+  - cookie 2 – counter
+  - cookie 3 - 쇼핑카트 1
+  - cookie 4 – 쇼핑카트 2
+
+- 알고리즘
+  - [프로그래머스-삼총사](https://github.com/sc303030/algorithm_practice/blob/dc5910d25990b13077d26779f863997ca50cc76a/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%5B%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4%5D%20%EC%82%BC%EC%B4%9D%EC%82%AC%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+  - [프로그래머스-점프와 순간 이동](https://github.com/sc303030/algorithm_practice/blob/4fe0cd6116080fac8422cb93eb89cf2ff8b6ead9/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%5B%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4%5D%20%EC%A0%90%ED%94%84%EC%99%80%20%EC%88%9C%EA%B0%84%20%EC%9D%B4%EB%8F%99%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+  
+- django channels
+  - 채팅방 삭제 구현
+
+- 쿠버네티스
+  - [실습] 쿠버네티스클러스터구성및실습준비
+
+- 컴퓨터 구조
+  - Ch02-10. 네트워크 계층의 프로토콜 (4) 라우팅과 처리 흐름
