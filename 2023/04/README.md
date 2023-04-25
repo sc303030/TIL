@@ -277,3 +277,23 @@
 
 - 컴퓨터 구조
   - Ch02-10. 네트워크 계층의 프로토콜 (4) 라우팅과 처리 흐름
+
+### 4월 25일 화요일
+
+- Node.js
+  - cookie 5 – 쇼핑카트 3
+  - cookie 6 – cookie & 보안
+  - session 1 - intro
+  - session 2 - counter 1
+  - session 3 - counter 2
+
+- django channels
+  - 채팅방 참여자 목록 노출
+
+- 쿠버네티스
+  - 04.쿠버네티스 오브젝트 개념
+  - 05.[실습] kubectl 명령어맛보기
+
+- 알고리즘
+  - [프로그래머스-푸드 파이터 대회](https://github.com/sc303030/algorithm_practice/blob/5513ff34e43d8d514ea1fdf8980e592448f328f8/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%5B%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4%5D%20%ED%91%B8%EB%93%9C%20%ED%8C%8C%EC%9D%B4%ED%84%B0%20%EB%8C%80%ED%9A%8C%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+  - [프로그래머스-예상 대진표](https://github.com/sc303030/algorithm_practice/blob/fe13c033b3037181c67d0f47ddd832d4dcbeb354/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%5B%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4%5D%20%EC%98%88%EC%83%81%20%EB%8C%80%EC%A7%84%ED%91%9C%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
