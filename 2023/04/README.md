@@ -297,3 +297,28 @@
 - 알고리즘
   - [프로그래머스-푸드 파이터 대회](https://github.com/sc303030/algorithm_practice/blob/5513ff34e43d8d514ea1fdf8980e592448f328f8/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%5B%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4%5D%20%ED%91%B8%EB%93%9C%20%ED%8C%8C%EC%9D%B4%ED%84%B0%20%EB%8C%80%ED%9A%8C%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
   - [프로그래머스-예상 대진표](https://github.com/sc303030/algorithm_practice/blob/fe13c033b3037181c67d0f47ddd832d4dcbeb354/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%5B%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4%5D%20%EC%98%88%EC%83%81%20%EB%8C%80%EC%A7%84%ED%91%9C%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+
+### 4월 28일 금요일
+
+- django channels
+  - 웹소켓 CSRF 보안
+  - OriginValidator 설정 테스트 (Feat. pytest)
+- Node.js
+  - session 4 - login 1
+  - session 5 - login 2
+  - session 6 - login 3
+  - session 7 - login 4
+  - session 8 - session store-file
+  - session 9 - session store-mysql
+
+- 쿠버네티스
+  - Pod 소개
+  - [실습] Pod - 컨테이너로 환경변수 전달
+
+- 알고리즘
+  - [프로그래머스-정수 제곱근 판별](https://github.com/sc303030/algorithm_practice/blob/b61c895ada290f4987908c8226f887033905055b/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%5B%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4%5D%20%EC%A0%95%EC%88%98%20%EC%A0%9C%EA%B3%B1%EA%B7%BC%20%ED%8C%90%EB%B3%84%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+  - [프로그래머스-2개 이하로 다른 비트](https://github.com/sc303030/algorithm_practice/blob/5b1b2c9c672dea17cbc487875f3cd1c7444be5b1/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%5B%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4%5D%202%EA%B0%9C%20%EC%9D%B4%ED%95%98%EB%A1%9C%20%EB%8B%A4%EB%A5%B8%20%EB%B9%84%ED%8A%B8%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+
+- 컴퓨터 구조
+  - Ch02-11. 네트워크 계층의 프로토콜 (5) ARP프로토콜의 역할
+  - Ch02-12. 네트워크 계층의 프로토콜 (6) ICMP와 IGMP 프로토콜의 역할
