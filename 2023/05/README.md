@@ -35,3 +35,42 @@
 
 - 컴퓨터 구조
   - Ch02-13. 네트워크 계층의 프로토콜 (7) IPv6와 ICMPv6 프로토콜의 역할
+
+### 5월 3일 수요일
+
+- 파이썬/장고로 결제 시작하기 (Feat. 아임포트)
+  - mall_test 앱 생성 및 등록
+  - 자바스크립트 만으로 포트원 결제 구현하기
+  - Payment 모델
+  - payment_new 뷰에서 Payment 생성하고 payment_pay로 이동하기
+  - payment_pay 뷰
+
+### 5월 4일 목요일
+
+- 알고리즘
+  - [프로그래머스-쿼드압축 후 개수 세기](https://github.com/sc303030/algorithm_practice/blob/7dadf34d825f9d9a507fb47228d4a0daaaeadee2/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%5B%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4%5D%20%EC%BF%BC%EB%93%9C%EC%95%95%EC%B6%95%20%ED%9B%84%20%EA%B0%9C%EC%88%98%20%EC%84%B8%EA%B8%B0%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+
+- 파이썬/장고로 결제 시작하기 (Feat. 아임포트)
+  - 가맹점 식별코드 획득 및 환경변수로 지정하기
+  - 포트원 결제내역 검증 및 payment_detail 뷰를 통한 결제내역 조회
+  - 회원가입
+  - 로그인
+  - 로그아웃
+  - 프로필
+  - 상단 네비게이션 바에 링크 추가
+
+- Node.js
+  - Passportjs 1 : intro
+  - Passportjs 2 : configure
+  - Passportjs 3 : route
+  - Passportjs 4 : serialize
+  - Passportjs 5 : logout
+  - Passportjs 6 : review
+
+- 컴퓨터 구조
+  - Ch02-14. 전송 계층의 프로토콜 (1) 전송 계층의 역할 소개
+  - Ch02-15. 전송 계층의 프로토콜 (2) TCP의 역할과 상태 천이도
+  - Ch02-16. 전송 계층의 프로토콜 (3) 흐름제어와 슬라이딩 윈도우
+
+- 쿠버네티스
+  - [실습] Pod – Label과 Selector
