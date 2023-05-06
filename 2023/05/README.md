@@ -74,3 +74,31 @@
 
 - 쿠버네티스
   - [실습] Pod – Label과 Selector
+
+### 5월 6일 토요일
+
+- 파이썬/장고로 결제 시작하기 (Feat. 아임포트)
+  - mall 앱 생성 및 등록
+  - MEDIA 설정
+  - mall 앱 Category/Post 모델 추가 및 마이그레이션 등록
+  - load_products 명령
+  - 어드민 커스텀
+
+- Node.js
+  - Federation authentication 1 : intro
+  - Federation authentication 2 : facebook
+  - Federation authentication 3
+  - Federation authentication 4
+  - Federation authentication 5
+
+- 알고리즘
+  - [프로그래머스-프렌즈4블록](https://github.com/sc303030/algorithm_practice/blob/11e7ae9c21cd68032b4afbd4fbda0b8b9e5d3fff/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%5B%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4%5D%201%EC%B0%A8%20%ED%94%84%EB%A0%8C%EC%A6%88%204%EB%B8%94%EB%A1%9D%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+
+- 쿠버네티스
+  - [실습] Pod – nodeSelector로 선택한 노드집합에 Pod 배포
+  - ReplicaSet 소개
+  - [실습] ReplicaSet - Pod 복제를 위해 태어난 ReplicaSet
+
+- 컴퓨터 구조
+  - Ch02-17. 전송 계층의 프로토콜 (4) TCP타이머와 API흐름, TCP캡쳐해보기
+  - Ch02-18. 전송 계층의 프로토콜 (5) UDP프로토콜의 구조
