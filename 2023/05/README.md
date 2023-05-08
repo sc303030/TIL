@@ -102,3 +102,18 @@
 - 컴퓨터 구조
   - Ch02-17. 전송 계층의 프로토콜 (4) TCP타이머와 API흐름, TCP캡쳐해보기
   - Ch02-18. 전송 계층의 프로토콜 (5) UDP프로토콜의 구조
+
+### 5월 8일 월요일
+
+- 파이썬/장고로 결제 시작하기 (Feat. 아임포트)
+  - 상품 페이지 만들기
+  - sorl.thumbnail을 활용한 상품 썸네일 생성
+  - 상품 목록 Pagination 지원
+  - 상단 네비게이션 바에 검색박스 추가
+  - 상품목록 뷰에서 검색어를 쿼리셋에 반영
+- Node.js
+  - authentication MySQL 1
+  - authentication MySQL 2 - Session store
+  - authentication MySQL 3 - register
+  - authentication MySQL 4 - login
+  - authentication MySQL 5 - federation
