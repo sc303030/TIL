@@ -117,3 +117,28 @@
   - authentication MySQL 3 - register
   - authentication MySQL 4 - login
   - authentication MySQL 5 - federation
+
+### 5월 9일 화요일
+
+- 알고리즘
+  - [프로그래머스-광물 캐기](https://github.com/sc303030/algorithm_practice/blob/a33278b7c5fe7e98c2941eb068401a48cc9e678c/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%5B%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4%5D%20%EA%B4%91%EB%AC%BC%20%EC%BA%90%EA%B8%B0%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+
+- 파이썬/장고로 결제 시작하기 (Feat. 아임포트)
+  - CartProduct 모델 정의 및 마이그레이션 추가
+  - 장바구니 담기 뷰 추가
+  - 장바구니 보기 뷰 추가
+
+- Node.js
+  - jade extends1
+  - jade extends 2
+  - Create module 1
+  - Create module 2
+  - Routes separate 1
+  - Routes separate 2
+  - Routes separate 3
+
+- 쿠버네티스
+  - [실습] ReplicaSet - Pod 종료 시 ReplicaSet 행동 실험
+
+- 컴퓨터 구조
+  - Ch02-19. 프로그래밍 소켓 인터페이스
