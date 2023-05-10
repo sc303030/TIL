@@ -142,3 +142,28 @@
 
 - 컴퓨터 구조
   - Ch02-19. 프로그래밍 소켓 인터페이스
+
+### 5월 10일 수요일
+
+- 알고리즘
+  - [프로그래머스-리코쳇 로봇](https://github.com/sc303030/algorithm_practice/blob/986f2026f5a85251f212f50fa3280834910c140f/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%5B%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4%5D%20%EB%A6%AC%EC%BD%94%EC%B3%87%20%EB%A1%9C%EB%B4%87%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+
+- Node.js
+  - CRUD + Auth - intro
+  - CRUD + Auth - mysql 1 (Auth views)
+  - CRUD + Auth - mysql 2 (Auth route)
+  - CRUD + Auth : mysql 3 (Auth config)
+  - CRUD + Auth - mysql 4 : (CRUD views)
+  - CRUD + Auth : mysql 5 (CRUD route)
+  - CRUD + Auth : mysql 6
+
+- 파이썬/장고로 결제 시작하기 (Feat. 아임포트)
+  - formset을 활용한 장바구니 수정
+  - django-widget-tweaks를 활용한 위젯 스타일 변경
+
+- 쿠버네티스
+  - [실습] ReplicaSet - Pod Template 변경
+
+- 컴퓨터 구조
+  - Ch02-20. 응용 계층의 다양한 프로토콜
+  - Ch02-21. Chapter2 정리
