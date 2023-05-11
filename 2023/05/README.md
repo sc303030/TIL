@@ -167,3 +167,11 @@
 - 컴퓨터 구조
   - Ch02-20. 응용 계층의 다양한 프로토콜
   - Ch02-21. Chapter2 정리
+
+### 5월 11일 목요일
+
+- 알고리즘
+  - [프로그래머스-우박수열 정적분](https://github.com/sc303030/algorithm_practice/blob/291d6a99bf32517382af581276cd5b6d43a2a7d0/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%5B%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4%5D%20%EC%9A%B0%EB%B0%95%EC%88%98%EC%97%B4%20%EC%A0%95%EC%A0%81%EB%B6%84%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+
+- 대관알리미
+  - 친구목록 api로 불러와서 친구에게 메시지 보내기
