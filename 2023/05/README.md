@@ -202,3 +202,35 @@
 
 - 알고리즘
   - [프로그래머스-두 원 사이의 정수 쌍](https://github.com/sc303030/algorithm_practice/blob/3db87a3e1d0bef0f635e0443508340e343ff623b/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%5B%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4%5D%20%EB%91%90%20%EC%9B%90%20%EC%82%AC%EC%9D%B4%EC%9D%98%20%EC%A0%95%EC%88%98%20%EC%8C%8D.md)
+
+### 5월 15일 월요일
+
+- 알고리즘
+  - [프로그래머스-혼자 놀기의 달인](https://github.com/sc303030/algorithm_practice/blob/6aa6d1bcdb03c7e1528201ed4bd6b4d7fc5761a8/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%5B%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4%5D%20%ED%98%BC%EC%9E%90%20%EB%86%80%EA%B8%B0%EC%9D%98%20%EB%8B%AC%EC%9D%B8%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+
+- 파이썬/장고로 결제 시작하기 (Feat. 아임포트)
+  - 장바구니를 통한 주문 생성
+  - Payment 추상화 모델 설계
+  - Order 기반에서 Payment 생성
+
+- boiler plate 
+  - 노드 리액트 기초 강의 #1 소개
+  - 노드 리액트 기초 강의 #2 NODE JS 와 EXPRESS JS 다운로드 하기
+
+### 5월 16일 화요일
+
+- 알고리즘
+  - [프로그래머스-숫자블록](https://github.com/sc303030/algorithm_practice/blob/450bd5e0f19104f192f9c13f5bfed12f1d2dabf7/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%5B%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4%5D%20%EC%88%AB%EC%9E%90%20%EB%B8%94%EB%A1%9D%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+
+- 파이썬/장고로 결제 시작하기 (Feat. 아임포트)
+  - order_pay 뷰 구현
+  - order_detail 뷰 구현
+  - order_list 뷰 구현
+  - admin 주문결제 취소 구현
+
+- 대관알리미
+  - 서울시 학교 파일 오픈 api에서 다운 (json으로)
+  - 모델 다시 설계
+  - 다시 크로링했더니 파일에서 url이 일정하지 않음
+    - http가 안 붙어 있거나 www가 없어서 전처리 필요
+    - 서울 초등학교 중에서 과학중점이 있으면 필터링 하지 않기
