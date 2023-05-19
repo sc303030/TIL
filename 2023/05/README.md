@@ -252,3 +252,24 @@
 - 대관 알리미
   - url은 유형이 다양해서 하나씩 찾기로 하였다.
     - www이 없는것도 있고 http가 없는것이 있어서 그렇다.
+
+### 5월 18일 목요일
+
+- 알고리즘
+  - [프로그래머스-이모티콘 할인행사](https://github.com/sc303030/algorithm_practice/blob/71e86ca2511788a2d497bbcfa28090aa3f8bd2a1/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%5B%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4%5D%20%EC%9D%B4%EB%AA%A8%ED%8B%B0%EC%BD%98%20%ED%95%A0%EC%9D%B8%ED%96%89%EC%82%AC%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+
+- boiler-plate
+  - 노드 리액트 기초 강의 #7 BodyParser & PostMan & 회원 가입 기능
+    - mongoose버전이 달라서 애먹음
+    - 강의 영상이랑 동일하게 하려면 `^5.4.20`으로 설치해야 함
+  - 노드 리액트 기초 강의 #8 Nodemon 설치
+
+### 5월 19일 금요일
+
+- 알고리즘
+  - [프로그래머스-과제 진행하기](https://github.com/sc303030/algorithm_practice/blob/4a36f33f43c1e06b5837d7dc9d84f136cb40bcd9/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%5B%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4%5D%20%EA%B3%BC%EC%A0%9C%20%EC%A7%84%ED%96%89%ED%95%98%EA%B8%B0%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+
+- 대관 알리미
+  - url이 잘못된 것들은 따로 모아서 다시 구글 드라이버로 크롤링 실행
+  - 학교 이름 검색해서 url가져와서 다시 저장
+    - 여기서 또 검색이 안 되는 것들은 따로 모아서 수동으로 진행
