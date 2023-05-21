@@ -283,3 +283,8 @@
     - 그걸 해결함
     - 그래도 부족함
     - 나머지는 하나씩 확인하며 해결해야 함
+
+### 5월 21일 일요일
+
+- 알고리즘
+  - [프로그래머스-등산코스 정하기](https://github.com/sc303030/algorithm_practice/blob/7bac9a35f6e7cc0a44f052a536e19f53d6873d0e/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%5B%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4%5D%20%EB%93%B1%EC%82%B0%EC%BD%94%EC%8A%A4%20%EC%A0%95%ED%95%98%EA%B8%B0%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
