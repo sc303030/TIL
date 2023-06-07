@@ -12,3 +12,13 @@
   - 장고 주요 구성요소
   - 장고앱과 블로그 코딩쇼
   - 장고 모델 (ORM) 소개
+
+### 6월 7일 수요일
+
+- 알고리즘
+  - [프로그래머스-단어 변환](https://github.com/sc303030/algorithm_practice/blob/1d5c89d361dbe15edb1af8e6dcd7fb4a6e7d55ea/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%5B%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4%5D%20%EB%8B%A8%EC%96%B4%20%EB%B3%80%ED%99%98%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+
+- 파이썬/장고 웹서비스 개발 완벽 가이드 with 리액트
+  - 장고 모델 필드
+  - 장고 admin을 통한 데이터 관리
+  - 장고가 media 파일을 다루는 방법
