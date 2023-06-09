@@ -37,3 +37,18 @@
   - 관계를 표현하는 모델 필드 (ForeignKey)
   - 관계를 표현하는 모델 필드 (OneToOneField)
   - 관계를 표현하는 모델 필드 (ManyToManyField)
+
+### 6월 9일 금요일
+
+- 알고리즘
+  - [프로그래머스-단속 카메라](https://github.com/sc303030/algorithm_practice/blob/2bb4dae7a29fbf12bf71432e6fbbc6151fe72794/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%5B%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4%5D%20%EB%8B%A8%EC%86%8D%20%EC%B9%B4%EB%A9%94%EB%9D%BC%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+
+- 파이썬/장고 웹서비스 개발 완벽 가이드 with 리액트
+
+  - 마이그레이션을 통한 데이터베이스 스키마 관리 (1)
+  - 마이그레이션을 통한 데이터베이스 스키마 관리 (2)
+  - 다양한 응답의 함수 기반 뷰 (1)
+  - 다양한 응답의 함수 기반 뷰 (2)
+  - URL Dispatcher와 정규 표현식
+  
+  
