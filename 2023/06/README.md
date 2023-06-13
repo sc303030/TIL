@@ -51,4 +51,17 @@
   - 다양한 응답의 함수 기반 뷰 (2)
   - URL Dispatcher와 정규 표현식
   
-  
+
+### 6월 13일 화요일
+
+- 알고리즘
+  - [프로그래머스-기지국 설치](https://github.com/sc303030/algorithm_practice/blob/f746b0d6c660968a25f8bf7271f988a1c6f07f5d/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%5B%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4%5D%20%EA%B8%B0%EC%A7%80%EA%B5%AD%20%EC%84%A4%EC%B9%98%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+
+- 파이썬/장고 웹서비스 개발 완벽 가이드 with 리액트
+  - 클래스 기반 뷰 시작하기
+  - 장고 기본 CBV API (Base Views)
+  - 장고 기본 CBV API (Generic display views) (1)
+  - 장고 기본 CBV API (Generic display views) (2)
+  - 장고 기본 CBV API (Generic display views) (3)
+  - 뷰 장식자
+  - 장고 기본 CBV API (Generic date views)
