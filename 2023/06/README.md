@@ -65,3 +65,15 @@
   - 장고 기본 CBV API (Generic display views) (3)
   - 뷰 장식자
   - 장고 기본 CBV API (Generic date views)
+
+### 6월 14일 수요일
+
+- 파이썬/장고 웹서비스 개발 완벽 가이드 with 리액트
+  - 적절한 HTTP 상태코드로 응답하기
+  - URL Reverse를 통해 유연하게 URL 문자열 및 응답 생성하기
+  - Overview
+  - CSS (Layout) (1)
+  - CSS (Layout) (2)
+  - JavaScript와 jQuery
+  - 휴대폰 망을 통해 로컬 개발서버에 접속하는 방법
+  - 장고가 static 파일을 다루는 방법
