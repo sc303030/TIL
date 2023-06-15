@@ -77,3 +77,16 @@
   - JavaScript와 jQuery
   - 휴대폰 망을 통해 로컬 개발서버에 접속하는 방법
   - 장고가 static 파일을 다루는 방법
+
+### 6월 15일 목요일
+
+- 알고리즘
+  - [프로그래머스-불량 사용자](https://github.com/sc303030/algorithm_practice/blob/e61f66abb599c7a7263543a2574e62feb2e892fe/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%5B%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4%5D%20%EB%B6%88%EB%9F%89%20%EC%82%AC%EC%9A%A9%EC%9E%90%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+
+- 파이썬/장고 웹서비스 개발 완벽 가이드 with 리액트
+  - HTML Form
+  - HttpRequest와 HttpResponse
+  - Django Form
+  - Cross Siste Request Forgery
+  - ModelForm
+
