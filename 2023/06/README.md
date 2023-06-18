@@ -94,3 +94,21 @@
 
 - 알고리즘
   - [프로그래머스-보석 쇼핑](https://github.com/sc303030/algorithm_practice/blob/e7243732dad816ef75382382c1a148120a3dcebe/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%5B%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4%5D%20%EB%B3%B4%EC%84%9D%20%EC%87%BC%ED%95%91%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+
+### 6월 18일 일요일
+
+- 알고리즘
+  - [프로그래머스-스티머 모으기(2)](https://github.com/sc303030/algorithm_practice/blob/0564126f52474ec1d74d316c0b3c53ada3b16f58/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%5B%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4%5D%20%EC%8A%A4%ED%8B%B0%EC%BB%A4%20%EB%AA%A8%EC%9C%BC%EA%B8%B0(2)%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+
+- 파이썬/장고 웹서비스 개발 완벽 가이드 with 리액트
+  - Form Validation
+  - Messages Framework
+  - Form을 통한 삭제 구현
+  - 장고 기본 CBV API (Generic editing views)
+  - 로그인 처리
+  - 사용자 프로필 페이지 및 프로필 수정
+  - 템플릿 레이아웃에 링크 추가하기
+  - 퀴즈를 맞춰야 로그인
+  - 회원가입
+  - 회원가입하자마자 로그인하기
+  - 로그아웃 처리
