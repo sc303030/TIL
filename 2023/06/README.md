@@ -112,3 +112,12 @@
   - 회원가입
   - 회원가입하자마자 로그인하기
   - 로그아웃 처리
+
+### 6월 19일 월요일
+
+- 알고리즘
+  - [프로그래머스-섬 연결하기](https://github.com/sc303030/algorithm_practice/blob/9a746104b4d843a87711f48f2579173d479fbeaa/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%5B%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4%5D%20%EC%84%AC%20%EC%97%B0%EA%B2%B0%ED%95%98%EA%B8%B0%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+
+- 파이썬/장고 웹서비스 개발 완벽 가이드 with 리액트
+  - Overview
+  - 프로젝트 생성 및 초기 프로젝트 환경설정
