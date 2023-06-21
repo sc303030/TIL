@@ -134,3 +134,13 @@
   - SendGrid API Key 획득하고 환경변수에 저장하기
   - 로그인/로그아웃 구현 그리고 회원 가입과 동시에 로그인
   - django-pydenticon을 활용하여 프로필 디폴트 이미지 구현
+
+### 6월 21일 수요일
+
+- 알고리즘
+  - [프로그래머스-요격 시스템](https://github.com/sc303030/algorithm_practice/blob/ea2a7da43784a4f075929128d769c7398af00352/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%5B%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4%5D%20%EC%9A%94%EA%B2%A9%20%EC%8B%9C%EC%8A%A4%ED%85%9C%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+- 파이썬/장고 웹서비스 개발 완벽 가이드 with 리액트
+  - 프로필 수정 구현과 장고3에서 추가된 TextChoices 활용
+  - auth앱의 PasswordChangeForm 커스텀을 통한 암호 수정 구현
+  - 유저 페이지 구현
+  - easy-thumbnails를 활용한 유저페이지 썸네일 처리 구현
