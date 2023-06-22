@@ -144,3 +144,15 @@
   - auth앱의 PasswordChangeForm 커스텀을 통한 암호 수정 구현
   - 유저 페이지 구현
   - easy-thumbnails를 활용한 유저페이지 썸네일 처리 구현
+
+### 6월 22일 목요일
+
+- 파이썬/장고 웹서비스 개발 완벽 가이드 with 리액트
+  - Timeline sidebar 템플릿 및 스타일 구현
+  - User 모델에 Follow-Unfollow 관계 필드를 구현하고, Follow 기능 구현
+  - Timeline에 Follow하는 유저들의 포스팅 만을 노출하기
+  - 유저페이지에서 Unfollow 구현
+  - Timeline 포스팅 목록 조건에 날짜 범위 지정하기
+
+- 알고리즘
+  - [프로그래머스-경주로 건설](https://github.com/sc303030/algorithm_practice/blob/91222af5eb1a0441b2af7c8f28b6ce8a9b9488ce/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%5B%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4%5D%20%EA%B2%BD%EC%A3%BC%EB%A1%9C%20%EA%B1%B4%EC%84%A4%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
