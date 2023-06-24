@@ -156,3 +156,14 @@
 
 - 알고리즘
   - [프로그래머스-경주로 건설](https://github.com/sc303030/algorithm_practice/blob/91222af5eb1a0441b2af7c8f28b6ce8a9b9488ce/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%5B%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4%5D%20%EA%B2%BD%EC%A3%BC%EB%A1%9C%20%EA%B1%B4%EC%84%A4%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+
+### 6월 24일 토요일
+
+- 알고리즘
+  - [프로그래머스-합승 택시 요금](https://github.com/sc303030/algorithm_practice/blob/fe552e76bdae3129c71ba9adcefcd34bcfc2bac9/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%5B%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4%5D%20%ED%95%A9%EC%8A%B9%20%ED%83%9D%EC%8B%9C%20%EC%9A%94%EA%B8%88%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+
+- 파이썬/장고 웹서비스 개발 완벽 가이드 with 리액트
+  - 포스팅 좋아요/취소 구현
+  - 장고 만으로 댓글 쓰기 구현
+  - 자바스크립트없이 포스팅 화면에서 댓글 쓰기 UI 개선
+  - 장고 위주로 jQuery를 통한 Ajax 댓글 쓰기 구현
