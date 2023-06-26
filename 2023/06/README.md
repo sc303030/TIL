@@ -167,3 +167,12 @@
   - 장고 만으로 댓글 쓰기 구현
   - 자바스크립트없이 포스팅 화면에서 댓글 쓰기 UI 개선
   - 장고 위주로 jQuery를 통한 Ajax 댓글 쓰기 구현
+
+### 6월 26일 월요일
+
+- 파이썬/장고 웹서비스 개발 완벽 가이드 with 리액트
+  - API 서버와 REST
+  - JSON 응답뷰 만들기
+
+- 알고리즘
+  - [프로그래머스-가장 긴 팰린드롬](https://github.com/sc303030/algorithm_practice/blob/19c4357152e4e0b6e3253e3d21adf9b394e8d0ce/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%5B%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4%5D%20%EA%B0%80%EC%9E%A5%20%EA%B8%B4%20%ED%8C%B0%EB%A6%B0%EB%93%9C%EB%A1%AC%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
