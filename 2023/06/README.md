@@ -181,3 +181,11 @@
 
 - 알고리즘
   - [프로그래머스-셔틀버스](https://github.com/sc303030/algorithm_practice/blob/ac802ea6e0c7443d270d07475c2230a8deabf73d/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%5B%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4%5D%20%EC%85%94%ED%8B%80%20%EB%B2%84%EC%8A%A4%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+
+### 6월 28일 수요일
+
+- 알고리즘
+  -  [프로그래머스-다단계 칫솔 판매](https://github.com/sc303030/algorithm_practice/blob/4aff8d74c22855e932a7bc4254f424585b1ca53b/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%5B%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4%5D%20%EB%8B%A4%EB%8B%A8%EA%B3%84%20%EC%B9%AB%EC%86%94%20%ED%8C%90%EB%A7%A4%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+
+- 파이썬/장고 웹서비스 개발 완벽 가이드 with 리액트
+  - JSON 직렬화
