@@ -18,3 +18,21 @@
   - [01/01] Overview 및 OpenAI API 키 발급
   - [01/02] LLM 채팅 서비스 예시
   - [01/03] 영어 상황극 채팅 웹서비스를 위해 필요한 기술
+
+### 7월 6일 목요일
+
+- 알고리즘
+  - [프로그래머스-과일 장수](https://github.com/sc303030/algorithm_practice/blob/f93c21cf0dadacc91ffe9848151d860a0f8a3799/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%5B%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4%5D%20%EA%B3%BC%EC%9D%BC%20%EC%9E%A5%EC%88%98%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+  - [프로그래머스-카드 뭉치](https://github.com/sc303030/algorithm_practice/blob/845e3c936e440bf2742a7f3592ad70d94f99b815/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%5B%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4%5D%20%EC%B9%B4%EB%93%9C%20%EB%AD%89%EC%B9%98%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+  - [프로그래머스-소수 찾기](http://github.com/sc303030/algorithm_practice/commit/d3480fe84c8c71fd9fbcfe3d84f583ab825c4611)
+  - [프로그래머스-숫자 짝꿍](https://github.com/sc303030/algorithm_practice/blob/a0bb6b4c9694efc26e1b60e2536dc4d7c5aa158d/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%5B%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4%5D%20%EC%88%AB%EC%9E%90%20%EC%A7%9D%EA%BF%8D%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+  - [프로그래머스-옹알이 (2)](https://github.com/sc303030/algorithm_practice/blob/3b94465b7d47c3aa0be011602a6ed2dd3bcc9129/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%5B%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4%5D%20%EC%98%B9%EC%95%8C%EC%9D%B4%20(2)%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+  - [프로그래머스-햄버거 만들기](https://github.com/sc303030/algorithm_practice/blob/6d15526867654d0c19cb3c8bb1e29beaf3484106/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%5B%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4%5D%20%ED%96%84%EB%B2%84%EA%B1%B0%20%EB%A7%8C%EB%93%A4%EA%B8%B0%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+
+### 7월 7일 금요일
+
+- 알고리즘
+  - [프로그래머스-바탕화면 정리](https://github.com/sc303030/algorithm_practice/blob/52cf86087c3c8e7e633c9785f0f58b2017fbd7ed/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%5B%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4%5D%20%EB%B0%94%ED%83%95%ED%99%94%EB%A9%B4%20%EC%A0%95%EB%A6%AC%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+  - [프로그래머스-공원 산책](https://github.com/sc303030/algorithm_practice/blob/6a1985d5062fabae43c9e96ed669a47971f76115/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%5B%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4%5D%20%EA%B3%B5%EC%9B%90%20%EC%82%B0%EC%B1%85%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+  - [프로그래머스-이상한 문자 만들기](https://github.com/sc303030/algorithm_practice/blob/c9838a2a656e4c714a716ced8ede1e9aa464265f/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%5B%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4%5D%20%EC%9D%B4%EC%83%81%ED%95%9C%20%EB%AC%B8%EC%9E%90%20%EB%A7%8C%EB%93%A4%EA%B8%B0%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+  - [프로그래머스-덧칠하기](https://github.com/sc303030/algorithm_practice/blob/5a15676bb6bdad5c7b37b2d589d4e54486d7cb38/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%5B%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4%5D%20%EB%8D%A7%EC%B9%A0%ED%95%98%EA%B8%B0%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
