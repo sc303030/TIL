@@ -36,3 +36,34 @@
   - [프로그래머스-공원 산책](https://github.com/sc303030/algorithm_practice/blob/6a1985d5062fabae43c9e96ed669a47971f76115/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%5B%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4%5D%20%EA%B3%B5%EC%9B%90%20%EC%82%B0%EC%B1%85%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
   - [프로그래머스-이상한 문자 만들기](https://github.com/sc303030/algorithm_practice/blob/c9838a2a656e4c714a716ced8ede1e9aa464265f/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%5B%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4%5D%20%EC%9D%B4%EC%83%81%ED%95%9C%20%EB%AC%B8%EC%9E%90%20%EB%A7%8C%EB%93%A4%EA%B8%B0%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
   - [프로그래머스-덧칠하기](https://github.com/sc303030/algorithm_practice/blob/5a15676bb6bdad5c7b37b2d589d4e54486d7cb38/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%5B%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4%5D%20%EB%8D%A7%EC%B9%A0%ED%95%98%EA%B8%B0%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+
+### 7월 10일 월요일
+
+- 알고리즘
+  - [프로그래머스-양궁대회](https://github.com/sc303030/algorithm_practice/blob/c867124a4bcdde33db7b2ec5281af35ae6b674bb/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%5B%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4%5D%20%EC%96%91%EA%B6%81%EB%8C%80%ED%9A%8C%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+
+### 7월 11일 화요일
+
+- 알고리즘
+  - [프로그래머스-택배 배달과 수거하기](https://github.com/sc303030/algorithm_practice/blob/3988ca1d414a78f48feab987179f58d04379a771/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%5B%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4%5D%20%ED%83%9D%EB%B0%B0%20%EB%B0%B0%EB%8B%AC%EA%B3%BC%20%EC%88%98%EA%B1%B0%ED%95%98%EA%B8%B0%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+  - 내일부터는 dfs와 bfs만 풀거다.
+
+- 파이썬/장고 웹서비스 개발 완벽 가이드 with 리액트
+  - Renderer를 통한 다양한 응답 포맷 지원
+  - Form과 Serializer 관점에서 DRF 비교
+  - Serializer를 통한 유효성 검사 및 저장
+  - Authentication과 Permission
+
+- ChatGPT 영어 상황극 채팅 서비스 만들기 (Feat. 파이썬/장고채널스)
+  - [03/01] 언어별 상황극을 위한 ChatGPT 프롬프트 예시
+  - [03/02] 영어 상황극 채팅 CLI
+  - [03/03] 명령행에서 음성으로 메세지 읽어주기
+  - [03/04] 명령행에서 표현 추천받기
+  - [03/05] 명령행에서 Assistant 메세지를 자동으로 읽어주기
+  - [04/01] 웹 서비스로 개발해야한다면?
+  - [04/02] 장고 프로젝트 생성 및 프로젝트 초기화
+  - [04/03] django-environ 라이브러리를 활용한 환경변수 로딩
+  - [04/04] Bootstrap5 라이브러리 적용 및 파이참 장고 지원 활성화
+  - [04/05] django-bootstrap5 추천 설정
+  - [04/06] 상황극 채팅방 설정을 담는 장고 모델 설계 및 마이그레이션
+  - [04/07] 구글 번역 모바일 페이지 크롤링을 통한 번역
