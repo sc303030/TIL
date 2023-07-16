@@ -115,3 +115,8 @@
   - babel과 webpack, 그리고 create-react-app
   - CRA 프로젝트에 Ant Design 적용하기
   - 리액트 엘리먼트
+
+### 7월 16일 일요일
+
+- 파이썬/장고 웹서비스 개발 완벽 가이드 with 리액트
+  - 상태값
