@@ -151,3 +151,14 @@
   - immer를 활용한 손쉬운 불변객체 다루기
   - 클래스 컴포넌트, 생명주기
   - 클래스 컴포넌트를 통한 에러 처리
+
+### 7월 20일 목요일
+
+- 알고리즘
+  - [백준-영역 구하기](https://github.com/sc303030/algorithm_practice/blob/ee746c2765b4494f01f6f494ff016a4900d097ed/5.DFS/%5B%EB%B0%B1%EC%A4%80%5D%202583%20%EC%98%81%EC%97%AD%20%EA%B5%AC%ED%95%98%EA%B8%B0%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+
+- 파이썬/장고 웹서비스 개발 완벽 가이드 with 리액트
+  - Axios 라이브러리를 활용한 HTTP 요청
+  - 함수 컴포넌트와 필수 Hook
+  - 커스텀 Hook 만들기
+  - 리듀서와 useReducer 훅
