@@ -162,3 +162,12 @@
   - 함수 컴포넌트와 필수 Hook
   - 커스텀 Hook 만들기
   - 리듀서와 useReducer 훅
+
+### 7월 22일 토요일
+
+- 알고리즘
+  - [백준-나이트의 이동](https://github.com/sc303030/algorithm_practice/blob/311762c7e1ed86b006a1fad58c6831636637a86f/6.BFS/%5B%EB%B0%B1%EC%A4%80%5D%207562%EB%B2%88%20%EB%82%98%EC%9D%B4%ED%8A%B8%EC%9D%98%20%EC%9D%B4%EB%8F%99%20%ED%8C%8C%EC%9D%B4%EC%8D%AC_2.md)
+  - [백준-그림](https://github.com/sc303030/algorithm_practice/blob/31b78dfe5f50374948bc681346849c6d80385014/5.DFS/%5B%EB%B0%B1%EC%A4%80%5D%201926%EB%B2%88%20%EA%B7%B8%EB%A6%BC%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+- 파이썬/장고 웹서비스 개발 완벽 가이드 with 리액트
+  - Context API
+  - Context API와 Reducer 패턴
