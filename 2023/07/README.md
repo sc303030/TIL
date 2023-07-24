@@ -180,3 +180,12 @@
 - 알고리즘
   - 백준-A->B
   - 백준-효율적인 해킹
+
+### 7월 24일 월요일
+
+- 알고리즘
+  - [백준-스타트 링크](https://github.com/sc303030/algorithm_practice/blob/d89b37b7c13aa27fcb3a5d98ac8e305bc39b069b/6.BFS/%5B%EB%B0%B1%EC%A4%80%5D%20%EC%8A%A4%ED%83%80%ED%8A%B8%20%EB%A7%81%ED%81%AC%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+  - [백준-음식물 피하기](https://github.com/sc303030/algorithm_practice/blob/6ba0f64c9d969892b78044de47bd4685818e0a28/5.DFS/%5B%EB%B0%B1%EC%A4%80%5D%201743%EB%B2%88%20%EC%9D%8C%EC%8B%9D%EB%AC%BC%20%ED%94%BC%ED%95%98%EA%B8%B0%20%ED%8C%8C%EC%9D%B4%EC%8D%AC_2.md)
+
+- 파이썬/장고로 웹채팅 서비스 만들기 (Feat. Channels) - 기본편 추가 과제
+  - 1. [채팅 로비에서 유저수 노출](https://github.com/sc303030/TIL/blob/1d02908088d5c0e80c26c6d84020ecefa2511bbb/django/%ED%8C%8C%EC%9D%B4%EC%8D%AC%EC%9E%A5%EA%B3%A0%EB%A1%9C%20%EC%9B%B9%EC%B1%84%ED%8C%85%20%EC%84%9C%EB%B9%84%EC%8A%A4%20%EB%A7%8C%EB%93%A4%EA%B8%B0%20(Feat.%20Channels)%20-%20%EA%B8%B0%EB%B3%B8%ED%8E%B8%20%EC%B6%94%EA%B0%80%20%EA%B3%BC%EC%A0%9C%EB%93%A4.md)
