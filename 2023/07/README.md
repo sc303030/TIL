@@ -189,3 +189,15 @@
 
 - 파이썬/장고로 웹채팅 서비스 만들기 (Feat. Channels) - 기본편 추가 과제
   - 1. [채팅 로비에서 유저수 노출](https://github.com/sc303030/TIL/blob/1d02908088d5c0e80c26c6d84020ecefa2511bbb/django/%ED%8C%8C%EC%9D%B4%EC%8D%AC%EC%9E%A5%EA%B3%A0%EB%A1%9C%20%EC%9B%B9%EC%B1%84%ED%8C%85%20%EC%84%9C%EB%B9%84%EC%8A%A4%20%EB%A7%8C%EB%93%A4%EA%B8%B0%20(Feat.%20Channels)%20-%20%EA%B8%B0%EB%B3%B8%ED%8E%B8%20%EC%B6%94%EA%B0%80%20%EA%B3%BC%EC%A0%9C%EB%93%A4.md)
+
+### 7월 25일 화요일
+
+- 알고리즘
+  - 백준-특정 거리의 도시 찾기
+  - 백준-알고리즘 수업 - 깊이 우선 탐색 1
+
+- 파이썬/장고 웹서비스 개발 완벽 가이드 with 리액트
+  - 프로젝트 생성 및 기본 환경 설정
+
+- 파이썬/장고로 웹채팅 서비스 만들기 (Feat. Channels) - 기본편 추가 과제
+  - LobbyMember 클래스 생성하여 추가,삭제되는지 확인
