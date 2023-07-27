@@ -212,3 +212,8 @@
 
 - 파이썬/장고로 웹채팅 서비스 만들기 (Feat. Channels) - 기본편 추가 과제
   - 로비화면에서 접속한 유저의 숫자와 이름이 보이도록 설정
+
+### 7월 27일 목요일
+
+- 알고리즘
+  - [백준-전쟁-전투](https://github.com/sc303030/algorithm_practice/blob/a4eb06cf16e3e0438076207ea7ce1f8784a1e715/6.BFS/%5B%EB%B0%B1%EC%A4%80%5D%201303%EB%B2%88%20%EC%A0%84%EC%9F%81%20-%20%EC%A0%84%ED%88%AC%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
