@@ -30,3 +30,22 @@
     ![chat_3번째_과제](https://github.com/sc303030/tstory_img/assets/52574837/f91f8ffa-439f-42b4-a138-9c844135e31a)
 
     - 유저별 아바타를 저장할 models을 생성해서 적용하기
+
+### 8월 3일 목요일
+
+- 알고리즘
+  - [백준-12761번 돌다리](https://github.com/sc303030/algorithm_practice/blob/c33a049a4ea8f0ab3488279311d9c5ece1cbb39b/6.BFS/%5B%EB%B0%B1%EC%A4%80%5D%2012761%EB%B2%88%20%EB%8F%8C%EB%8B%A4%EB%A6%AC%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+  - [백준-16174번 점프왕 쩰리](https://github.com/sc303030/algorithm_practice/blob/f748d0c92d61fc00b7f66fa3f1805463cf4f8e5c/5.DFS/%5B%EB%B0%B1%EC%A4%80%5D%2016174%EB%B2%88%20%EC%A0%90%ED%94%84%EC%99%95%20%EC%A9%B0%EB%A6%AC(Large)%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+
+- 파이썬/장고로 웹채팅 서비스 만들기 (Feat. Channels) - 기본편 추가 과제
+
+  - accounts에 User 모델 만들어서 avatar 이미지 필드 추가하여 완성
+
+    ![chat_채팅_user_이미지추가](https://github.com/sc303030/tstory_img/assets/52574837/d9b8a9db-acc4-4b4d-8862-31e9de5b1124)
+
+  - 채팅방에 새로운 유저가 들어오면, 최근 메세지 5개 보여주기
+    - Message models생성 완료
+    - 내일은 form 생성해서 연결하고 저장하는 작업까지 해보기
+  - 채팅 로비에서 유저수 노출
+    - 이건 질의응답 답변대로 Lobby라는 고정 채팅방을 만들기로 하자.
+    - 다만 owner가 필요하기에 lobby 전용 owner를 생성해서 연결시키도록 하자.
