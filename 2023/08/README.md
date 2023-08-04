@@ -49,3 +49,23 @@
   - 채팅 로비에서 유저수 노출
     - 이건 질의응답 답변대로 Lobby라는 고정 채팅방을 만들기로 하자.
     - 다만 owner가 필요하기에 lobby 전용 owner를 생성해서 연결시키도록 하자.
+
+### 8월 4일 금요일
+
+- 알고리즘
+  - [백준-18404번 현명한 나이트](https://github.com/sc303030/algorithm_practice/blob/669107ff096b64f98e407dc7f27b278df2381c9c/6.BFS/%5B%EB%B0%B1%EC%A4%80%5D%2018404%EB%B2%88%20%ED%98%84%EB%AA%85%ED%95%9C%20%EB%82%98%EC%9D%B4%ED%8A%B8%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+  - [백준-2467번 안전 영역](https://github.com/sc303030/algorithm_practice/blob/7c67ff2f64ea5f504b79b13f58e49e1e60c8d6d5/5.DFS/%5B%EB%B0%B1%EC%A4%80%5D%202468%EB%B2%88%20%EC%95%88%EC%A0%84%20%EC%98%81%EC%97%AD%20%ED%8C%8C%EC%9D%B4%EC%8D%AC_02.md)
+- 파이썬/장고로 웹채팅 서비스 만들기 (Feat. Channels) - 기본편 추가 과제
+
+  - 채팅 로비에서 유저수 노출
+    - Lobby 방과 Lobby바 전용 owner인 LobbyAdmin을 생성하여 해결 완료.
+
+  - 채팅방에 새로운 유저가 들어오면, 최근 메세지 5개 보여주기
+    - Message 모델 생성하여 ordering을 최신순으로 정렬
+    - 다시 클라이언트로 보낼때는 리버스하여 과거순으로 정렬하여 보내기
+  - ![chat_채팅_메시지보여주기](https://github.com/sc303030/tstory_img/assets/52574837/0a8e4377-d867-4c74-83c5-b36c6ac3a26f)
+  - 메시지 수정/삭제
+  
+    ![chat_수정_삭제](https://github.com/sc303030/tstory_img/assets/52574837/bd0fd620-b9c3-4b90-a0f4-652b0c88a47a)
+  
+    버튼 눌러서 모달 창 띄우기까지 완료
