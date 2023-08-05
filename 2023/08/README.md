@@ -69,3 +69,10 @@
     ![chat_수정_삭제](https://github.com/sc303030/tstory_img/assets/52574837/bd0fd620-b9c3-4b90-a0f4-652b0c88a47a)
   
     버튼 눌러서 모달 창 띄우기까지 완료
+
+### 8월 5일 토요일
+
+- 알고리즘
+  -  [백준-17129번 윌리암슨수액빨이딱따구리가 정보섬에 올라온 이유](https://github.com/sc303030/algorithm_practice/blob/98318b9d564dea6cd5fc533411cb187d8543a008/6.BFS/%5B%EB%B0%B1%EC%A4%80%5D%2017129%EB%B2%88%20%EC%9C%8C%EB%A6%AC%EC%95%94%EC%8A%A8%EC%88%98%EC%95%A1%EB%B9%A8%EC%9D%B4%EB%94%B1%EB%94%B0%EA%B5%AC%EB%A6%AC%EA%B0%80%20%EC%A0%95%EB%B3%B4%EC%84%AC%EC%97%90%20%EC%98%AC%EB%9D%BC%EC%98%A8%20%EC%9D%B4%EC%9C%A0%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+  -  [백준-15900번 나무 탈출](https://github.com/sc303030/algorithm_practice/blob/2e92cbcdc9f7d53a93c1eb776a35a5ba2718d450/5.DFS/%5B%EB%B0%B1%EC%A4%80%5D%2015900%EB%B2%88%20%EB%82%98%EB%AC%B4%20%ED%83%88%EC%B6%9C%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+  -  
