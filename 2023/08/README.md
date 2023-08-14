@@ -79,3 +79,19 @@
 ### 8월 6일 일요일
 
 - 수정해서 업데이트는 했지만 그 버튼에 연결된 속성들이 초기화되어서 다시 해야 할 듯...ㅠ.ㅠ
+
+### 8월 11일 금요일
+
+- 알고리즘
+  -  [백준-15723번 n단 논법](https://github.com/sc303030/algorithm_practice/blob/85b18355074c285c403894f40a8aec82416f64a7/10.dynamic_programming/%5B%EB%B0%B1%EC%A4%80%5D%2015723%EB%B2%88%20n%EB%8B%A8%20%EB%85%BC%EB%B2%95%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+  -  [백준-17391번 무한부스터](https://github.com/sc303030/algorithm_practice/blob/c6477063fff6b3a9e4611933d7639451715bb801/6.BFS/%5B%EB%B0%B1%EC%A4%80%5D%2017391%EB%B2%88%20%EB%AC%B4%ED%95%9C%EB%B6%80%EC%8A%A4%ED%84%B0%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+
+### 8월 14일 월요일
+
+- 알고리즘
+  - 백준-15649번 N과 M(1)
+    - 백트랙킹 시작하기
+- 파이썬/장고로 웹채팅 서비스 만들기 (Feat. Channels) - 기본편 추가 과제
+  - 수정하면 상대방과 나의 화면에서 수정된 메시지 보이기 성공
+  - [기록하기 위해 깃 레포 생성](https://github.com/sc303030/django-chat)
+  - 이제 삭제를 구현해보자.
