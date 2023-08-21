@@ -155,3 +155,8 @@
     - 아직 좋아요 하지 않았으면 좋아요 목록 추가
   - 웹에서도 한 개의 함수로 처리
     - 기존에는 like, dislike로 각각 type을 보냈는데 like 하나로 처리
+
+### 8월 21일 월요일
+
+- 알고리즘
+  - [백준-16943번 숫자 재배치](https://github.com/sc303030/algorithm_practice/blob/70a26353f967236742352e5709ed197d17001214/23.%EB%B0%B1%ED%8A%B8%EB%9E%99%ED%82%B9/%5B%EB%B0%B1%EC%A4%80%5D%2016943%EB%B2%88%20%EC%88%AB%EC%9E%90%20%EC%9E%AC%EB%B0%B0%EC%B9%98%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
