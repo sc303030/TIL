@@ -160,3 +160,8 @@
 
 - 알고리즘
   - [백준-16943번 숫자 재배치](https://github.com/sc303030/algorithm_practice/blob/70a26353f967236742352e5709ed197d17001214/23.%EB%B0%B1%ED%8A%B8%EB%9E%99%ED%82%B9/%5B%EB%B0%B1%EC%A4%80%5D%2016943%EB%B2%88%20%EC%88%AB%EC%9E%90%20%EC%9E%AC%EB%B0%B0%EC%B9%98%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+
+### 8월 25일 금요일
+
+- 알고리즘
+  - [백준-11729번 하노이 탑 이동 순서](https://github.com/sc303030/algorithm_practice/blob/0bda6f04858a88db0c965606ad44bc9014ffcb45/4.recursive/%5B%EB%B0%B1%EC%A4%80%5D%2011729%EB%B2%88%20%ED%95%98%EB%85%B8%EC%9D%B4%20%ED%83%91%20%EC%9D%B4%EB%8F%99%20%EC%88%9C%EC%84%9C.md)
