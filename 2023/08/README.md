@@ -165,3 +165,15 @@
 
 - 알고리즘
   - [백준-11729번 하노이 탑 이동 순서](https://github.com/sc303030/algorithm_practice/blob/0bda6f04858a88db0c965606ad44bc9014ffcb45/4.recursive/%5B%EB%B0%B1%EC%A4%80%5D%2011729%EB%B2%88%20%ED%95%98%EB%85%B8%EC%9D%B4%20%ED%83%91%20%EC%9D%B4%EB%8F%99%20%EC%88%9C%EC%84%9C.md)
+
+### 8월 28일 월요일
+
+- 알고리즘
+  - [백준-1992번 쿼드트리](https://github.com/sc303030/algorithm_practice/blob/30f68cf9daed93b12c3850b6952bf48425baf86f/4.recursive/%5B%EB%B0%B1%EC%A4%80%5D%201992%EB%B2%88%20%EC%BF%BC%EB%93%9C%ED%8A%B8%EB%A6%AC%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+  - [백준-1074번 Z](https://github.com/sc303030/algorithm_practice/blob/3de191fc4bc54a9a61a526dda27d53c4443005a3/4.recursive/%5B%EB%B0%B1%EC%A4%80%5D%201074%EB%B2%88%20Z%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+
+### 8월 29일 화요일
+
+- 알고리즘
+  - 백준-1914 하노이 탑
+  - 백준-9934 완전 이진 트리
