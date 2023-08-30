@@ -177,3 +177,14 @@
 - 알고리즘
   - 백준-1914 하노이 탑
   - 백준-9934 완전 이진 트리
+
+### 8월 30일 수요일
+
+- 알고리즘
+  - [프로그래머스-풍선 터트리기](https://github.com/sc303030/algorithm_practice/blob/9fe545d5ae663de87b002450da1d5a8203cf200f/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%5B%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4%5D%20%ED%92%8D%EC%84%A0%20%ED%84%B0%ED%8A%B8%EB%A6%AC%EA%B8%B0%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+- 파이썬/장고 웹서비스 개발 완벽 가이드 with 리액트
+  - 회원가입 API 만들기
+  - 리액트 기본 기능으로 회원가입 폼 만들기
+  - Ant Design Form을 활용한 회원가입 폼 만들기
+  - 장고에 JWT 토큰 발급 붙이기
+  - 로그인 폼을 만들고 로컬 스토리지에 jwt 저장하기
