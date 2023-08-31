@@ -188,3 +188,13 @@
   - Ant Design Form을 활용한 회원가입 폼 만들기
   - 장고에 JWT 토큰 발급 붙이기
   - 로그인 폼을 만들고 로컬 스토리지에 jwt 저장하기
+
+### 8월 31일 목요일
+
+- 알고리즘
+  - [프로그래머스-미로 탈출 명령어](https://github.com/sc303030/algorithm_practice/blob/271e91ebe226d1138bb43820c6aeab2ea02d625c/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%5B%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4%5D%20%EB%AF%B8%EB%A1%9C%20%ED%83%88%EC%B6%9C%20%EB%AA%85%EB%A0%B9%EC%96%B4%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+- 파이썬/장고 웹서비스 개발 완벽 가이드 with 리액트
+  - Context API와 Reducer를 활용하여 JWT Token 공유하기
+  - LoginRequiredRouter 구현하기
+  - 포스팅 목록 API에 JWT 인증하기
+  - Suggestion 목록 API 및 화면 구현
