@@ -17,4 +17,9 @@
   - [백준-1326번 폴짝폴짝](https://github.com/sc303030/algorithm_practice/blob/e5786f663ad28305dc2579a968f4a90937d6786c/6.BFS/%5B%EB%B0%B1%EC%A4%80%5D%201326%EB%B2%88%20%ED%8F%B4%EC%A7%9D%20%ED%8F%B4%EC%A7%9D%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
   - [백준-21938번 영상처리](https://github.com/sc303030/algorithm_practice/blob/2182e7d132c1a067571bea0f56c13fb7f7b76e8e/5.DFS/%5B%EB%B0%B1%EC%A4%80%5D%2021938%EB%B2%88%20%EC%98%81%EC%83%81%EC%B2%98%EB%A6%AC%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
 
-  
+
+### 9월 6일 수요일
+
+- 알고리즘
+  - [백준-14562번 태권왕](https://github.com/sc303030/algorithm_practice/blob/e8d5743b404e382982052c47ffdc7724d3d87e89/6.BFS/%5B%EB%B0%B1%EC%A4%80%5D%2014562%EB%B2%88%20%ED%83%9C%EA%B6%8C%EC%99%95%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+  - [백준-24482번 알고리즘 수업 - 깊이 우선 탐색 4](https://github.com/sc303030/algorithm_practice/blob/fe4987ef68ae30dd6a19996790196e205963f71a/5.DFS/%5B%EB%B0%B1%EC%A4%80%5D%2024482%EB%B2%88%20%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98%20%EC%88%98%EC%97%85%20-%20%EA%B9%8A%EC%9D%B4%20%EC%9A%B0%EC%84%A0%20%ED%83%90%EC%83%89%204%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
