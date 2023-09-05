@@ -9,4 +9,12 @@
 - 알고리즘
   - [백준-14496번 그대, 그머가 되어](https://github.com/sc303030/algorithm_practice/blob/eb49d23eaf8148c069611589491871f7c1448195/6.BFS/%5B%EB%B0%B1%EC%A4%80%5D%2014496%EB%B2%88%20%EA%B7%B8%EB%8C%80%2C%20%EA%B7%B8%EB%A8%B8%EA%B0%80%20%EB%90%98%EC%96%B4%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
   - [백준-14248번 점프 점프](https://github.com/sc303030/algorithm_practice/blob/1c3260f8dd6d8f824f2dcdb43df91f51b957c3a3/5.DFS/%5B%EB%B0%B1%EC%A4%80%5D%2014248%EB%B2%88%20%EC%A0%90%ED%94%84%20%EC%A0%90%ED%94%84%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
-  - 
+
+### 9월 5일 화요일
+
+- 알고리즘
+
+  - [백준-1326번 폴짝폴짝](https://github.com/sc303030/algorithm_practice/blob/e5786f663ad28305dc2579a968f4a90937d6786c/6.BFS/%5B%EB%B0%B1%EC%A4%80%5D%201326%EB%B2%88%20%ED%8F%B4%EC%A7%9D%20%ED%8F%B4%EC%A7%9D%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+  - [백준-21938번 영상처리](https://github.com/sc303030/algorithm_practice/blob/2182e7d132c1a067571bea0f56c13fb7f7b76e8e/5.DFS/%5B%EB%B0%B1%EC%A4%80%5D%2021938%EB%B2%88%20%EC%98%81%EC%83%81%EC%B2%98%EB%A6%AC%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+
+  
