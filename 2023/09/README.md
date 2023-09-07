@@ -23,3 +23,9 @@
 - 알고리즘
   - [백준-14562번 태권왕](https://github.com/sc303030/algorithm_practice/blob/e8d5743b404e382982052c47ffdc7724d3d87e89/6.BFS/%5B%EB%B0%B1%EC%A4%80%5D%2014562%EB%B2%88%20%ED%83%9C%EA%B6%8C%EC%99%95%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
   - [백준-24482번 알고리즘 수업 - 깊이 우선 탐색 4](https://github.com/sc303030/algorithm_practice/blob/fe4987ef68ae30dd6a19996790196e205963f71a/5.DFS/%5B%EB%B0%B1%EC%A4%80%5D%2024482%EB%B2%88%20%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98%20%EC%88%98%EC%97%85%20-%20%EA%B9%8A%EC%9D%B4%20%EC%9A%B0%EC%84%A0%20%ED%83%90%EC%83%89%204%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+
+### 9월 7일 목요일
+
+- 알고리즘
+  - [백준-24483번 알고리즘 수업 - 깊이 우선 탐색5](https://github.com/sc303030/algorithm_practice/blob/cd31fec282c121ffcee8679cdead277b3cd88daf/5.DFS/%5B%EB%B0%B1%EC%A4%80%5D%2024483%EB%B2%88%20%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98%20%EC%88%98%EC%97%85%20-%20%EA%B9%8A%EC%9D%B4%20%EC%9A%B0%EC%84%A0%20%ED%83%90%EC%83%89%205%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+  - [백준-24446번 알고리즘 수업 - 너비 우선 탐색3](http://github.com/sc303030/algorithm_practice/commit/85c3138e5d994ee9fe7ef1d7ef262a174184eb61)
