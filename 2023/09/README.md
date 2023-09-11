@@ -35,3 +35,9 @@
 - 알고리즘
   - [백준-18232번 텔레포트 정거장](https://github.com/sc303030/algorithm_practice/blob/ea3d2cf0cf5daa7e21c02105b06877f682a6c94f/6.BFS/%5B%EB%B0%B1%EC%A4%80%5D%2018232%EB%B2%88%20%ED%85%94%EB%A0%88%ED%8F%AC%ED%8A%B8%20%EC%A0%95%EA%B1%B0%EC%9E%A5%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
   - [백준-18126번 너구리 구구](https://github.com/sc303030/algorithm_practice/blob/5421b6290bfb83fed0d72c422946b0c7bb76901d/5.DFS/%5B%EB%B0%B1%EC%A4%80%5D%2018126%EB%B2%88%20%EB%84%88%EA%B5%AC%EB%A6%AC%20%EA%B5%AC%EA%B5%AC%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+
+### 9월 11일 월요일
+
+- 알고리즘
+  - [백준-24447번 알고리즘 수업 - 너비 우선 탐색 4](https://github.com/sc303030/algorithm_practice/blob/8501d1b27e28218ffa9b00c11c85d44c4a883eed/6.BFS/%5B%EB%B0%B1%EC%A4%80%5D%2024447%EB%B2%88%20%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98%20%EC%88%98%EC%97%85%20-%20%EB%84%88%EB%B9%84%20%EC%9A%B0%EC%84%A0%20%ED%83%90%EC%83%89%204%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+  - [백준-24484번 알고리즘 수업 - 너비 우선 탐색 6](https://github.com/sc303030/algorithm_practice/blob/d8ed8d84bf311492100dcd98335f4500f4dff48b/5.DFS/%5B%EB%B0%B1%EC%A4%80%5D%2024484%EB%B2%88%20%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98%20%EC%88%98%EC%97%85%20-%20%EB%84%88%EB%B9%84%20%EC%9A%B0%EC%84%A0%20%ED%83%90%EC%83%89%206%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
