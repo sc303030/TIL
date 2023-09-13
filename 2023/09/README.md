@@ -47,3 +47,8 @@
 - 알고리즘
   - [백준-25416번 빠른 숫자 탐색](https://github.com/sc303030/algorithm_practice/blob/91cf9e2dc4bdf3c32db8a75162a441fe148f10d8/6.BFS/%5B%EB%B0%B1%EC%A4%80%5D%2025416%EB%B2%88%20%EB%B9%A0%EB%A5%B8%20%EC%88%AB%EC%9E%90%20%ED%83%90%EC%83%89%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
   - [백준-25516번 거리가 k이하인 트리 노드에서 사과 수확하기](https://github.com/sc303030/algorithm_practice/blob/9b82647cdd1ed4e7f64c3900917b274f32429587/5.DFS/%5B%EB%B0%B1%EC%A4%80%5D%2025516%EB%B2%88%20%EA%B1%B0%EB%A6%AC%EA%B0%80%20k%EC%9D%B4%ED%95%98%EC%9D%B8%20%ED%8A%B8%EB%A6%AC%20%EB%85%B8%EB%93%9C%EC%97%90%EC%84%9C%20%EC%82%AC%EA%B3%BC%20%EC%88%98%ED%99%95%ED%95%98%EA%B8%B0%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+
+### 9월 13일 수요일
+
+- 알고리즘
+  - [백준-2606번 바이러스](https://github.com/sc303030/algorithm_practice/blob/ed6cf5782aabe01924ed71630e44f3d1997019d6/6.BFS/%5B%EB%B0%B1%EC%A4%80%5D%202606%EB%B2%88%20%EB%B0%94%EC%9D%B4%EB%9F%AC%EC%8A%A4%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
