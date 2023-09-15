@@ -52,3 +52,9 @@
 
 - 알고리즘
   - [백준-2606번 바이러스](https://github.com/sc303030/algorithm_practice/blob/ed6cf5782aabe01924ed71630e44f3d1997019d6/6.BFS/%5B%EB%B0%B1%EC%A4%80%5D%202606%EB%B2%88%20%EB%B0%94%EC%9D%B4%EB%9F%AC%EC%8A%A4%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+
+### 9월 15일 금요일
+
+- 알고리즘
+  - [백준-25418번 정수 a를 k로 만들기](https://github.com/sc303030/algorithm_practice/blob/6e9972ad412ac8d0dff362755a456f7078cf2ff7/6.BFS/%5B%EB%B0%B1%EC%A4%80%5D%2025418%EB%B2%88%20%EC%A0%95%EC%88%98%20a%EB%A5%BC%20k%EB%A1%9C%20%EB%A7%8C%EB%93%A4%EA%B8%B0%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+  - [백준-26169번 세 번 이내에 사과를 먹자](https://github.com/sc303030/algorithm_practice/blob/121c765f9ab50235ae68811d81bb7e7712a015e1/5.DFS/%5B%EB%B0%B1%EC%A4%80%5D%2026169%EB%B2%88%20%EC%84%B8%20%EB%B2%88%20%EC%9D%B4%EB%82%B4%EC%97%90%20%EC%82%AC%EA%B3%BC%EB%A5%BC%20%EB%A8%B9%EC%9E%90%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
