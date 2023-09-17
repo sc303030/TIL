@@ -63,3 +63,8 @@
 
 - 알고리즘
   - [백준-16173번 점프왕 젤리 (Small)](https://github.com/sc303030/algorithm_practice/blob/181d65b5afa6eac60ca38be5b7e47a62faadf2a7/6.BFS/%5B%EB%B0%B1%EC%A4%80%5D%2016173%EB%B2%88%20%EC%A0%90%ED%94%84%EC%99%95%20%EC%A0%A4%EB%A6%AC%20(Small)%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+
+### 9월 17일 일요일
+
+- 알고리즘
+  - [백준-1388번 바닥 장식](https://github.com/sc303030/algorithm_practice/blob/538970453a470118d7de9128d68a5b0e0014f391/5.DFS/%5B%EB%B0%B1%EC%A4%80%5D%201388%EB%B2%88%20%EB%B0%94%EB%8B%A5%20%EC%9E%A5%EC%8B%9D%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
