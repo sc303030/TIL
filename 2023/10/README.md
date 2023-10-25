@@ -9,3 +9,9 @@
 - 프로그래머스
   - [분수의 덧셈](https://github.com/sc303030/algorithm_practice/blob/39ddf0fbb0d30938206ba92e4f456c93c6932ea0/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%5B%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4%5D%20%EB%B6%84%EC%88%98%EC%9D%98%20%EB%8D%A7%EC%85%88%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
   - [평행](https://github.com/sc303030/algorithm_practice/blob/7d84f6b9be9e3f60707d79111fc62d0e2de3a4fc/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%5B%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4%5D%20%ED%8F%89%ED%96%89%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+
+### 10월 25일 수요일
+
+- 프로그래머스
+  - [연속된 수의 합](http://github.com/sc303030/algorithm_practice/commit/60e0158d20373ca0a320521d7f23125ac776d877)
+  - [다음에 올 숫자](https://github.com/sc303030/algorithm_practice/blob/fe9fc7f50525eced61127b69169463fb90c72353/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%5B%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4%5D%20%EB%8B%A4%EC%9D%8C%EC%97%90%20%EC%98%AC%20%EC%88%AB%EC%9E%90%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
