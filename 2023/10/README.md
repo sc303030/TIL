@@ -15,3 +15,8 @@
 - 프로그래머스
   - [연속된 수의 합](http://github.com/sc303030/algorithm_practice/commit/60e0158d20373ca0a320521d7f23125ac776d877)
   - [다음에 올 숫자](https://github.com/sc303030/algorithm_practice/blob/fe9fc7f50525eced61127b69169463fb90c72353/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%5B%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4%5D%20%EB%8B%A4%EC%9D%8C%EC%97%90%20%EC%98%AC%20%EC%88%AB%EC%9E%90%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
+
+### 10월 26일 목요일
+
+- 프로그래머스
+  - [겹치는 선분의 길이](https://github.com/sc303030/algorithm_practice/blob/39ca6f0b3d9c10471cfb210aa6dc1eee9cea34f6/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/%5B%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4%5D%20%EA%B2%B9%EC%B9%98%EB%8A%94%20%EC%84%A0%EB%B6%84%EC%9D%98%20%EA%B8%B8%EC%9D%B4%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
